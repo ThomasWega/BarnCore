@@ -1,12 +1,14 @@
 package com.bof.core.plots.crops;
 
 import com.bof.core.plots.Plot;
+import com.bof.core.plots.PlotType;
 import com.bof.core.utils.BoxUtils;
 import lombok.Data;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.Sign;
 import org.bukkit.block.data.Ageable;
+import org.bukkit.block.data.type.Farmland;
 import org.bukkit.util.BoundingBox;
 
 @Data
@@ -18,15 +20,25 @@ public class FarmPlot implements Plot {
         return box;
     }
 
+    @Override
+    public PlotType getType() {
+        return PlotType.FARM;
+    }
+
     public void changeCrops(CropsType type) {
-        BoxUtils.getBlocksInBox(box).stream()
-                .filter(block -> block.getType() == Material.FARMLAND)
+        BoxUtils.getBlocksInBox(box, true)
                 .forEach(block -> {
-                    Block cropBlock = block.getRelative(BlockFace.UP);
-                    cropBlock.setType(type.getMaterial());
-                    Ageable ageable = ((Ageable) cropBlock.getBlockData());
-                    ageable.setAge(ageable.getMaximumAge());
-                    cropBlock.setBlockData(ageable);
+                    if (block.getState() instanceof Sign sign) {
+                        sign.getBlock().getRelative(BlockFace.DOWN).setType(Material.FARMLAND);
+                        Farmland farmland = ((Farmland) block.getRelative(BlockFace.DOWN).getBlockData());
+                        farmland.setMoisture(farmland.getMaximumMoisture());
+                    }
+
+                    if (block.getRelative(BlockFace.DOWN).getType() == Material.FARMLAND) {
+                        block.setType(type.getMaterial());
+                        Ageable ageable = ((Ageable) block.getBlockData());
+                        ageable.setAge(ageable.getMaximumAge());
+                    }
                 });
     }
 }
