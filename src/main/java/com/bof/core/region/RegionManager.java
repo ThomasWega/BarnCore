@@ -1,6 +1,9 @@
 package com.bof.core.region;
 
+import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -8,7 +11,7 @@ import java.util.Optional;
 
 import static com.bof.core.region.storage.RegionsStorage.regions;
 
-public class RegionManager {
+public class RegionManager implements Listener {
 
     /**
      * Try assigning region to player
@@ -64,5 +67,17 @@ public class RegionManager {
         return regions.stream()
                 .filter(barnRegion -> !barnRegion.isAssigned())
                 .toList();
+    }
+
+    public @NotNull List<BarnRegion> getAllOccupiedRegions() {
+        return regions.stream()
+                .filter(BarnRegion::isAssigned)
+                .toList();
+    }
+
+    @EventHandler
+    private void onHologramInteract(PlayerHologramInteractEvent event) {
+        getAllOccupiedRegions().forEach(region -> region.getPlots().values().forEach(plots -> plots.forEach(plot ->
+                plot.getHologramAction().accept(event))));
     }
 }

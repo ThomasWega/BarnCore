@@ -1,0 +1,6 @@
+plots:
+  farm:
+    # amount of these plots that the barn has in total
+    amount: 10
+  animal:
+    amount: 10

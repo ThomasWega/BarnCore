@@ -25,6 +25,8 @@ dependencies {
     paperweight.paperDevBundle("1.20.1-R0.1-SNAPSHOT")
     api("com.bof:toolkit:1.0-SNAPSHOT")
     api("com.github.unldenis:Hologram-Lib:2.6.0")
+    api("com.github.stefvanschie.inventoryframework:IF:0.10.11")
+    api("cloud.commandframework", "cloud-paper", "1.8.4")
     implementation(platform("com.intellectualsites.bom:bom-newest:1.37"))
     compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core")
     compileOnly("com.bof.barn:world-generator:1.0.0-SNAPSHOT")

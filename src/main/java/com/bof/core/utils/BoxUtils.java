@@ -1,5 +1,6 @@
 package com.bof.core.utils;
 
+import com.bof.core.plots.Plot;
 import com.bof.core.plots.PlotType;
 import com.bof.toolkit.utils.ColorUtils;
 import org.apache.commons.lang3.tuple.MutablePair;
@@ -8,8 +9,10 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
+import org.bukkit.block.data.type.Farmland;
 import org.bukkit.block.sign.Side;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
@@ -23,12 +26,12 @@ public class BoxUtils {
     private BoxUtils() {
     }
 
-    public static Set<BoundingBox> identifyPlots(@NotNull PlotType type, @NotNull BoundingBox box) {
+    public static Map<String, BoundingBox> identifyPlots(@NotNull PlotType type, @NotNull BoundingBox box) {
         // get the signs of the specified PlotType only
-        List<Sign> signsInBox = getBlocksInBox(box, "SIGN").stream()
+        Set<Sign> signsInBox = getBlocksInBox(box, "SIGN").stream()
                 .map(block -> ((Sign) block.getState()))
                 .filter(sign -> ColorUtils.stripColor(sign.getSide(Side.FRONT).line(0)).equals(type.getIdentifier()))
-                .toList();
+                .collect(Collectors.toSet());
 
         final Map<String, MutablePair<Block, Block>> plotLocations = new HashMap<>();
 
@@ -44,10 +47,31 @@ public class BoxUtils {
             plotLocations.put(id, pair);
         });
 
-        // convert to bounding boxes
-        return plotLocations.values().stream()
-                .map(pair -> BoundingBox.of(pair.getLeft(), pair.getRight()))
-                .collect(Collectors.toSet());
+        removeSignsForPlot(signsInBox);
+
+        return plotLocations.entrySet()
+                .stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> {
+                            MutablePair<Block, Block> pair = entry.getValue();
+                            return BoundingBox.of(pair.getLeft(), pair.getRight());
+                        }
+                ));
+    }
+
+    private static void removeSignsForPlot(Set<Sign> signs) {
+        signs.forEach(sign -> {
+            Block block = sign.getBlock();
+            block.setType(Material.AIR);
+
+            Block under = block.getRelative(BlockFace.DOWN);
+            under.setType(Material.FARMLAND);
+
+            Farmland farmland = ((Farmland) under.getBlockData());
+            farmland.setMoisture(farmland.getMaximumMoisture());
+            under.setBlockData(farmland);
+        });
     }
 
     public static Optional<Location> identifySpawn(@NotNull BoundingBox box) {
