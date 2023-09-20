@@ -21,7 +21,7 @@ public final class Core extends JavaPlugin implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     private void onGridLoad(GridLoadedEvent event) {
-        RegionsStorage.convertToRegions();
+        RegionsStorage.convertToRegions(this);
         this.registerEventsAfterGridLoad();
     }
 

@@ -4,9 +4,11 @@ import com.bof.core.plots.PlotType;
 import com.bof.toolkit.utils.ColorUtils;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.block.sign.Side;
 import org.bukkit.util.BoundingBox;
@@ -46,6 +48,14 @@ public class BoxUtils {
         return plotLocations.values().stream()
                 .map(pair -> BoundingBox.of(pair.getLeft(), pair.getRight()))
                 .collect(Collectors.toSet());
+    }
+
+    public static Optional<Location> identifySpawn(@NotNull BoundingBox box) {
+        return getBlocksInBox(box, "SIGN").stream()
+                .map(block -> ((Sign) block.getState()))
+                .filter(sign -> ColorUtils.stripColor(sign.getSide(Side.FRONT).line(0)).equals("spawn"))
+                .map(BlockState::getLocation)
+                .findFirst();
     }
 
     public static Set<Block> getBlocksInBox(@NotNull BoundingBox box, boolean includeAir) {

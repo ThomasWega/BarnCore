@@ -18,11 +18,13 @@ repositories {
     mavenLocal()
     mavenCentral()
     maven { url = uri("https://repo.papermc.io/repository/maven-public/") }
+    maven { url = uri("https://jitpack.io") }
 }
 
 dependencies {
     paperweight.paperDevBundle("1.20.1-R0.1-SNAPSHOT")
     api("com.bof:toolkit:1.0-SNAPSHOT")
+    api("com.github.unldenis:Hologram-Lib:2.6.0")
     implementation(platform("com.intellectualsites.bom:bom-newest:1.37"))
     compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core")
     compileOnly("com.bof.barn:world-generator:1.0.0-SNAPSHOT")

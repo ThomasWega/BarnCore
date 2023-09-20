@@ -22,8 +22,7 @@ public class RegionManager {
             BarnRegion region = optRegion.get();
             region.setOwner(player);
             region.setAssigned(true);
-            // TODO: uncomment, but the region either needs to have a spawn position or center
-           // player.teleport(region.getBox().getCenter().toLocation(player.getWorld()));
+            player.teleport(region.getSpawnLocation());
             player.sendMessage("TO ADD - assigned region to you");
             return true;
         }

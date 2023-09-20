@@ -11,4 +11,8 @@ dependencies:
       load: BEFORE
       required: true
       join-classpath: true
+    ProtocolLib:
+      load: BEFORE
+      required: true
+      join-classpath: true
 
