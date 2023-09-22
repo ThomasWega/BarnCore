@@ -126,7 +126,6 @@ public class CropsHarvestMenu extends ChestGui {
                 // this doesn't work for some reason
                 // this.update()
                 new CropsHarvestMenu(this.region).show(event.getWhoClicked());
-                plot.updateHologram();
                 return;
             }
             // if not click shift, open the select menu

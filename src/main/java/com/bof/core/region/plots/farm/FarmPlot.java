@@ -8,7 +8,6 @@ import com.bof.core.utils.BoxUtils;
 import com.github.unldenis.hologram.Hologram;
 import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
 import com.github.unldenis.hologram.line.BlockLine;
-import com.github.unldenis.hologram.line.TextLine;
 import lombok.Data;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -62,14 +61,14 @@ public class FarmPlot implements HarvestablePlot {
         this.setCurrentCrop(type);
     }
 
-    public boolean harvestCrops(@NotNull Player player) {
+    public int harvestCrops(@NotNull Player player) {
+        int count = 0;
+
         // there is nothing to harvest
         if (currentCrop == CropType.NONE || !isCropPresent()) {
-            player.sendMessage("TO ADD - No crop is planted");
-            return false;
+            return count;
         }
 
-        int count = 0;
         for (Block block : boxBlocks) {
             if (this.getOwningRegion().isCropsInvFull()) {
                 player.sendMessage("TO ADD - Crops inventory is full");
@@ -84,11 +83,7 @@ public class FarmPlot implements HarvestablePlot {
             }
         }
 
-        if (count > 0) {
-            player.sendMessage("TO ADD - Harvested " + count + " crops");
-        }
-
-        return true;
+        return count;
     }
 
     public int getRemainingCrops() {
@@ -108,18 +103,12 @@ public class FarmPlot implements HarvestablePlot {
     }
 
     public void updateHologram() {
-        hologram.getLines().stream()
+        this.hologram.getLines().stream()
                 .filter(iLine -> iLine instanceof BlockLine)
                 .map(iLine -> ((BlockLine) iLine))
-                .forEach(blockLine -> {
-                    blockLine.setObj(new ItemStack(currentCrop.getItemMaterial()));
-                    blockLine.update(owningRegion.getAllPlayers());
-                });
+                .forEach(blockLine -> blockLine.setObj(new ItemStack(currentCrop.getItemMaterial())));
 
-        hologram.getLines().stream()
-                .filter(iLine -> iLine instanceof TextLine)
-                .map(iLine -> ((TextLine) iLine))
-                .forEach(textLine -> textLine.update(owningRegion.getAllPlayers()));
+        this.hologram.getLines().forEach(iLine -> iLine.update(this.owningRegion.getAllPlayers()));
     }
 
     public void setAutoHarvest(@NotNull Player player, boolean autoHarvest) {
@@ -149,8 +138,8 @@ public class FarmPlot implements HarvestablePlot {
     @Override
     public List<Component> getLore() {
         return List.of(
-                MiniMessage.miniMessage().deserialize("<color:#FCDB03>Upgrades: <red>❌</red></color>"),
-                MiniMessage.miniMessage().deserialize("<color:#D4F542>Enchanted Rain: <red>❌</red></color>"),
+                MiniMessage.miniMessage().deserialize("<color:#FCDB03>Upgrades: <red>OFF</red></color>"),
+                MiniMessage.miniMessage().deserialize("<color:#D4F542>Enchanted Rain: <red>OFF</red></color>"),
                 MiniMessage.miniMessage().deserialize("<color:#2B84FF>Auto Harvest: %barn_plot_farm_colored_status_autoharvest_" + this.id + "%</color>")
         );
     }

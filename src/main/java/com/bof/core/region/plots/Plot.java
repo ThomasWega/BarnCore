@@ -48,4 +48,6 @@ public interface Plot {
     BoundingBox getBox();
 
     Set<Block> getBoxBlocks();
+
+    void updateHologram();
 }

@@ -22,8 +22,7 @@ public class BarnRegion {
     private final BoundingBox box;
     private final Set<UUID> members = new HashSet<>();
     private final List<ItemStack> cropsInventory = new ArrayList<>();
-    private final int cropsInventorySize = 10;
-    // TODO get actual value
+    private final int cropsInventorySize = 100;
     private final int autoHarvestSlots = 2;
     private boolean isAssigned = false;
     private Player owner;

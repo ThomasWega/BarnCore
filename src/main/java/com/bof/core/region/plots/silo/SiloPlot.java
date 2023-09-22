@@ -7,9 +7,11 @@ import com.bof.core.region.plots.silo.menu.SiloPlotMainMenu;
 import com.bof.core.utils.BoxUtils;
 import com.github.unldenis.hologram.Hologram;
 import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
+import com.github.unldenis.hologram.line.BlockLine;
 import lombok.Data;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BoundingBox;
@@ -38,6 +40,10 @@ public class SiloPlot implements Plot {
         this.boxBlocks = BoxUtils.getBlocksInBox(box, true);
     }
 
+    public boolean isFilled() {
+        return getFilledAmount() >= capacity;
+    }
+
     public int getFilledAmount() {
         return this.items.stream()
                 .mapToInt(ItemStack::getAmount)
@@ -47,6 +53,23 @@ public class SiloPlot implements Plot {
     public float getFilledPercentage() {
         float percentage = (float) this.getFilledAmount() / this.capacity * 100;
         return Math.min(100, percentage); // Ensure the percentage doesn't exceed 100
+    }
+
+    public void updateHologram() {
+        this.hologram.getLines().stream()
+                .filter(iLine -> iLine instanceof BlockLine)
+                .map(iLine -> ((BlockLine) iLine))
+                .forEach(blockLine -> {
+                    Material material = this.isFilled() ? Material.BARRIER : Material.BARREL;
+                    blockLine.setObj(new ItemStack(material));
+                });
+
+        this.hologram.getLines().forEach(iLine -> iLine.update(this.owningRegion.getAllPlayers()));
+    }
+
+    public void setAutoSell(boolean autoSell) {
+        this.autoSell = autoSell;
+        this.updateHologram();
     }
 
 

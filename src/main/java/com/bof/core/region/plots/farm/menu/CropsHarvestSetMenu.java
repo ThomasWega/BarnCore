@@ -88,7 +88,6 @@ public class CropsHarvestSetMenu extends ChestGui {
                                             previousSelectedPlot.setAutoHarvest(false);
                                         }
                                         plot.setAutoHarvest(true);
-                                        plot.updateHologram();
                                         new CropsHarvestMenu(region).show(event.getWhoClicked());
                                     }
                             ));
