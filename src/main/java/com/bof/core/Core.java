@@ -4,7 +4,6 @@ import com.bof.barn.world_generator.event.GridLoadedEvent;
 import com.bof.core.region.plots.farm.handler.CropsTrampingHandler;
 import com.bof.core.region.plots.handler.PlayerFarmPlotHandler;
 import com.bof.core.region.handler.PlayerRegionAssignHandler;
-import com.bof.core.placeholders.holo.HoloPlaceholders;
 import com.bof.core.placeholders.papi.PAPIHook;
 import com.bof.core.region.plots.PlotHoloManager;
 import com.bof.core.region.plots.PlotManager;
@@ -31,14 +30,13 @@ public final class Core extends JavaPlugin implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     private void onGridLoad(GridLoadedEvent event) {
-        this.regionManager = new RegionManager(this.regionStorage);
+        this.regionManager = new RegionManager(this);
         this.registerEventsAfterGridLoad();
         this.regionStorage.convertToRegions();
     }
 
     @Override
     public void onEnable() {
-        HoloPlaceholders.getPlaceholders().add("test", player -> player.getName());
         LOGGER = getComponentLogger();
         this.loadFiles();
         this.registerEvents();

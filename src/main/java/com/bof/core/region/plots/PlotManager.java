@@ -23,9 +23,9 @@ public class PlotManager implements Listener {
     }
 
     private void handlePlotsCreation(BarnRegion region) {
-        Map<PlotType, Set<Plot>> plots = new HashMap<>();
+        Map<PlotType, Set<HarvestablePlot>> plots = new HashMap<>();
         Arrays.stream(PlotType.values()).forEach(plotType -> plots.put(plotType, BoxUtils.identifyPlots(plotType, region.getBox()).entrySet().stream()
-                .map(entry -> Plot.newPlot(region, plotType, entry.getValue(), Integer.parseInt(entry.getKey())))
+                .map(entry -> HarvestablePlot.newPlot(region, plotType, entry.getValue(), Integer.parseInt(entry.getKey())))
                 .peek(plot -> Bukkit.getPluginManager().callEvent(new PlotCreatedEvent(plot)))
                 .collect(Collectors.toSet())
         ));

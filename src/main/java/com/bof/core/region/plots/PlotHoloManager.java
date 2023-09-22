@@ -4,13 +4,11 @@ import com.bof.core.Core;
 import com.bof.core.placeholders.holo.HoloPlaceholders;
 import com.bof.core.region.plots.event.PlotCreatedEvent;
 import com.bof.core.region.plots.farm.FarmPlot;
-import com.bof.core.region.BarnRegion;
 import com.bof.core.utils.PlotUtils;
 import com.bof.toolkit.utils.ComponentUtils;
 import com.github.unldenis.hologram.Hologram;
 import com.github.unldenis.hologram.HologramBuilder;
 import com.github.unldenis.hologram.HologramPool;
-import com.github.unldenis.hologram.InteractiveHologramPool;
 import com.github.unldenis.hologram.line.BlockLine;
 import com.github.unldenis.hologram.line.Line;
 import lombok.RequiredArgsConstructor;
@@ -31,15 +29,14 @@ public class PlotHoloManager implements Listener {
         this.handleHologram(event.getPlot());
     }
 
-    private void handleHologram(Plot plot) {
+    private void handleHologram(HarvestablePlot plot) {
         PlotUtils.identifyHologram(plot).ifPresent(loc -> {
             loc.getBlock().setType(Material.AIR);
-
             plot.setHologram(this.getHologram(plugin, plot, loc, plot.getOwningRegion().getHologramPool()));
         });
     }
 
-    private Hologram getHologram(Core plugin, Plot plot, Location loc, HologramPool holoPool) {
+    private Hologram getHologram(Core plugin, HarvestablePlot plot, Location loc, HologramPool holoPool) {
         Location holoLoc = loc.add(0.5, 0.75, 0);
 
         HologramBuilder builder = Hologram.builder(plugin, holoLoc)
@@ -54,10 +51,21 @@ public class PlotHoloManager implements Listener {
                 .placeholders(HoloPlaceholders.getPlaceholders())
                 .loadAndBuild(holoPool);
 
-        // add the type line, but move it slightly
-        BlockLine line = new BlockLine(new Line(plugin, holo.getLines().get(0).getLocation().clone().add(0, 0.6, 0.25)), new ItemStack(((FarmPlot) plot).getCurrentCrop().getItemMaterial()));
-        holo.getLines().add(0, line);
 
+        this.addBlockLine(plot, holo);
         return holo;
+    }
+
+    private void addBlockLine(Plot plot, Hologram holo) {
+        Location loc = holo.getLines().get(0).getLocation().clone().add(0, 0.6, 0.25);
+
+        ItemStack item = new ItemStack(Material.BARRIER);
+        switch (plot.getType()) {
+            case FARM -> item = new ItemStack(((FarmPlot) plot).getCurrentCrop().getItemMaterial());
+            case SILO -> item = new ItemStack(Material.BARREL);
+        }
+
+        BlockLine line = new BlockLine(new Line(plugin, loc), item);
+        holo.getLines().add(0, line);
     }
 }

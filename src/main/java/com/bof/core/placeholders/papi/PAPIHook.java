@@ -2,7 +2,7 @@ package com.bof.core.placeholders.papi;
 
 import com.bof.core.player.GamePlayer;
 import com.bof.core.region.BarnRegion;
-import com.bof.core.region.plots.Plot;
+import com.bof.core.region.plots.HarvestablePlot;
 import com.bof.core.region.plots.PlotType;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
@@ -51,14 +51,14 @@ public class PAPIHook extends PlaceholderExpansion {
 
         if (params.startsWith("plot_farm_autoharvest")) {
             int plotId = Integer.parseInt(params.substring(22));
-            Optional<Plot> optPlot = region.getPlot(PlotType.FARM, plotId);
+            Optional<HarvestablePlot> optPlot = region.getPlot(PlotType.FARM, plotId);
             if (optPlot.isPresent())
                 return String.valueOf(optPlot.get().isAutoHarvest());
         }
 
         if (params.startsWith("plot_farm_colored_status_autoharvest")) {
             int plotId = Integer.parseInt(params.substring(37));
-            Optional<Plot> optPlot = region.getPlot(PlotType.FARM, plotId);
+            Optional<HarvestablePlot> optPlot = region.getPlot(PlotType.FARM, plotId);
             if (optPlot.isPresent()) {
                 return optPlot.get().isAutoHarvest() ? "§aON" : "§cOFF";
             }

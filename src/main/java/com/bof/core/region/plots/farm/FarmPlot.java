@@ -1,9 +1,9 @@
 package com.bof.core.region.plots.farm;
 
-import com.bof.core.region.plots.Plot;
+import com.bof.core.region.BarnRegion;
+import com.bof.core.region.plots.HarvestablePlot;
 import com.bof.core.region.plots.PlotType;
 import com.bof.core.region.plots.farm.menu.FarmPlotMainMenu;
-import com.bof.core.region.BarnRegion;
 import com.bof.core.utils.BoxUtils;
 import com.github.unldenis.hologram.Hologram;
 import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
@@ -27,7 +27,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @Data
-public class FarmPlot implements Plot {
+public class FarmPlot implements HarvestablePlot {
     private final BarnRegion owningRegion;
     private final PlotType type = PlotType.FARM;
     private final BoundingBox box;
@@ -149,7 +149,6 @@ public class FarmPlot implements Plot {
 
     @Override
     public List<Component> getLore() {
-        String autoHarvestStatus = this.autoHarvest ? "<green>ON</green>" : "<red>OFF</red>";
         return List.of(
                 MiniMessage.miniMessage().deserialize("<color:#FCDB03>Upgrades: <red>❌</red></color>"),
                 MiniMessage.miniMessage().deserialize("<color:#D4F542>Enchanted Rain: <red>❌</red></color>"),

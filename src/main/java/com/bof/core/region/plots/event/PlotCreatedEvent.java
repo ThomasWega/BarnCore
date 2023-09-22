@@ -1,7 +1,6 @@
 package com.bof.core.region.plots.event;
 
-import com.bof.core.region.plots.Plot;
-import com.bof.core.region.BarnRegion;
+import com.bof.core.region.plots.HarvestablePlot;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.event.Event;
@@ -12,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 @RequiredArgsConstructor
 public class PlotCreatedEvent extends Event {
     private static final HandlerList HANDLERS = new HandlerList();
-    private final Plot plot;
+    private final HarvestablePlot plot;
 
     public static HandlerList getHandlerList() {
         return HANDLERS;
