@@ -38,11 +38,11 @@ public class ItemBuilder {
     private final ItemMeta meta;
     private final Damageable damageable;
     @Getter
-    private List<Component> lore = new ArrayList<>();
-    @Getter
     private final Set<ItemFlag> flags = new HashSet<>();
     @Getter
     private final Map<Enchantment, Integer> enchantments = new HashMap<>();
+    @Getter
+    private List<Component> lore = new ArrayList<>();
     @Getter
     private Material material;
     @Getter

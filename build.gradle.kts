@@ -19,6 +19,10 @@ repositories {
     mavenCentral()
     maven { url = uri("https://repo.papermc.io/repository/maven-public/") }
     maven { url = uri("https://jitpack.io") }
+    maven { url = uri("https://repo.kryptonmc.org/releases") }
+    maven {
+        url = uri("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+    }
 }
 
 dependencies {
@@ -31,6 +35,8 @@ dependencies {
     compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core")
     compileOnly("com.bof.barn:world-generator:1.0.0-SNAPSHOT")
     compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit") { isTransitive = false }
+    compileOnly("me.neznamy:tab-api:4.0.2")
+    compileOnly("me.clip:placeholderapi:2.11.3")
 }
 
 tasks {

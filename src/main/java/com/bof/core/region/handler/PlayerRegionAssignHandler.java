@@ -1,12 +1,10 @@
-package com.bof.core.handler;
+package com.bof.core.region.handler;
 
-import com.bof.core.plots.PlotType;
-import com.bof.core.plots.crops.FarmPlot;
-import com.bof.core.plots.crops.menu.CropsMainMenu;
-import com.bof.core.plots.crops.menu.FarmChangeCropsMenu;
+import com.bof.core.Core;
+import com.bof.core.player.GamePlayer;
+import com.bof.core.region.plots.farm.menu.CropsHarvestMenu;
 import com.bof.core.region.BarnRegion;
 import com.bof.core.region.RegionManager;
-import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,10 +13,16 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
-@RequiredArgsConstructor
-public class PlayerJoinHandler implements Listener {
+public class PlayerRegionAssignHandler implements Listener {
+    private final Core plugin;
     private final RegionManager regionManager;
+
+    public PlayerRegionAssignHandler(Core plugin) {
+        this.plugin = plugin;
+        this.regionManager = plugin.getRegionManager();
+    }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     private void onPrePlayerJoin(AsyncPlayerPreLoginEvent event) {
@@ -29,7 +33,16 @@ public class PlayerJoinHandler implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     private void onPlayerJoin(PlayerJoinEvent event) {
-        regionManager.assignRegion(event.getPlayer());
+        Player player = event.getPlayer();
+        regionManager.assignRegion(player);
+        GamePlayer.cache(plugin, player);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    private void onPlayerQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        regionManager.deAssignRegion(player);
+        GamePlayer.unCache(player);
     }
 
     @EventHandler
@@ -37,6 +50,6 @@ public class PlayerJoinHandler implements Listener {
         Player player = event.getPlayer();
         BarnRegion region = regionManager.getRegionOf(player).get();
         // new FarmChangeCropsMenu(((FarmPlot) region.getPlots().get(PlotType.FARM).toArray()[0])).show(player);
-        new CropsMainMenu(region).show(player);
+        new CropsHarvestMenu(region).show(player);
     }
 }

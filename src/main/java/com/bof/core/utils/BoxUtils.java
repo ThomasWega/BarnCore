@@ -1,7 +1,6 @@
 package com.bof.core.utils;
 
-import com.bof.core.plots.Plot;
-import com.bof.core.plots.PlotType;
+import com.bof.core.region.plots.PlotType;
 import com.bof.toolkit.utils.ColorUtils;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.bukkit.Bukkit;

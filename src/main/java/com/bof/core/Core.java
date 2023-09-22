@@ -1,9 +1,16 @@
 package com.bof.core;
 
-import com.bof.barn.world_generator.events.GridLoadedEvent;
-import com.bof.core.handler.PlayerJoinHandler;
+import com.bof.barn.world_generator.event.GridLoadedEvent;
+import com.bof.core.region.plots.farm.handler.CropsTrampingHandler;
+import com.bof.core.region.plots.handler.PlayerFarmPlotHandler;
+import com.bof.core.region.handler.PlayerRegionAssignHandler;
+import com.bof.core.placeholders.holo.HoloPlaceholders;
+import com.bof.core.placeholders.papi.PAPIHook;
+import com.bof.core.region.plots.PlotHoloManager;
+import com.bof.core.region.plots.PlotManager;
 import com.bof.core.region.RegionManager;
-import com.bof.core.region.storage.RegionsStorage;
+import com.bof.core.region.spawn.SpawnManager;
+import com.bof.core.region.storage.RegionStorage;
 import com.bof.toolkit.file.FileLoader;
 import lombok.Getter;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
@@ -16,23 +23,26 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
 
+@Getter
 public final class Core extends JavaPlugin implements Listener {
     public static ComponentLogger LOGGER;
-
-    @Getter
-    private final RegionManager regionManager = new RegionManager();
+    private final RegionStorage regionStorage = new RegionStorage();
+    private RegionManager regionManager;
 
     @EventHandler(priority = EventPriority.LOWEST)
     private void onGridLoad(GridLoadedEvent event) {
-        RegionsStorage.convertToRegions(this);
+        this.regionManager = new RegionManager(this.regionStorage);
         this.registerEventsAfterGridLoad();
+        this.regionStorage.convertToRegions();
     }
 
     @Override
     public void onEnable() {
+        HoloPlaceholders.getPlaceholders().add("test", player -> player.getName());
         LOGGER = getComponentLogger();
         this.loadFiles();
         this.registerEvents();
+        this.registerPAPIPlaceholders();
     }
 
     @Override
@@ -46,8 +56,13 @@ public final class Core extends JavaPlugin implements Listener {
 
     private void registerEventsAfterGridLoad() {
         PluginManager p = Bukkit.getPluginManager();
-        p.registerEvents(new PlayerJoinHandler(regionManager), this);
+        p.registerEvents(new PlotManager(), this);
+        p.registerEvents(new PlotHoloManager(this), this);
+        p.registerEvents(new SpawnManager(), this);
+        p.registerEvents(new PlayerRegionAssignHandler(this), this);
         p.registerEvents(regionManager, this);
+        p.registerEvents(new PlayerFarmPlotHandler(), this);
+        p.registerEvents(new CropsTrampingHandler(), this);
     }
 
     private void loadFiles() {
@@ -58,5 +73,9 @@ public final class Core extends JavaPlugin implements Listener {
         } catch (IOException e) {
             throw new RuntimeException("Failed to load one or more config files", e);
         }
+    }
+
+    private void registerPAPIPlaceholders() {
+        new PAPIHook().register();
     }
 }

@@ -1,4 +1,4 @@
-package com.bof.core.plots;
+package com.bof.core.region.plots;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -7,7 +7,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum PlotType {
     FARM("farm"),
-    ANIMAL("animal");
+    ANIMAL("animal"),
+    SILO("silo");
 
     private final String identifier;
 }

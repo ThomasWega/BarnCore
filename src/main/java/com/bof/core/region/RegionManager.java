@@ -1,17 +1,29 @@
 package com.bof.core.region;
 
+import com.bof.core.Core;
+import com.bof.core.region.event.RegionCreatedEvent;
+import com.bof.core.region.storage.RegionStorage;
+import com.github.unldenis.hologram.HologramPool;
+import com.github.unldenis.hologram.InteractiveHologramPool;
 import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
 
-import static com.bof.core.region.storage.RegionsStorage.regions;
-
 public class RegionManager implements Listener {
+    private final Core plugin;
+    private final RegionStorage storage;
+
+    public RegionManager(@NotNull Core plugin) {
+        this.plugin = plugin;
+        this.storage = plugin.getRegionStorage();
+    }
 
     /**
      * Try assigning region to player
@@ -33,7 +45,7 @@ public class RegionManager implements Listener {
     }
 
     public boolean deAssignRegion(@NotNull Player player) {
-        return regions.stream()
+        return this.storage.getRegions().stream()
                 .filter(barnRegion -> barnRegion.getOwner() == player)
                 .peek(barnRegion -> {
                     barnRegion.setOwner(null);
@@ -44,7 +56,7 @@ public class RegionManager implements Listener {
     }
 
     public Optional<BarnRegion> getRegionOf(@NotNull Player player) {
-        return regions.stream()
+        return this.storage.getRegions().stream()
                 .filter(barnRegion -> barnRegion.getOwner() == player)
                 .findAny();
     }
@@ -55,7 +67,7 @@ public class RegionManager implements Listener {
     }
 
     public Optional<BarnRegion> getFreeRegion() {
-        return regions.stream()
+        return this.storage.getRegions().stream()
                 .filter(barnRegion -> !barnRegion.isAssigned())
                 .findFirst();
     }
@@ -64,13 +76,13 @@ public class RegionManager implements Listener {
      * @return List of all free regions, or empty list if none are free
      */
     public @NotNull List<BarnRegion> getAllFreeRegions() {
-        return regions.stream()
+        return this.storage.getRegions().stream()
                 .filter(barnRegion -> !barnRegion.isAssigned())
                 .toList();
     }
 
     public @NotNull List<BarnRegion> getAllOccupiedRegions() {
-        return regions.stream()
+        return this.storage.getRegions().stream()
                 .filter(BarnRegion::isAssigned)
                 .toList();
     }
@@ -79,5 +91,18 @@ public class RegionManager implements Listener {
     private void onHologramInteract(PlayerHologramInteractEvent event) {
         getAllOccupiedRegions().forEach(region -> region.getPlots().values().forEach(plots -> plots.forEach(plot ->
                 plot.getHologramAction().accept(event))));
+    }
+
+    @EventHandler(priority = EventPriority.LOW)
+    private void onRegionCreate(RegionCreatedEvent event) {
+        this.handleHologram(event.getRegion());
+    }
+
+    private void handleHologram(BarnRegion region) {
+        HologramPool holoPool = new HologramPool(plugin, 100);
+        region.setHologramPool(holoPool);
+
+        InteractiveHologramPool interactiveHoloPool = new InteractiveHologramPool(holoPool, 0f, 5f);
+        region.setInteractiveHologramPool(interactiveHoloPool);
     }
 }
