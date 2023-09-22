@@ -6,7 +6,6 @@ import com.bof.core.region.storage.RegionStorage;
 import com.github.unldenis.hologram.HologramPool;
 import com.github.unldenis.hologram.InteractiveHologramPool;
 import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
-import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

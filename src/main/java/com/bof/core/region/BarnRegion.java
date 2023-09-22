@@ -2,6 +2,7 @@ package com.bof.core.region;
 
 
 import com.bof.core.region.plots.HarvestablePlot;
+import com.bof.core.region.plots.Plot;
 import com.bof.core.region.plots.PlotType;
 import com.github.unldenis.hologram.HologramPool;
 import com.github.unldenis.hologram.InteractiveHologramPool;
@@ -27,7 +28,7 @@ public class BarnRegion {
     private boolean isAssigned = false;
     private Player owner;
     private Location spawnLocation;
-    private Map<PlotType, Set<HarvestablePlot>> plots;
+    private Map<PlotType, Set<Plot>> plots;
     private HologramPool hologramPool;
     private InteractiveHologramPool interactiveHologramPool;
     private float farmCoins = 0;
@@ -58,7 +59,8 @@ public class BarnRegion {
     public int getAutoHarvestPlotsCount() {
         return (int) plots.values().stream()
                 .flatMap(Set::stream)
-                .filter(HarvestablePlot::isAutoHarvest)
+                .filter(plot -> plot instanceof HarvestablePlot)
+                .filter(plot -> ((HarvestablePlot) plot).isAutoHarvest())
                 .count();
     }
 
@@ -66,7 +68,7 @@ public class BarnRegion {
         return this.getAutoHarvestPlotsCount() < this.autoHarvestSlots;
     }
 
-    public Optional<HarvestablePlot> getPlot(@NotNull PlotType type, int id) {
+    public Optional<Plot> getPlot(@NotNull PlotType type, int id) {
         return this.plots.get(type).stream()
                 .filter(plot -> plot.getId() == id)
                 .findAny();

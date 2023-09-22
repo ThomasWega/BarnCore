@@ -2,7 +2,6 @@ package com.bof.core.region.handler;
 
 import com.bof.core.Core;
 import com.bof.core.player.GamePlayer;
-import com.bof.core.region.plots.farm.menu.CropsHarvestMenu;
 import com.bof.core.region.BarnRegion;
 import com.bof.core.region.RegionManager;
 import net.kyori.adventure.text.Component;
@@ -50,6 +49,5 @@ public class PlayerRegionAssignHandler implements Listener {
         Player player = event.getPlayer();
         BarnRegion region = regionManager.getRegionOf(player).get();
         // new FarmChangeCropsMenu(((FarmPlot) region.getPlots().get(PlotType.FARM).toArray()[0])).show(player);
-        new CropsHarvestMenu(region).show(player);
     }
 }

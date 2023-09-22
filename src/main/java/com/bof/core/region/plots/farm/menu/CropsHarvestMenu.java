@@ -3,10 +3,10 @@ package com.bof.core.region.plots.farm.menu;
 import com.bof.core.item.ItemBuilder;
 import com.bof.core.item.SkullBuilder;
 import com.bof.core.menu.premade.back.GoBackPane;
-import com.bof.core.region.plots.HarvestablePlot;
+import com.bof.core.region.BarnRegion;
+import com.bof.core.region.plots.Plot;
 import com.bof.core.region.plots.PlotType;
 import com.bof.core.region.plots.farm.FarmPlot;
-import com.bof.core.region.BarnRegion;
 import com.bof.core.skin.Skin;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
@@ -64,7 +64,7 @@ public class CropsHarvestMenu extends ChestGui {
                 .map(Map.Entry::getValue)
                 .forEach(plots -> plots.stream()
                         // sort by id, so first plot is always 1, second is 2, etc.
-                        .sorted(Comparator.comparingInt(HarvestablePlot::getId))
+                        .sorted(Comparator.comparingInt(Plot::getId))
                         .map(plot -> ((FarmPlot) plot))
                         .filter(FarmPlot::isAutoHarvest)
                         .forEach(plot -> {

@@ -29,14 +29,14 @@ public class PlotHoloManager implements Listener {
         this.handleHologram(event.getPlot());
     }
 
-    private void handleHologram(HarvestablePlot plot) {
+    private void handleHologram(Plot plot) {
         PlotUtils.identifyHologram(plot).ifPresent(loc -> {
             loc.getBlock().setType(Material.AIR);
             plot.setHologram(this.getHologram(plugin, plot, loc, plot.getOwningRegion().getHologramPool()));
         });
     }
 
-    private Hologram getHologram(Core plugin, HarvestablePlot plot, Location loc, HologramPool holoPool) {
+    private Hologram getHologram(Core plugin, Plot plot, Location loc, HologramPool holoPool) {
         Location holoLoc = loc.add(0.5, 0.75, 0);
 
         HologramBuilder builder = Hologram.builder(plugin, holoLoc)

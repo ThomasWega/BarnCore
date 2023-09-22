@@ -1,6 +1,6 @@
 package com.bof.core.utils;
 
-import com.bof.core.region.plots.HarvestablePlot;
+import com.bof.core.region.plots.Plot;
 import com.bof.toolkit.utils.ColorUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,7 +15,7 @@ import java.util.Optional;
 
 public class PlotUtils {
 
-    public static Optional<Location> identifyHologram(@NotNull HarvestablePlot plot) {
+    public static Optional<Location> identifyHologram(@NotNull Plot plot) {
         return BoxUtils.getBlocksInBox(plot.getBox(), "SIGN").stream()
                 .map(block -> ((Sign) block.getState()))
                 .filter(sign -> ColorUtils.stripColor(sign.getSide(Side.FRONT).line(0)).equals("holo"))
@@ -23,7 +23,7 @@ public class PlotUtils {
                 .findFirst();
     }
 
-    public static void handleSignsRemoval(@NotNull HarvestablePlot plot) {
+    public static void handleSignsRemoval(@NotNull Plot plot) {
         BoxUtils.getBlocksInBox(plot.getBox(), "SIGN").forEach(block -> {
             if (block.getState() instanceof Sign sign) {
                 sign.getBlock().getRelative(BlockFace.DOWN).setType(Material.FARMLAND);

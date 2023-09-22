@@ -46,7 +46,7 @@ public class BoxUtils {
             plotLocations.put(id, pair);
         });
 
-        removeSignsForPlot(signsInBox);
+        removeSignsForPlot(type, signsInBox);
 
         return plotLocations.entrySet()
                 .stream()
@@ -59,17 +59,18 @@ public class BoxUtils {
                 ));
     }
 
-    private static void removeSignsForPlot(Set<Sign> signs) {
+    private static void removeSignsForPlot(PlotType type, Set<Sign> signs) {
         signs.forEach(sign -> {
             Block block = sign.getBlock();
             block.setType(Material.AIR);
 
-            Block under = block.getRelative(BlockFace.DOWN);
-            under.setType(Material.FARMLAND);
-
-            Farmland farmland = ((Farmland) under.getBlockData());
-            farmland.setMoisture(farmland.getMaximumMoisture());
-            under.setBlockData(farmland);
+            if (type == PlotType.FARM) {
+                Block under = block.getRelative(BlockFace.DOWN);
+                under.setType(Material.FARMLAND);
+                Farmland farmland = ((Farmland) under.getBlockData());
+                farmland.setMoisture(farmland.getMaximumMoisture());
+                under.setBlockData(farmland);
+            }
         });
     }
 
