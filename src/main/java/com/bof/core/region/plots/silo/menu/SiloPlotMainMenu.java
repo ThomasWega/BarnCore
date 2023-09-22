@@ -40,9 +40,10 @@ public class SiloPlotMainMenu extends ChestGui {
     }
 
     private void addSections() {
-        this.mainPane.addItem(getSellCropsItem(), 1, 0);
-        this.mainPane.addItem(getOpenSiloItem(), 3, 0);
-        this.mainPane.addItem(getAutoSellItem(), 5, 0);
+        this.mainPane.addItem(getSellCropsItem(), 0, 0);
+        this.mainPane.addItem(getOpenSiloItem(), 2, 0);
+        this.mainPane.addItem(getPutCropsItem(), 4, 0);
+        this.mainPane.addItem(getAutoSellItem(), 6, 0);
     }
 
     private GuiItem getSellCropsItem() {
@@ -61,14 +62,13 @@ public class SiloPlotMainMenu extends ChestGui {
 
     private GuiItem getOpenSiloItem() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#ffa83d>Open Silo</color></b>");
-        return new GuiItem(
-                new ItemBuilder(Material.BARREL)
+        return new GuiItem(new ItemBuilder(Material.BARREL)
                         .displayName(name)
                         .lore(List.of(
                                 Component.empty(),
                                 Component.text("Click to open silo", NamedTextColor.DARK_GRAY)
                         ))
-                        .build(), event -> event.setCancelled(true)
+                        .build(), event -> new SiloContainerMainMenu(this.plot).show(event.getWhoClicked())
         );
     }
 
@@ -93,6 +93,18 @@ public class SiloPlotMainMenu extends ChestGui {
                     player.sendMessage("TO ADD - changed auto sell");
                     player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
                 }
+        );
+    }
+
+    private GuiItem getPutCropsItem() {
+        Component name = MiniMessage.miniMessage().deserialize("<b><color:#FF5A36>Put Crops</color></b>");
+        return new GuiItem(new ItemBuilder(Material.HOPPER)
+                .displayName(name)
+                .lore(List.of(
+                        Component.empty(),
+                        Component.text("Click crops into silo", NamedTextColor.DARK_GRAY)
+                ))
+                .build(), event -> event.setCancelled(true)
         );
     }
 }

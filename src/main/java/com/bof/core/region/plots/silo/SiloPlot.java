@@ -16,6 +16,7 @@ import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BoundingBox;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -30,7 +31,7 @@ public class SiloPlot implements Plot {
     private final Set<Block> boxBlocks;
     private Hologram hologram;
     private final int capacity = 1000;
-    private final Set<ItemStack> items = new HashSet<>();
+    private final List<ItemStack> items = new ArrayList<>();
     private boolean autoSell = false;
 
     public SiloPlot(BarnRegion owningRegion, BoundingBox box, int id) {
