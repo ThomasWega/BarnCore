@@ -192,7 +192,7 @@ public class FarmPlot implements HarvestablePlot {
     public Consumer<PlayerHologramInteractEvent> getHologramAction() {
         return event -> {
             if (event.getHologram().equals(this.hologram)) {
-                new FarmPlotMainMenu(this).show(event.getPlayer());
+                new FarmPlotMainMenu(this, true).show(event.getPlayer());
             }
         };
     }

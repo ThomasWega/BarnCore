@@ -77,7 +77,7 @@ public class CropsMainMenu extends ChestGui {
                                     new ItemBuilder(plot.getCurrentCrop().getItemMaterial())
                                             .displayName(plot.getDisplayName())
                                             .lore(lore)
-                                            .build(), event -> new FarmPlotMainMenu(plot).show(event.getWhoClicked())
+                                            .build(), event -> new FarmPlotMainMenu(plot, false).show(event.getWhoClicked())
                             ));
                         }));
     }

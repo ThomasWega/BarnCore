@@ -26,10 +26,12 @@ import java.util.List;
 public class FarmChangeCropsMenu extends ChestGui {
     private final FarmPlot plot;
     private final OutlinePane mainPane = new OutlinePane(1, 1, 7, 1);
+    private final boolean closeFarmPlotMenuOnGoBack;
 
-    public FarmChangeCropsMenu(@NotNull FarmPlot plot) {
+    public FarmChangeCropsMenu(@NotNull FarmPlot plot, boolean closeFarmPlotMenuOnGoBack) {
         super(3, ComponentHolder.of(Component.text("Crops on Plot " + plot.getId())));
         this.plot = plot;
+        this.closeFarmPlotMenuOnGoBack = closeFarmPlotMenuOnGoBack;
         this.initialize();
     }
 
@@ -39,7 +41,7 @@ public class FarmChangeCropsMenu extends ChestGui {
         this.addCropsItems();
         this.addSpaceItem();
 
-        this.addPane(new GoBackPane(4, 2, new FarmPlotMainMenu(this.plot)));
+        this.addPane(new GoBackPane(4, 2, new FarmPlotMainMenu(this.plot, this.closeFarmPlotMenuOnGoBack)));
         this.addPane(mainPane);
 
         this.setOnGlobalClick(event -> event.setCancelled(true));

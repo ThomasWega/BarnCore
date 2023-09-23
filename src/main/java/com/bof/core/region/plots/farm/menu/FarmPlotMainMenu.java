@@ -22,17 +22,23 @@ import java.util.List;
 public class FarmPlotMainMenu extends ChestGui {
     private final FarmPlot plot;
     private final StaticPane mainPane = new StaticPane(1, 1, 7, 2);
+    private final boolean closeOnGoBack;
 
-    public FarmPlotMainMenu(@NotNull FarmPlot plot) {
+    public FarmPlotMainMenu(@NotNull FarmPlot plot, boolean closeOnGoBack) {
         super(4, ComponentHolder.of(Component.text("Farm Plot " + plot.getId())));
         this.plot = plot;
+        this.closeOnGoBack = closeOnGoBack;
         this.initialize();
     }
 
     private void initialize() {
         this.addSections();
 
-        this.addPane(new GoBackPane(4, 3, new CropsMainMenu(this.plot.getOwningRegion())));
+        if (this.closeOnGoBack) {
+            this.addPane(new GoBackPane(4, 3, null));
+        } else {
+            this.addPane(new GoBackPane(4, 3, new CropsMainMenu(this.plot.getOwningRegion())));
+        }
         this.addPane(mainPane);
 
         this.setOnGlobalClick(event -> event.setCancelled(true));
@@ -55,7 +61,7 @@ public class FarmPlotMainMenu extends ChestGui {
                                 Component.empty(),
                                 Component.text("Click to change the crops", NamedTextColor.DARK_GRAY)
                         ))
-                        .build(), event -> new FarmChangeCropsMenu(this.plot).show(event.getWhoClicked())
+                        .build(), event -> new FarmChangeCropsMenu(this.plot, this.closeOnGoBack).show(event.getWhoClicked())
         );
     }
 
@@ -101,13 +107,13 @@ public class FarmPlotMainMenu extends ChestGui {
                 event -> {
                     Player player = ((Player) event.getWhoClicked());
 
-                    int harvestedCount = plot.harvestCrops(player);
+                    int harvestedCount = this.plot.harvestCrops(player);
                     if (harvestedCount > 0) {
                         player.sendMessage("TO ADD - Harvested " + harvestedCount + " crops");
                     } else {
                         player.sendMessage("TO ADD - No crop is planted");
                     }
-                    new FarmPlotMainMenu(this.plot).show(player);
+                    new FarmPlotMainMenu(this.plot, this.closeOnGoBack).show(player);
                 }
         );
     }

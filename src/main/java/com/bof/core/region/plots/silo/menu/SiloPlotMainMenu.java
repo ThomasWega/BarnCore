@@ -131,7 +131,9 @@ public class SiloPlotMainMenu extends ChestGui {
             this.plot.addCropsToSilo(region.getCropsInventory());
             float value = region.removeCropsFromInventory(region.getCropsInventory());
 
-            player.sendMessage("TO ADD - Put crops of value " + value + "FarmCoins into the silo");
+            if (value != 0) {
+                player.sendMessage("TO ADD - Put crops of value " + value + " FarmCoins into the silo");
+            }
             player.closeInventory();
         };
     }
