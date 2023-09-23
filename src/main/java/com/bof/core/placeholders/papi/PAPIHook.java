@@ -49,20 +49,22 @@ public class PAPIHook extends PlaceholderExpansion {
                 return String.valueOf(region.getCropsInventory().size());
             case "inv_size":
                 return String.valueOf(region.getCropsInventorySize());
+            case "farmcoins":
+                return String.valueOf(region.getFarmCoins());
         }
 
-        if (params.startsWith("plot_farm_autoharvest_")) {
-            int plotId = Integer.parseInt(params.substring(22));
+        if (params.startsWith("plot_farm_autostore_")) {
+            int plotId = Integer.parseInt(params.substring(20));
             Optional<Plot> optPlot = region.getPlot(PlotType.FARM, plotId);
             if (optPlot.isPresent())
-                return String.valueOf(((HarvestablePlot) optPlot.get()).isAutoHarvest());
+                return String.valueOf(((HarvestablePlot) optPlot.get()).isAutoStore());
         }
 
-        if (params.startsWith("plot_farm_colored_status_autoharvest_")) {
-            int plotId = Integer.parseInt(params.substring(37));
+        if (params.startsWith("plot_farm_colored_status_autostore_")) {
+            int plotId = Integer.parseInt(params.substring(35));
             Optional<Plot> optPlot = region.getPlot(PlotType.FARM, plotId);
             if (optPlot.isPresent()) {
-                return ((HarvestablePlot) optPlot.get()).isAutoHarvest() ? "§aON" : "§cOFF";
+                return ((HarvestablePlot) optPlot.get()).isAutoStore() ? "§aON" : "§cOFF";
             }
         }
 
@@ -84,7 +86,7 @@ public class PAPIHook extends PlaceholderExpansion {
             int plotId = Integer.parseInt(params.substring(28));
             Optional<Plot> optPlot = region.getPlot(PlotType.SILO, plotId);
             if (optPlot.isPresent())
-                return String.valueOf(((SiloPlot) optPlot.get()).getFilledPercentage());
+                return String.valueOf(((SiloPlot) optPlot.get()).getFilledPercentageRounded(2));
         }
 
         if (params.startsWith("plot_silo_autosell_")) {

@@ -7,6 +7,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
 public class NextPageItem extends GuiItem {
+
     public NextPageItem() {
         super(new SkullBuilder()
                 .displayName(Component.text("Next page", NamedTextColor.GRAY))

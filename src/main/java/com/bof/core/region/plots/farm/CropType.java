@@ -45,4 +45,11 @@ public enum CropType {
         }
         return Optional.empty();
     }
+
+    public static Optional<CropType> getByItemMaterial(@NotNull Material material) {
+        for (CropType type : CropType.values()) {
+            if (type.getItemMaterial() == material) return Optional.of(type);
+        }
+        return Optional.empty();
+    }
 }

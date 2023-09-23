@@ -4,6 +4,7 @@ import com.bof.core.region.BarnRegion;
 import com.bof.core.region.plots.HarvestablePlot;
 import com.bof.core.region.plots.PlotType;
 import com.bof.core.region.plots.farm.menu.FarmPlotMainMenu;
+import com.bof.core.region.plots.silo.SiloPlot;
 import com.bof.core.utils.BoxUtils;
 import com.github.unldenis.hologram.Hologram;
 import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
@@ -20,8 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BoundingBox;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -34,7 +34,7 @@ public class FarmPlot implements HarvestablePlot {
     private final Set<Block> boxBlocks;
     private CropType currentCrop = CropType.NONE;
     private Hologram hologram;
-    private boolean autoHarvest = false;
+    private boolean autoStore = false;
 
     public FarmPlot(@NotNull BarnRegion owningRegion, @NotNull BoundingBox box, int id) {
         this.owningRegion = owningRegion;
@@ -62,6 +62,14 @@ public class FarmPlot implements HarvestablePlot {
     }
 
     public int harvestCrops(@NotNull Player player) {
+        return this.handleCropBreak(player, this.boxBlocks);
+    }
+
+    public int handleCropBreak(@NotNull Player player, @NotNull Block... blocks) {
+        return this.handleCropBreak(player, Arrays.asList(blocks));
+    }
+    
+    public int handleCropBreak(@NotNull Player player, @NotNull Collection<Block> blocks) {
         int count = 0;
 
         // there is nothing to harvest
@@ -69,21 +77,80 @@ public class FarmPlot implements HarvestablePlot {
             return count;
         }
 
-        for (Block block : boxBlocks) {
-            if (this.getOwningRegion().isCropsInvFull()) {
-                player.sendMessage("TO ADD - Crops inventory is full");
-                break;
-            }
+        for (Block block : blocks) {
             if (CropType.getByMaterial(block.getType())
                     .filter(cropType -> cropType != CropType.NONE)
                     .isPresent()) {
-                this.getOwningRegion().addCrops(new ItemStack(block.getType()));
+
+                ItemStack item = new ItemStack(block.getType());
+                if (this.isAutoStore()) {
+                    // first tries putting into silo, then tries inventory, if both fails, returns list of items which failed
+                    if (!this.addCropsToSilo(player, item).isEmpty()) {
+                        player.sendMessage("TO ADD - All silos are full. Putting the items to inventory");
+                        if (!this.addCropsToInventory(player, item).isEmpty()) {
+                            player.sendMessage("TO ADD - Crops inventory is full 1");
+                        }
+                        break;
+                    }
+                } else {
+                    if (!this.addCropsToInventory(player, item).isEmpty()) {
+                        player.sendMessage("TO ADD - Crops inventory is full 2");
+                        break;
+                    }
+                }
+
                 block.setType(Material.AIR);
                 count++;
             }
         }
 
+        // everything was harvested
+        if (this.getRemainingCrops() == 0) {
+            this.setCurrentCrop(CropType.NONE);
+        }
+
         return count;
+    }
+
+    public @NotNull List<ItemStack> addCropsToInventory(@NotNull Player player, @NotNull ItemStack... items) {
+        return this.addCropsToInventory(player, Arrays.asList(items));
+    }
+
+    public @NotNull List<ItemStack> addCropsToInventory(@NotNull Player player, @NotNull Collection<ItemStack> crops) {
+        List<ItemStack> unAdded = new ArrayList<>();
+
+        for (ItemStack item : crops) {
+            if (!this.getOwningRegion().addCropsToInventory(item).isEmpty()) {
+                unAdded.add(item);
+            }
+        }
+
+        return unAdded;
+    }
+
+    public @NotNull List<ItemStack> addCropsToSilo(@NotNull Player player, @NotNull ItemStack... crops) {
+        return this.addCropsToSilo(player, Arrays.asList(crops));
+    }
+
+    public @NotNull List<ItemStack> addCropsToSilo(@NotNull Player player, @NotNull Collection<ItemStack> items) {
+        List<ItemStack> unAdded = new ArrayList<>();
+        Optional<SiloPlot> optSilo = this.getOwningRegion().getFreeSilo();
+
+        for (ItemStack item : items) {
+            // no free silo is available, so put all remaining items as unAdded
+            if (optSilo.isEmpty()) {
+                unAdded.add(item);
+                continue;
+            }
+
+            SiloPlot silo = optSilo.get();
+            // silo is full, so try getting a new free silo
+            if (!silo.addCropsToSilo(item).isEmpty()) {
+                optSilo = this.getOwningRegion().getFreeSilo();
+            }
+        }
+
+        return unAdded;
     }
 
     public int getRemainingCrops() {
@@ -111,13 +178,13 @@ public class FarmPlot implements HarvestablePlot {
         this.hologram.getLines().forEach(iLine -> iLine.update(this.owningRegion.getAllPlayers()));
     }
 
-    public void setAutoHarvest(@NotNull Player player, boolean autoHarvest) {
-        if (!this.getOwningRegion().hasFreeAutoHarvestSlots() && autoHarvest) {
-            player.sendMessage("TO ADD - No free AutoHarvest slots");
+    public void setAutoStore(@NotNull Player player, boolean autoStore) {
+        if (!this.getOwningRegion().hasFreeAutoStoreSlots() && autoStore) {
+            player.sendMessage("TO ADD - No free AutoStore slots");
             return;
         }
 
-        this.autoHarvest = autoHarvest;
+        this.autoStore = autoStore;
         this.updateHologram();
     }
 
@@ -140,7 +207,7 @@ public class FarmPlot implements HarvestablePlot {
         return List.of(
                 MiniMessage.miniMessage().deserialize("<color:#FCDB03>Upgrades: <red>OFF</red></color>"),
                 MiniMessage.miniMessage().deserialize("<color:#D4F542>Enchanted Rain: <red>OFF</red></color>"),
-                MiniMessage.miniMessage().deserialize("<color:#2B84FF>Auto Harvest: %barn_plot_farm_colored_status_autoharvest_" + this.id + "%</color>")
+                MiniMessage.miniMessage().deserialize("<color:#2B84FF>Auto Store: %barn_plot_farm_colored_status_autostore_" + this.id + "%</color>")
         );
     }
 }

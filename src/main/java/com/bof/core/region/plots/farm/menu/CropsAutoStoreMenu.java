@@ -27,17 +27,17 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
-public class CropsHarvestMenu extends ChestGui {
+public class CropsAutoStoreMenu extends ChestGui {
     private final BarnRegion region;
     private final OutlinePane selectedPane = new OutlinePane(1, 1, 7, 2);
     private final OutlinePane unlockedSlotsPane = selectedPane.copy();
     private final OutlinePane lockedSlotsPane = unlockedSlotsPane.copy();
     private final int unlockedSlots;
 
-    public CropsHarvestMenu(@NotNull BarnRegion region) {
-        super(4, ComponentHolder.of(Component.text("Harvest Menu")));
+    public CropsAutoStoreMenu(@NotNull BarnRegion region) {
+        super(4, ComponentHolder.of(Component.text("Auto Store Menu")));
         this.region = region;
-        this.unlockedSlots = region.getAutoHarvestSlots();
+        this.unlockedSlots = region.getAutoStoreSlots();
         this.initialize();
     }
 
@@ -66,7 +66,7 @@ public class CropsHarvestMenu extends ChestGui {
                         // sort by id, so first plot is always 1, second is 2, etc.
                         .sorted(Comparator.comparingInt(Plot::getId))
                         .map(plot -> ((FarmPlot) plot))
-                        .filter(FarmPlot::isAutoHarvest)
+                        .filter(FarmPlot::isAutoStore)
                         .forEach(plot -> {
                                     List<Component> lore = new ArrayList<>(plot.getLore());
                                     lore.addAll(List.of(
@@ -116,20 +116,20 @@ public class CropsHarvestMenu extends ChestGui {
     }
 
     private Consumer<InventoryClickEvent> handleSelectAction() {
-        return event -> new CropsHarvestSetMenu(region, null).show(event.getWhoClicked());
+        return event -> new CropsAutoStoreSetMenu(region, null).show(event.getWhoClicked());
     }
 
     private Consumer<InventoryClickEvent> handleSelectAction(FarmPlot plot) {
         return event -> {
             if (event.getClick() == ClickType.SHIFT_LEFT || event.getClick() == ClickType.SHIFT_RIGHT) {
-                plot.setAutoHarvest(false);
+                plot.setAutoStore(false);
                 // this doesn't work for some reason
                 // this.update()
-                new CropsHarvestMenu(this.region).show(event.getWhoClicked());
+                new CropsAutoStoreMenu(this.region).show(event.getWhoClicked());
                 return;
             }
             // if not click shift, open the select menu
-            new CropsHarvestSetMenu(region, plot).show(event.getWhoClicked());
+            new CropsAutoStoreSetMenu(region, plot).show(event.getWhoClicked());
         };
     }
 }

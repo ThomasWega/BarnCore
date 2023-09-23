@@ -4,6 +4,8 @@ package com.bof.core.region;
 import com.bof.core.region.plots.HarvestablePlot;
 import com.bof.core.region.plots.Plot;
 import com.bof.core.region.plots.PlotType;
+import com.bof.core.region.plots.silo.SiloPlot;
+import com.bof.core.utils.CropUtils;
 import com.github.unldenis.hologram.HologramPool;
 import com.github.unldenis.hologram.InteractiveHologramPool;
 import lombok.Data;
@@ -23,7 +25,7 @@ public class BarnRegion {
     private final Set<UUID> members = new HashSet<>();
     private final List<ItemStack> cropsInventory = new ArrayList<>();
     private final int cropsInventorySize = 100;
-    private final int autoHarvestSlots = 2;
+    private final int autoStoreSlots = 2;
     private boolean isAssigned = false;
     private Player owner;
     private Location spawnLocation;
@@ -44,27 +46,64 @@ public class BarnRegion {
         return cropsInventory.size() >= cropsInventorySize;
     }
 
-    public boolean addCrops(ItemStack... itemStack) {
-        return this.addCrops(Arrays.stream(itemStack).toList());
+    public @NotNull List<ItemStack> addCropsToInventory(@NotNull ItemStack... itemStack) {
+        return this.addCropsToInventory(Arrays.asList(itemStack));
     }
 
-    public boolean addCrops(Collection<ItemStack> itemStacks) {
-        if (isCropsInvFull()) return false;
+    public @NotNull List<ItemStack> addCropsToInventory(@NotNull Collection<ItemStack> itemStacks) {
+        List<ItemStack> unAdded = new ArrayList<>();
+        for (ItemStack itemStack : itemStacks) {
+            if (this.isCropsInvFull()) {
+                unAdded.add(itemStack);
+                continue;
+            }
 
-        this.cropsInventory.addAll(itemStacks);
-        return true;
+            this.cropsInventory.add(itemStack);
+        }
+
+        return unAdded;
     }
 
-    public int getAutoHarvestPlotsCount() {
+    public float removeCropsFromInventory(@NotNull ItemStack... crops) {
+        return this.removeCropsFromInventory(Arrays.asList(crops));
+    }
+
+    public float removeCropsFromInventory(@NotNull Collection<ItemStack> crops) {
+        // Create a copy of the collection to avoid ConcurrentModificationException
+        // (the crops can be referenced from cropStored)
+        List<ItemStack> cropsToRemove = new ArrayList<>(crops);
+        // can't use removeAll, because that will remove all crops of the same type
+        cropsToRemove.forEach(this.cropsInventory::remove);
+
+        return CropUtils.getValueOf(cropsToRemove);
+    }
+
+    public int getAutoStorePlotsCount() {
         return (int) plots.values().stream()
                 .flatMap(Set::stream)
                 .filter(plot -> plot instanceof HarvestablePlot)
-                .filter(plot -> ((HarvestablePlot) plot).isAutoHarvest())
+                .filter(plot -> ((HarvestablePlot) plot).isAutoStore())
                 .count();
     }
 
-    public boolean hasFreeAutoHarvestSlots() {
-        return this.getAutoHarvestPlotsCount() < this.autoHarvestSlots;
+    public boolean hasFreeAutoStoreSlots() {
+        return this.getAutoStorePlotsCount() < this.autoStoreSlots;
+    }
+
+    /**
+     * @return Silo that is not full and has the largest capacity out of the free silos
+     */
+    public Optional<SiloPlot> getFreeSilo() {
+        return plots.get(PlotType.SILO).stream()
+                .filter(plot -> plot instanceof SiloPlot)
+                .map(plot -> (SiloPlot) plot)
+                .filter(siloPlot -> !siloPlot.isFull())
+                .max(Comparator.comparingInt(SiloPlot::getCapacity));
+    }
+
+
+    public boolean hasFreeSiloPlot() {
+        return this.getFreeSilo().isPresent();
     }
 
     public Optional<Plot> getPlot(@NotNull PlotType type, int id) {

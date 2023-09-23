@@ -25,15 +25,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
-public class CropsHarvestSetMenu extends ChestGui {
+public class CropsAutoStoreSetMenu extends ChestGui {
     private final BarnRegion region;
     private final OutlinePane mainPane = new OutlinePane(1, 1, 7, 2);
     private final OutlinePane lockedPane = mainPane.copy();
     @Nullable
     private final FarmPlot previousSelectedPlot;
 
-    public CropsHarvestSetMenu(@NotNull BarnRegion region, @Nullable FarmPlot previousSelectedPlot) {
-        super(4, ComponentHolder.of(Component.text("Select plot to Auto Harvest")));
+    public CropsAutoStoreSetMenu(@NotNull BarnRegion region, @Nullable FarmPlot previousSelectedPlot) {
+        super(4, ComponentHolder.of(Component.text("Select plot to Auto Store")));
         this.region = region;
         this.previousSelectedPlot = previousSelectedPlot;
         this.initialize();
@@ -46,7 +46,7 @@ public class CropsHarvestSetMenu extends ChestGui {
         this.addLockedPlots();
         this.addActivePlots();
 
-        this.addPane(new GoBackPane(4, 3, new CropsHarvestMenu(this.region)));
+        this.addPane(new GoBackPane(4, 3, new CropsAutoStoreMenu(this.region)));
         this.addPane(mainPane);
         this.addPane(lockedPane);
 
@@ -71,7 +71,7 @@ public class CropsHarvestSetMenu extends ChestGui {
                         // sort by id, so first plot is always 1, second is 2, etc.
                         .sorted(Comparator.comparingInt(Plot::getId))
                         .map(plot -> ((FarmPlot) plot))
-                        .filter(farmPlot -> !farmPlot.isAutoHarvest())
+                        .filter(farmPlot -> !farmPlot.isAutoStore())
                         .forEach(plot -> {
                             List<Component> lore = new ArrayList<>(plot.getLore());
                             lore.addAll(List.of(
@@ -85,10 +85,10 @@ public class CropsHarvestSetMenu extends ChestGui {
                                             .build(),
                                     event -> {
                                         if (previousSelectedPlot != null) {
-                                            previousSelectedPlot.setAutoHarvest(false);
+                                            previousSelectedPlot.setAutoStore(false);
                                         }
-                                        plot.setAutoHarvest(true);
-                                        new CropsHarvestMenu(region).show(event.getWhoClicked());
+                                        plot.setAutoStore(true);
+                                        new CropsAutoStoreMenu(region).show(event.getWhoClicked());
                                     }
                             ));
                         }));

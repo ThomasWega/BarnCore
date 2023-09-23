@@ -43,7 +43,7 @@ public class FarmPlotMainMenu extends ChestGui {
         this.mainPane.addItem(getUpgradesItem(), 3, 0);
         this.mainPane.addItem(getBoostersItem(), 6, 0);
         this.mainPane.addItem(getHarvestItem(), 1, 1);
-        this.mainPane.addItem(getAutoHarvestItem(), 5, 1);
+        this.mainPane.addItem(getAutoStoreItem(), 5, 1);
     }
 
     private GuiItem getChangeCropsItem() {
@@ -60,13 +60,13 @@ public class FarmPlotMainMenu extends ChestGui {
     }
 
     private GuiItem getUpgradesItem() {
-        Component name = MiniMessage.miniMessage().deserialize("<b><color:#4FFFD3>Boosters</color></b>");
+        Component name = MiniMessage.miniMessage().deserialize("<b><color:#4FFFD3>Upgrades</color></b>");
         return new GuiItem(
                 new SkullBuilder()
                         .displayName(name)
                         .lore(List.of(
                                 Component.empty(),
-                                Component.text("Click to open boosters", NamedTextColor.DARK_GRAY)
+                                Component.text("Click to open upgrades", NamedTextColor.DARK_GRAY)
                         ))
                         .skin(new Skin("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmI0OWEyY2I5MDczNzk5MzIwMWZlNzJhMWYxYWI3NWM1YzkzYzI4ZjA0N2Y2ODVmZmFkNWFiMjBjN2IwY2FmMCJ9fX0=", null))
                         .build(), event -> event.setCancelled(true)
@@ -112,13 +112,15 @@ public class FarmPlotMainMenu extends ChestGui {
         );
     }
 
-    private GuiItem getAutoHarvestItem() {
-        Component name = MiniMessage.miniMessage().deserialize("<b><color:#2b84ff>Auto Harvest</color></b>");
-        String statusStr = plot.isAutoHarvest() ? "<green>ON</green>" : "<red>OFF</red>";
+    private GuiItem getAutoStoreItem() {
+        Component name = MiniMessage.miniMessage().deserialize("<b><color:#2b84ff>Auto Store</color></b>");
+        String statusStr = plot.isAutoStore() ? "<green>ON</green>" : "<red>OFF</red>";
         Component status = MiniMessage.miniMessage().deserialize("<white>Status: " + statusStr + "</white>");
         return new GuiItem(new SkullBuilder()
                         .displayName(name)
                         .lore(List.of(
+                                Component.text("Automatically puts crops into silo", NamedTextColor.GRAY),
+                                Component.empty(),
                                 status,
                                 Component.empty(),
                                 Component.text("Click to change status", NamedTextColor.DARK_GRAY)
@@ -129,8 +131,8 @@ public class FarmPlotMainMenu extends ChestGui {
                         .build(),
                 event -> {
                     Player player = ((Player) event.getWhoClicked());
-                    this.plot.setAutoHarvest(player, !plot.isAutoHarvest());
-                    player.sendMessage("TO ADD - changed auto harvest status");
+                    this.plot.setAutoStore(player, !plot.isAutoStore());
+                    player.sendMessage("TO ADD - changed auto store status");
                     player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
                 }
         );
