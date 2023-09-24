@@ -1,5 +1,6 @@
-package com.bof.core.region.plots.farm;
+package com.bof.core.region.plot.farm;
 
+import com.bof.core.region.plot.HarvestableType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Getter
-public enum CropType {
+public enum CropType implements HarvestableType {
     NONE(Material.AIR, Material.BARRIER, Component.text("None", NamedTextColor.RED), 0f),
     WHEAT(Material.WHEAT, Material.WHEAT, Component.text("Wheat", TextColor.fromHexString("#F5DEB3")), 1f),
     CARROT(Material.CARROTS, Material.CARROT, Component.text("Carrots", TextColor.fromHexString("#FFA500")), 2f),

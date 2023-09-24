@@ -1,6 +1,6 @@
 package com.bof.core.utils;
 
-import com.bof.core.region.plots.PlotType;
+import com.bof.core.region.plot.PlotType;
 import com.bof.toolkit.utils.ColorUtils;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.bukkit.Bukkit;
@@ -57,6 +57,15 @@ public class BoxUtils {
                             return BoundingBox.of(pair.getLeft(), pair.getRight());
                         }
                 ));
+    }
+
+    public static Block getCenterBlock(@NotNull BoundingBox box) {
+        Vector center = box.getCenter();
+        return Bukkit.getWorld("world").getBlockAt(center.getBlockX(), center.getBlockY(), center.getBlockZ());
+    }
+
+    public static Location getCenterLocation(@NotNull BoundingBox box) {
+        return getCenterBlock(box).getLocation();
     }
 
     private static void removeSignsForPlot(PlotType type, Set<Sign> signs) {

@@ -1,6 +1,6 @@
 package com.bof.core.utils;
 
-import com.bof.core.region.plots.Plot;
+import com.bof.core.region.plot.Plot;
 import com.bof.toolkit.utils.ColorUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;

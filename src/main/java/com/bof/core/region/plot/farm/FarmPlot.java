@@ -1,10 +1,10 @@
-package com.bof.core.region.plots.farm;
+package com.bof.core.region.plot.farm;
 
 import com.bof.core.region.BarnRegion;
-import com.bof.core.region.plots.HarvestablePlot;
-import com.bof.core.region.plots.PlotType;
-import com.bof.core.region.plots.farm.menu.FarmPlotMainMenu;
-import com.bof.core.region.plots.silo.SiloPlot;
+import com.bof.core.region.plot.HarvestablePlot;
+import com.bof.core.region.plot.PlotType;
+import com.bof.core.region.plot.farm.menu.FarmPlotMainMenu;
+import com.bof.core.region.plot.silo.SiloPlot;
 import com.bof.core.utils.BoxUtils;
 import com.github.unldenis.hologram.Hologram;
 import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
@@ -26,13 +26,13 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @Data
-public class FarmPlot implements HarvestablePlot {
+public class FarmPlot implements HarvestablePlot<CropType> {
     private final BarnRegion owningRegion;
     private final PlotType type = PlotType.FARM;
     private final BoundingBox box;
     private final int id;
     private final Set<Block> boxBlocks;
-    private CropType currentCrop = CropType.NONE;
+    private CropType currentlyHarvesting = CropType.NONE;
     private Hologram hologram;
     private boolean autoStore = false;
 
@@ -43,8 +43,8 @@ public class FarmPlot implements HarvestablePlot {
         this.id = id;
     }
 
-    public void setCurrentCrop(@NotNull CropType type) {
-        this.currentCrop = type;
+    public void setCurrentlyHarvesting(@NotNull CropType type) {
+        this.currentlyHarvesting = type;
         this.updateHologram();
     }
 
@@ -58,7 +58,7 @@ public class FarmPlot implements HarvestablePlot {
                 }
             }
         });
-        this.setCurrentCrop(type);
+        this.setCurrentlyHarvesting(type);
     }
 
     public int harvestCrops(@NotNull Player player) {
@@ -73,7 +73,7 @@ public class FarmPlot implements HarvestablePlot {
         int count = 0;
 
         // there is nothing to harvest
-        if (currentCrop == CropType.NONE || !isCropPresent()) {
+        if (currentlyHarvesting == CropType.NONE || !isCropPresent()) {
             return count;
         }
 
@@ -106,7 +106,7 @@ public class FarmPlot implements HarvestablePlot {
 
         // everything was harvested
         if (this.getRemainingCrops() == 0) {
-            this.setCurrentCrop(CropType.NONE);
+            this.setCurrentlyHarvesting(CropType.NONE);
         }
 
         return count;
@@ -173,7 +173,7 @@ public class FarmPlot implements HarvestablePlot {
         this.hologram.getLines().stream()
                 .filter(iLine -> iLine instanceof BlockLine)
                 .map(iLine -> ((BlockLine) iLine))
-                .forEach(blockLine -> blockLine.setObj(new ItemStack(currentCrop.getItemMaterial())));
+                .forEach(blockLine -> blockLine.setObj(new ItemStack(currentlyHarvesting.getItemMaterial())));
 
         this.hologram.getLines().forEach(iLine -> iLine.update(this.owningRegion.getAllPlayers()));
     }

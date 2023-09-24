@@ -1,9 +1,9 @@
-package com.bof.core.region.plots.farm.menu;
+package com.bof.core.region.plot.animal.menu;
 
 import com.bof.core.item.ItemBuilder;
 import com.bof.core.menu.premade.back.GoBackPane;
-import com.bof.core.region.plots.farm.CropType;
-import com.bof.core.region.plots.farm.FarmPlot;
+import com.bof.core.region.plot.animal.AnimalPlot;
+import com.bof.core.region.plot.animal.AnimalType;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
@@ -23,13 +23,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.List;
 
-public class FarmChangeCropsMenu extends ChestGui {
-    private final FarmPlot plot;
+public class AnimalChangeAnimalMenu extends ChestGui {
+    private final AnimalPlot plot;
     private final OutlinePane mainPane = new OutlinePane(1, 1, 7, 1);
     private final boolean closeFarmPlotMenuOnGoBack;
 
-    public FarmChangeCropsMenu(@NotNull FarmPlot plot, boolean closeFarmPlotMenuOnGoBack) {
-        super(3, ComponentHolder.of(Component.text("Crops on Plot " + plot.getId())));
+    public AnimalChangeAnimalMenu(@NotNull AnimalPlot plot, boolean closeFarmPlotMenuOnGoBack) {
+        super(3, ComponentHolder.of(Component.text("Animals on Plot " + plot.getId())));
         this.plot = plot;
         this.closeFarmPlotMenuOnGoBack = closeFarmPlotMenuOnGoBack;
         this.initialize();
@@ -41,21 +41,21 @@ public class FarmChangeCropsMenu extends ChestGui {
         this.addCropsItems();
         this.addSpaceItem();
 
-        this.addPane(new GoBackPane(4, 2, new FarmPlotMainMenu(this.plot, this.closeFarmPlotMenuOnGoBack)));
+        this.addPane(new GoBackPane(4, 2, new AnimalPlotMainMenu(this.plot, this.closeFarmPlotMenuOnGoBack)));
         this.addPane(mainPane);
 
         this.setOnGlobalClick(event -> event.setCancelled(true));
     }
 
     private void addCropsItems() {
-        Arrays.stream(CropType.values()).forEach(cropsType -> {
-            String cropName = StringUtils.capitalize(cropsType.name().toLowerCase());
-            Component currentlyPlanted = MiniMessage.miniMessage().deserialize("<dark_gray>Currently planted</dark_gray>");
-            Component changeToType = MiniMessage.miniMessage().deserialize("<white>Change crops to " + cropName + "</white>");
+        Arrays.stream(AnimalType.values()).forEach(animalType -> {
+            String animalName = StringUtils.capitalize(animalType.name().toLowerCase());
+            Component currentlyPlanted = MiniMessage.miniMessage().deserialize("<dark_gray>Currently selected</dark_gray>");
+            Component changeToType = MiniMessage.miniMessage().deserialize("<white>Change animals to " + animalName + "</white>");
 
-            if (cropsType == plot.getCurrentCrop()) {
-                this.mainPane.addItem(new GuiItem(new ItemBuilder(cropsType.getItemMaterial())
-                        .displayName(cropsType.getDisplayName()
+            if (animalType == plot.getCurrentlyHarvesting()) {
+                this.mainPane.addItem(new GuiItem(new ItemBuilder(animalType.getItem())
+                        .displayName(animalType.getDisplayName()
                                 .decorate(TextDecoration.BOLD))
                         .lore(List.of(
                                 Component.empty(),
@@ -66,8 +66,8 @@ public class FarmChangeCropsMenu extends ChestGui {
                         .build()
                 ));
             } else {
-                this.mainPane.addItem(new GuiItem(new ItemBuilder(cropsType.getItemMaterial())
-                        .displayName(cropsType.getDisplayName()
+                this.mainPane.addItem(new GuiItem(new ItemBuilder(animalType.getItem())
+                        .displayName(animalType.getDisplayName()
                                 .decorate(TextDecoration.BOLD))
                         .lore(List.of(
                                 Component.empty(),
@@ -76,9 +76,9 @@ public class FarmChangeCropsMenu extends ChestGui {
                         .build(),
                         event -> {
                             Player player = ((Player) event.getWhoClicked());
-                            player.sendMessage("TO ADD - changed the crops type to " + cropName);
+                            player.sendMessage("TO ADD - changed the animal type to " + animalName);
                             player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
-                            this.plot.changeCrops(cropsType);
+                            this.plot.changeAnimals(animalType);
                         }
                 ));
             }

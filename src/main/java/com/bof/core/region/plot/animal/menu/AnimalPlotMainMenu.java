@@ -1,9 +1,9 @@
-package com.bof.core.region.plots.farm.menu;
+package com.bof.core.region.plot.animal.menu;
 
 import com.bof.core.item.ItemBuilder;
 import com.bof.core.item.SkullBuilder;
 import com.bof.core.menu.premade.back.GoBackPane;
-import com.bof.core.region.plots.farm.FarmPlot;
+import com.bof.core.region.plot.animal.AnimalPlot;
 import com.bof.core.skin.Skin;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
@@ -12,6 +12,7 @@ import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -19,13 +20,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class FarmPlotMainMenu extends ChestGui {
-    private final FarmPlot plot;
+public class AnimalPlotMainMenu extends ChestGui {
+    private final AnimalPlot plot;
     private final StaticPane mainPane = new StaticPane(1, 1, 7, 2);
     private final boolean closeOnGoBack;
 
-    public FarmPlotMainMenu(@NotNull FarmPlot plot, boolean closeOnGoBack) {
-        super(4, ComponentHolder.of(Component.text("Farm Plot " + plot.getId())));
+    public AnimalPlotMainMenu(@NotNull AnimalPlot plot, boolean closeOnGoBack) {
+        super(4, ComponentHolder.of(Component.text("Animal Plot " + plot.getId())));
         this.plot = plot;
         this.closeOnGoBack = closeOnGoBack;
         this.initialize();
@@ -37,7 +38,8 @@ public class FarmPlotMainMenu extends ChestGui {
         if (this.closeOnGoBack) {
             this.addPane(new GoBackPane(4, 3, null));
         } else {
-            this.addPane(new GoBackPane(4, 3, new CropsMainMenu(this.plot.getOwningRegion())));
+          //  this.addPane(new GoBackPane(4, 3, new CropsMainMenu(this.plot.getOwningRegion())));
+            this.addPane(new GoBackPane(4, 3, null));
         }
         this.addPane(mainPane);
 
@@ -45,23 +47,23 @@ public class FarmPlotMainMenu extends ChestGui {
     }
 
     private void addSections() {
-        this.mainPane.addItem(getChangeCropsItem(), 0, 0);
+        this.mainPane.addItem(getChangeAnimalsItem(), 0, 0);
         this.mainPane.addItem(getUpgradesItem(), 3, 0);
         this.mainPane.addItem(getBoostersItem(), 6, 0);
         this.mainPane.addItem(getHarvestItem(), 1, 1);
         this.mainPane.addItem(getAutoStoreItem(), 5, 1);
     }
 
-    private GuiItem getChangeCropsItem() {
-        Component name = MiniMessage.miniMessage().deserialize("<b><color:#FF8378>Change Crops</color></b>");
+    private GuiItem getChangeAnimalsItem() {
+        Component name = MiniMessage.miniMessage().deserialize("<b><color:#3bff5b>Change Animals</color></b>");
         return new GuiItem(
-                new ItemBuilder(this.plot.getCurrentCrop().getItemMaterial())
+                new ItemBuilder(this.plot.getCurrentlyHarvesting().getItem())
                         .displayName(name)
                         .lore(List.of(
                                 Component.empty(),
-                                Component.text("Click to change the crops", NamedTextColor.DARK_GRAY)
+                                Component.text("Click to change the animals", NamedTextColor.DARK_GRAY)
                         ))
-                        .build(), event -> new FarmChangeCropsMenu(this.plot, this.closeOnGoBack).show(event.getWhoClicked())
+                        .build() , event -> new AnimalChangeAnimalMenu(this.plot, this.closeOnGoBack).show(event.getWhoClicked())
         );
     }
 
@@ -94,26 +96,25 @@ public class FarmPlotMainMenu extends ChestGui {
     }
 
     private GuiItem getHarvestItem() {
-        Component name = MiniMessage.miniMessage().deserialize("<b><color:#BE7DFF>Harvest Crops</color></b>");
+        Component name = MiniMessage.miniMessage().deserialize("<b><color:#ffb640>Harvest Animals</color></b>");
         return new GuiItem(
-                new SkullBuilder()
+                new ItemBuilder(Material.IRON_AXE)
                         .displayName(name)
                         .lore(List.of(
                                 Component.empty(),
-                                Component.text("Click to harvest crops", NamedTextColor.DARK_GRAY)
+                                Component.text("Click to harvest animals", NamedTextColor.DARK_GRAY)
                         ))
-                        .skin(new Skin("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2Y5ZTdjZDdiMTRmNWJjNjk1Yzc1ZGE1MDI2YjA5ZGViMjA5MmNlNDczN2VjNmI1YThiMGEyN2YxZmVlZjk1NCJ9fX0=", null))
                         .build(),
                 event -> {
                     Player player = ((Player) event.getWhoClicked());
 
-                    int harvestedCount = this.plot.harvestCrops(player);
+                    int harvestedCount = this.plot.harvestAnimals(player);
                     if (harvestedCount > 0) {
-                        player.sendMessage("TO ADD - Harvested " + harvestedCount + " crops");
+                        player.sendMessage("TO ADD - Harvested " + harvestedCount + " animals");
                     } else {
-                        player.sendMessage("TO ADD - No crop is planted");
+                        player.sendMessage("TO ADD - No animal is present");
                     }
-                    new FarmPlotMainMenu(this.plot, this.closeOnGoBack).show(player);
+                    new AnimalPlotMainMenu(this.plot, this.closeOnGoBack).show(player);
                 }
         );
     }
@@ -125,7 +126,7 @@ public class FarmPlotMainMenu extends ChestGui {
         return new GuiItem(new SkullBuilder()
                         .displayName(name)
                         .lore(List.of(
-                                Component.text("Automatically puts crops into silo", NamedTextColor.GRAY),
+                                Component.text("Automatically puts animals TO ADD", NamedTextColor.GRAY),
                                 Component.empty(),
                                 status,
                                 Component.empty(),
@@ -138,7 +139,7 @@ public class FarmPlotMainMenu extends ChestGui {
                 event -> {
                     Player player = ((Player) event.getWhoClicked());
                     this.plot.setAutoStore(player, !plot.isAutoStore());
-                    player.sendMessage("TO ADD - changed auto store status");
+                    player.sendMessage("TO ADD - changed auto store status 2");
                     player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
                 }
         );

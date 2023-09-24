@@ -1,4 +1,4 @@
-package com.bof.core.region.plots.farm.handler;
+package com.bof.core.region.plot.farm.handler;
 
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;

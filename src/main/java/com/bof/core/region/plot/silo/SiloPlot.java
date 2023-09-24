@@ -1,9 +1,9 @@
-package com.bof.core.region.plots.silo;
+package com.bof.core.region.plot.silo;
 
 import com.bof.core.region.BarnRegion;
-import com.bof.core.region.plots.Plot;
-import com.bof.core.region.plots.PlotType;
-import com.bof.core.region.plots.silo.menu.SiloPlotMainMenu;
+import com.bof.core.region.plot.Plot;
+import com.bof.core.region.plot.PlotType;
+import com.bof.core.region.plot.silo.menu.SiloPlotMainMenu;
 import com.bof.core.utils.BoxUtils;
 import com.bof.core.utils.CropUtils;
 import com.github.unldenis.hologram.Hologram;

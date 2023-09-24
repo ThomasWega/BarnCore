@@ -1,6 +1,6 @@
 package com.bof.core.utils;
 
-import com.bof.core.region.plots.farm.CropType;
+import com.bof.core.region.plot.farm.CropType;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 

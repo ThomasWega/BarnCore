@@ -4,9 +4,6 @@ import com.bof.core.Core;
 import com.bof.core.player.GamePlayer;
 import com.bof.core.region.BarnRegion;
 import com.bof.core.region.RegionManager;
-import com.bof.core.region.plots.PlotType;
-import com.bof.core.region.plots.farm.menu.CropsAutoStoreMenu;
-import com.bof.core.region.plots.silo.SiloPlot;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -51,13 +48,5 @@ public class PlayerRegionAssignHandler implements Listener {
     private void test(PlayerChatEvent event) {
         Player player = event.getPlayer();
         BarnRegion region = regionManager.getRegionOf(player).get();
-        new CropsAutoStoreMenu(region).show(player);
-    }
-
-    @EventHandler
-    private void test2(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        BarnRegion region = regionManager.getRegionOf(player).get();
-        region.getPlots().get(PlotType.SILO).forEach(plot -> ((SiloPlot) plot).getCropsStored().clear());
     }
 }

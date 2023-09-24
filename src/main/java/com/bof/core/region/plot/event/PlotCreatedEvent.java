@@ -1,6 +1,6 @@
-package com.bof.core.region.plots.event;
+package com.bof.core.region.plot.event;
 
-import com.bof.core.region.plots.Plot;
+import com.bof.core.region.plot.Plot;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.event.Event;

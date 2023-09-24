@@ -1,6 +1,6 @@
-package com.bof.core.region.plots;
+package com.bof.core.region.plot;
 
-import com.bof.core.region.plots.event.PlotCreatedEvent;
+import com.bof.core.region.plot.event.PlotCreatedEvent;
 import com.bof.core.region.BarnRegion;
 import com.bof.core.region.event.RegionCreatedEvent;
 import com.bof.core.utils.BoxUtils;
@@ -25,7 +25,7 @@ public class PlotManager implements Listener {
     private void handlePlotsCreation(BarnRegion region) {
         Map<PlotType, Set<Plot>> plots = new HashMap<>();
         Arrays.stream(PlotType.values()).forEach(plotType -> plots.put(plotType, BoxUtils.identifyPlots(plotType, region.getBox()).entrySet().stream()
-                .map(entry -> Plot.newPlot(region, plotType, entry.getValue(), Integer.parseInt(entry.getKey())))
+                .map(entry -> Plot.newPlot(plotType, region, entry.getValue(), Integer.parseInt(entry.getKey())))
                 .peek(plot -> Bukkit.getPluginManager().callEvent(new PlotCreatedEvent(plot)))
                 .collect(Collectors.toSet())
         ));

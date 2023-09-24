@@ -1,9 +1,9 @@
-package com.bof.core.region.plots;
+package com.bof.core.region.plot;
 
 import com.bof.core.Core;
 import com.bof.core.placeholders.holo.HoloPlaceholders;
-import com.bof.core.region.plots.event.PlotCreatedEvent;
-import com.bof.core.region.plots.farm.FarmPlot;
+import com.bof.core.region.plot.event.PlotCreatedEvent;
+import com.bof.core.region.plot.farm.FarmPlot;
 import com.bof.core.utils.PlotUtils;
 import com.bof.toolkit.utils.ComponentUtils;
 import com.github.unldenis.hologram.Hologram;
@@ -61,7 +61,7 @@ public class PlotHoloManager implements Listener {
 
         ItemStack item = new ItemStack(Material.BARRIER);
         switch (plot.getType()) {
-            case FARM -> item = new ItemStack(((FarmPlot) plot).getCurrentCrop().getItemMaterial());
+            case FARM -> item = new ItemStack(((FarmPlot) plot).getCurrentlyHarvesting().getItemMaterial());
             case SILO -> item = new ItemStack(Material.BARREL);
         }
 

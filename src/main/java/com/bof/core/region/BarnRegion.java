@@ -1,10 +1,10 @@
 package com.bof.core.region;
 
 
-import com.bof.core.region.plots.HarvestablePlot;
-import com.bof.core.region.plots.Plot;
-import com.bof.core.region.plots.PlotType;
-import com.bof.core.region.plots.silo.SiloPlot;
+import com.bof.core.region.plot.HarvestablePlot;
+import com.bof.core.region.plot.Plot;
+import com.bof.core.region.plot.PlotType;
+import com.bof.core.region.plot.silo.SiloPlot;
 import com.bof.core.utils.CropUtils;
 import com.github.unldenis.hologram.HologramPool;
 import com.github.unldenis.hologram.InteractiveHologramPool;

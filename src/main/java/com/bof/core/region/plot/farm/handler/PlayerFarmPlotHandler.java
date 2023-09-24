@@ -1,8 +1,8 @@
-package com.bof.core.region.plots.farm.handler;
+package com.bof.core.region.plot.farm.handler;
 
 import com.bof.core.player.GamePlayer;
-import com.bof.core.region.plots.PlotType;
-import com.bof.core.region.plots.farm.FarmPlot;
+import com.bof.core.region.plot.PlotType;
+import com.bof.core.region.plot.farm.FarmPlot;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;

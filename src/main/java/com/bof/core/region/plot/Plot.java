@@ -1,8 +1,9 @@
-package com.bof.core.region.plots;
+package com.bof.core.region.plot;
 
 import com.bof.core.region.BarnRegion;
-import com.bof.core.region.plots.farm.FarmPlot;
-import com.bof.core.region.plots.silo.SiloPlot;
+import com.bof.core.region.plot.animal.AnimalPlot;
+import com.bof.core.region.plot.farm.FarmPlot;
+import com.bof.core.region.plot.silo.SiloPlot;
 import com.github.unldenis.hologram.Hologram;
 import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
 import net.kyori.adventure.text.Component;
@@ -15,7 +16,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 public interface Plot {
-    static Plot newPlot(@NotNull BarnRegion owningRegion, @NotNull PlotType type, @NotNull BoundingBox box, int id) {
+    static Plot newPlot(@NotNull PlotType type, @NotNull BarnRegion owningRegion, @NotNull BoundingBox box, int id) {
         switch (type) {
             case FARM -> {
                 return new FarmPlot(owningRegion, box, id);
@@ -24,7 +25,7 @@ public interface Plot {
                 return new SiloPlot(owningRegion, box, id);
             }
             case ANIMAL -> {
-                return null;
+                return new AnimalPlot(owningRegion, box, id);
             }
         }
         return null;

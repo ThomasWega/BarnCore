@@ -1,10 +1,10 @@
-package com.bof.core.region.plots.silo.menu;
+package com.bof.core.region.plot.silo.menu;
 
 import com.bof.core.item.ItemBuilder;
 import com.bof.core.menu.premade.back.GoBackPane;
 import com.bof.core.menu.premade.page.PaginatedNavGUI;
-import com.bof.core.region.plots.farm.CropType;
-import com.bof.core.region.plots.silo.SiloPlot;
+import com.bof.core.region.plot.farm.CropType;
+import com.bof.core.region.plot.silo.SiloPlot;
 import com.bof.core.utils.ItemStackUtils;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;

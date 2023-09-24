@@ -1,12 +1,12 @@
-package com.bof.core.region.plots.farm.menu;
+package com.bof.core.region.plot.farm.menu;
 
 import com.bof.core.item.ItemBuilder;
 import com.bof.core.item.SkullBuilder;
 import com.bof.core.menu.premade.back.GoBackPane;
 import com.bof.core.region.BarnRegion;
-import com.bof.core.region.plots.Plot;
-import com.bof.core.region.plots.PlotType;
-import com.bof.core.region.plots.farm.FarmPlot;
+import com.bof.core.region.plot.Plot;
+import com.bof.core.region.plot.PlotType;
+import com.bof.core.region.plot.farm.FarmPlot;
 import com.bof.core.skin.Skin;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
@@ -75,7 +75,7 @@ public class CropsAutoStoreMenu extends ChestGui {
                                             Component.text("Shift-click to change plot", NamedTextColor.DARK_GRAY)
                                     ));
                                     this.selectedPane.addItem(new GuiItem(
-                                            new ItemBuilder(plot.getCurrentCrop().getItemMaterial())
+                                            new ItemBuilder(plot.getCurrentlyHarvesting().getItemMaterial())
                                                     .displayName(plot.getDisplayName())
                                                     .lore(lore)
                                                     .build(), handleSelectAction(plot)

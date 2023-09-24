@@ -1,10 +1,10 @@
-package com.bof.core.region.plots.silo.menu;
+package com.bof.core.region.plot.silo.menu;
 
 import com.bof.core.item.ItemBuilder;
 import com.bof.core.item.SkullBuilder;
 import com.bof.core.menu.premade.back.GoBackPane;
 import com.bof.core.region.BarnRegion;
-import com.bof.core.region.plots.silo.SiloPlot;
+import com.bof.core.region.plot.silo.SiloPlot;
 import com.bof.core.skin.Skin;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;

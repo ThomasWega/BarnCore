@@ -23,6 +23,7 @@ repositories {
     maven {
         url = uri("https://repo.extendedclip.com/content/repositories/placeholderapi/")
     }
+    maven { url = uri("https://repo.dmulloy2.net/repository/public/") }
 }
 
 dependencies {
@@ -37,6 +38,7 @@ dependencies {
     compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit") { isTransitive = false }
     compileOnly("me.neznamy:tab-api:4.0.2")
     compileOnly("me.clip:placeholderapi:2.11.3")
+    compileOnly ("com.comphenix.protocol:ProtocolLib:4.7.0")
 }
 
 tasks {

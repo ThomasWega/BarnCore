@@ -1,12 +1,12 @@
 package com.bof.core;
 
 import com.bof.barn.world_generator.event.GridLoadedEvent;
-import com.bof.core.region.plots.farm.handler.CropsTrampingHandler;
-import com.bof.core.region.plots.farm.handler.PlayerFarmPlotHandler;
+import com.bof.core.region.plot.farm.handler.CropsTrampingHandler;
+import com.bof.core.region.plot.farm.handler.PlayerFarmPlotHandler;
 import com.bof.core.region.handler.PlayerRegionAssignHandler;
 import com.bof.core.placeholders.papi.PAPIHook;
-import com.bof.core.region.plots.PlotHoloManager;
-import com.bof.core.region.plots.PlotManager;
+import com.bof.core.region.plot.PlotHoloManager;
+import com.bof.core.region.plot.PlotManager;
 import com.bof.core.region.RegionManager;
 import com.bof.core.region.spawn.SpawnManager;
 import com.bof.core.region.storage.RegionStorage;
