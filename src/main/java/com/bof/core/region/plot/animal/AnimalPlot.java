@@ -4,7 +4,7 @@ import com.bof.core.region.BarnRegion;
 import com.bof.core.region.plot.HarvestablePlot;
 import com.bof.core.region.plot.PlotType;
 import com.bof.core.region.plot.animal.menu.AnimalPlotMainMenu;
-import com.bof.core.region.plot.animal.nms.NMSAnimal;
+import com.bof.core.region.plot.barn.BarnPlot;
 import com.bof.core.utils.BoxUtils;
 import com.github.unldenis.hologram.Hologram;
 import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
@@ -12,16 +12,19 @@ import com.github.unldenis.hologram.line.BlockLine;
 import lombok.Data;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BoundingBox;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 @Data
 public class AnimalPlot implements HarvestablePlot<AnimalType> {
@@ -30,6 +33,8 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
     private final BoundingBox box;
     private final int id;
     private final Set<Block> boxBlocks;
+    private final Set<UUID> animals = new HashSet<>();
+    private final int animalCount = 6;
     private AnimalType currentlyHarvesting = AnimalType.NONE;
     private Hologram hologram;
     private boolean autoStore = false;
@@ -47,26 +52,40 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
     }
 
 
-    public void changeAnimals(AnimalType type) {
-        Location center = BoxUtils.getCenterLocation(this.box);
-        new NMSAnimal(center, type);
+    public void changeAnimals(@NotNull AnimalType type) {
+        // remove previous mobs
+        this.animals.forEach(uuid -> {
+            LivingEntity entity = ((LivingEntity) Bukkit.getWorld("world").getEntity(uuid));
+            if (entity != null) {
+                entity.setHealth(0);
+            }
+        });
+        this.animals.clear();
+
+        // add new mobs
+        if (type != AnimalType.NONE) {
+            for (int i = 0; i < animalCount; i++) {
+                Location location = BoxUtils.getRandomLocation(this.getBox());
+                this.animals.add(Bukkit.getWorld("world").spawnEntity(location, type.getEntityType(), CreatureSpawnEvent.SpawnReason.CUSTOM).getUniqueId());
+            }
+        }
         this.setCurrentlyHarvesting(type);
     }
 
-    public int harvestAnimals(@NotNull Player player) {
-        player.sendMessage("TO FIX - finish adding!");
-        return 0;
-    }
-/*
-    public int harvestAnimals(@NotNull Player player) {
-        return this.handleAnimalBreak(player, this.boxBlocks);
+    private Set<LivingEntity> getEntities() {
+        return this.animals.stream()
+                .map(uuid -> ((LivingEntity) Bukkit.getWorld("world").getEntity(uuid)))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
     }
 
-    public int handleAnimalBreak(@NotNull Player player, @NotNull Block... blocks) {
-        return this.handleAnimalBreak(player, Arrays.asList(blocks));
+
+    public int harvestAnimals(@NotNull Player player) {
+        Set<LivingEntity> entities = this.getEntities();
+        return this.handleAnimalKill(player, entities.toArray(LivingEntity[]::new));
     }
-    
-    public int handleAnimalBreak(@NotNull Player player, @NotNull Collection<Block> blocks) {
+
+    public int handleAnimalKill(@NotNull Player player, @NotNull LivingEntity... entities) {
         int count = 0;
 
         // there is nothing to harvest
@@ -74,30 +93,35 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
             return count;
         }
 
-        for (Block block : blocks) {
-            if (AnimalType.getByMaterial(block.getType())
-                    .filter(cropType -> cropType != AnimalType.NONE)
-                    .isPresent()) {
+        for (LivingEntity entity : entities) {
+            Optional<AnimalType> optAnimalType = AnimalType.getByEntityType(entity.getType())
+                    .filter(type -> type != AnimalType.NONE);
 
-                ItemStack item = new ItemStack(block.getType());
+            if (optAnimalType.isPresent()) {
+                AnimalType animalType = optAnimalType.get();
+                ItemStack item = new ItemStack(animalType.getItem());
                 if (this.isAutoStore()) {
-                    // first tries putting into silo, then tries inventory, if both fails, returns list of items which failed
-                    if (!this.addAnimalsToSilo(player, item).isEmpty()) {
-                        player.sendMessage("TO ADD - All silos are full. Putting the items to inventory");
-                        if (!this.addAnimalsToInventory(player, item).isEmpty()) {
+                    // first tries putting into barn, then tries inventory, if both fails, returns list of items which failed
+                    if (!this.addAnimalsToBarn(item).isEmpty()) {
+                        player.sendMessage("TO ADD - The barn is full. Putting the items to inventory");
+                        if (!this.addAnimalsToInventory(item).isEmpty()) {
                             player.sendMessage("TO ADD - Animals inventory is full 1");
                         }
                         break;
                     }
                 } else {
-                    if (!this.addAnimalsToInventory(player, item).isEmpty()) {
+                    if (!this.addAnimalsToInventory(item).isEmpty()) {
                         player.sendMessage("TO ADD - Animals inventory is full 2");
                         break;
                     }
                 }
 
-                block.setType(Material.AIR);
+                entity.setKiller(player);
+                entity.setHealth(0);
                 count++;
+
+                // needs to be after killing the mob
+                this.animals.remove(entity.getUniqueId());
             }
         }
 
@@ -110,15 +134,15 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
     }
 
 
-    public @NotNull List<ItemStack> addAnimalsToInventory(@NotNull Player player, @NotNull ItemStack... items) {
-        return this.addAnimalsToInventory(player, Arrays.asList(items));
+    public @NotNull List<ItemStack> addAnimalsToInventory(@NotNull ItemStack... items) {
+        return this.addAnimalsToInventory(Arrays.asList(items));
     }
 
 
-    public @NotNull List<ItemStack> addAnimalsToInventory(@NotNull Player player, @NotNull Collection<ItemStack> crops) {
+    public @NotNull List<ItemStack> addAnimalsToInventory(@NotNull Collection<ItemStack> animals) {
         List<ItemStack> unAdded = new ArrayList<>();
 
-        for (ItemStack item : crops) {
+        for (ItemStack item : animals) {
             if (!this.getOwningRegion().addAnimalsToInventory(item).isEmpty()) {
                 unAdded.add(item);
             }
@@ -128,25 +152,25 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
     }
 
 
-    public @NotNull List<ItemStack> addAnimalsToSilo(@NotNull Player player, @NotNull ItemStack... crops) {
-        return this.addAnimalsToSilo(player, Arrays.asList(crops));
+    public @NotNull List<ItemStack> addAnimalsToBarn(@NotNull ItemStack... animals) {
+        return this.addAnimalsToBarn(Arrays.asList(animals));
     }
 
-    public @NotNull List<ItemStack> addAnimalsToSilo(@NotNull Player player, @NotNull Collection<ItemStack> items) {
+    public @NotNull List<ItemStack> addAnimalsToBarn(@NotNull Collection<ItemStack> items) {
         List<ItemStack> unAdded = new ArrayList<>();
-        Optional<SiloPlot> optSilo = this.getOwningRegion().getFreeSilo();
+        Optional<BarnPlot> optBarn = this.getOwningRegion().getFreeBarn();
 
         for (ItemStack item : items) {
-            // no free silo is available, so put all remaining items as unAdded
-            if (optSilo.isEmpty()) {
+            // no free barn is available, so put all remaining items as unAdded
+            if (optBarn.isEmpty()) {
                 unAdded.add(item);
                 continue;
             }
 
-            SiloPlot silo = optSilo.get();
-            // silo is full, so try getting a new free silo
-            if (!silo.addAnimalsToSilo(item).isEmpty()) {
-                optSilo = this.getOwningRegion().getFreeSilo();
+            BarnPlot barn = optBarn.get();
+            // barn is full, so try getting a new free barn
+            if (!barn.addAnimalsToBarn(item).isEmpty()) {
+                optBarn = this.getOwningRegion().getFreeBarn();
             }
         }
 
@@ -154,28 +178,19 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
     }
 
     public int getRemainingAnimals() {
-        return (int) boxBlocks.stream()
-                .filter(block -> block.getType() != Material.AIR)
-                .filter(block -> AnimalType.getByMaterial(block.getType()).isPresent())
-                .count();
+        return this.getEntities().size();
     }
 
     private boolean isAnimalPresent() {
-        Set<Material> boxBlocksMat = boxBlocks.stream()
-                .map(Block::getType)
-                .collect(Collectors.toSet());
-
-        return AnimalType.getMaterials().stream()
-                .anyMatch(boxBlocksMat::contains);
+        return this.getRemainingAnimals() > 0;
     }
 
- */
 
     public void updateHologram() {
         this.hologram.getLines().stream()
                 .filter(iLine -> iLine instanceof BlockLine)
                 .map(iLine -> ((BlockLine) iLine))
-                .forEach(blockLine -> blockLine.setObj(new ItemStack(currentlyHarvesting.getItem())));
+                .forEach(blockLine -> blockLine.setObj(new ItemStack(this.currentlyHarvesting.getItem())));
 
         this.hologram.getLines().forEach(iLine -> iLine.update(this.owningRegion.getAllPlayers()));
     }

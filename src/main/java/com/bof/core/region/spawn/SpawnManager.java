@@ -3,7 +3,6 @@ package com.bof.core.region.spawn;
 import com.bof.core.region.BarnRegion;
 import com.bof.core.region.event.RegionCreatedEvent;
 import com.bof.core.utils.BoxUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -23,6 +22,6 @@ public class SpawnManager implements Listener {
         // remove the sign
         optSpawnLoc.ifPresent(loc -> loc.getBlock().setType(Material.AIR));
         region.setSpawnLocation(optSpawnLoc.map(loc -> loc.add(0, 2, 0))
-                .orElse(region.getBox().getCenter().toLocation(Bukkit.getWorld("world"))));
+                .orElse(BoxUtils.getCenterLocation(region.getBox())));
     }
 }

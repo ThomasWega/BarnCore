@@ -2,6 +2,7 @@ package com.bof.core.region.plot;
 
 import com.bof.core.region.BarnRegion;
 import com.bof.core.region.plot.animal.AnimalPlot;
+import com.bof.core.region.plot.barn.BarnPlot;
 import com.bof.core.region.plot.farm.FarmPlot;
 import com.bof.core.region.plot.silo.SiloPlot;
 import com.github.unldenis.hologram.Hologram;
@@ -26,6 +27,9 @@ public interface Plot {
             }
             case ANIMAL -> {
                 return new AnimalPlot(owningRegion, box, id);
+            }
+            case BARN -> {
+                return new BarnPlot(owningRegion, box, id);
             }
         }
         return null;

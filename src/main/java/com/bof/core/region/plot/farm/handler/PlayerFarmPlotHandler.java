@@ -3,7 +3,6 @@ package com.bof.core.region.plot.farm.handler;
 import com.bof.core.player.GamePlayer;
 import com.bof.core.region.plot.PlotType;
 import com.bof.core.region.plot.farm.FarmPlot;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,7 +16,6 @@ public class PlayerFarmPlotHandler implements Listener {
         Player player = event.getPlayer();
         GamePlayer gamePlayer = GamePlayer.get(player);
         Block block = event.getBlock();
-        Material blockType = block.getType();
 
         event.setCancelled(true);
 

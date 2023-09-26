@@ -4,8 +4,9 @@ package com.bof.core.region;
 import com.bof.core.region.plot.HarvestablePlot;
 import com.bof.core.region.plot.Plot;
 import com.bof.core.region.plot.PlotType;
+import com.bof.core.region.plot.barn.BarnPlot;
 import com.bof.core.region.plot.silo.SiloPlot;
-import com.bof.core.utils.CropUtils;
+import com.bof.core.utils.HarvestableUtils;
 import com.github.unldenis.hologram.HologramPool;
 import com.github.unldenis.hologram.InteractiveHologramPool;
 import lombok.Data;
@@ -25,6 +26,8 @@ public class BarnRegion {
     private final Set<UUID> members = new HashSet<>();
     private final List<ItemStack> cropsInventory = new ArrayList<>();
     private final int cropsInventorySize = 100;
+    private final List<ItemStack> animalInventory = new ArrayList<>();
+    private final int animalInventorySize = 100;
     private final int autoStoreSlots = 2;
     private boolean isAssigned = false;
     private Player owner;
@@ -43,7 +46,11 @@ public class BarnRegion {
     }
 
     public boolean isCropsInvFull() {
-        return cropsInventory.size() >= cropsInventorySize;
+        return this.cropsInventory.size() >= this.cropsInventorySize;
+    }
+
+    public boolean isAnimalInvFull() {
+        return this.animalInventory.size() >= this.animalInventorySize;
     }
 
     public @NotNull List<ItemStack> addCropsToInventory(@NotNull ItemStack... itemStack) {
@@ -75,14 +82,46 @@ public class BarnRegion {
         // can't use removeAll, because that will remove all crops of the same type
         cropsToRemove.forEach(this.cropsInventory::remove);
 
-        return CropUtils.getValueOf(cropsToRemove);
+        return HarvestableUtils.getValueOfCrops(cropsToRemove);
+    }
+
+    public @NotNull List<ItemStack> addAnimalsToInventory(@NotNull ItemStack... itemStack) {
+        return this.addAnimalsToInventory(Arrays.asList(itemStack));
+    }
+
+    public @NotNull List<ItemStack> addAnimalsToInventory(@NotNull Collection<ItemStack> itemStacks) {
+        List<ItemStack> unAdded = new ArrayList<>();
+        for (ItemStack itemStack : itemStacks) {
+            if (this.isAnimalInvFull()) {
+                unAdded.add(itemStack);
+                continue;
+            }
+
+            this.animalInventory.add(itemStack);
+        }
+
+        return unAdded;
+    }
+
+    public float removeAnimalsFromInventory(@NotNull ItemStack... crops) {
+        return this.removeAnimalsFromInventory(Arrays.asList(crops));
+    }
+
+    public float removeAnimalsFromInventory(@NotNull Collection<ItemStack> crops) {
+        // Create a copy of the collection to avoid ConcurrentModificationException
+        // (the animals can be referenced from cropStored)
+        List<ItemStack> animalsToRemove = new ArrayList<>(crops);
+        // can't use removeAll, because that will remove all animals of the same type
+        animalsToRemove.forEach(this.animalInventory::remove);
+
+        return HarvestableUtils.getValueOfAnimals(animalsToRemove);
     }
 
     public int getAutoStorePlotsCount() {
         return (int) plots.values().stream()
                 .flatMap(Set::stream)
                 .filter(plot -> plot instanceof HarvestablePlot)
-                .filter(plot -> ((HarvestablePlot) plot).isAutoStore())
+                .filter(plot -> ((HarvestablePlot<?>) plot).isAutoStore())
                 .count();
     }
 
@@ -94,11 +133,20 @@ public class BarnRegion {
      * @return Silo that is not full and has the largest capacity out of the free silos
      */
     public Optional<SiloPlot> getFreeSilo() {
-        return plots.get(PlotType.SILO).stream()
-                .filter(plot -> plot instanceof SiloPlot)
+        return this.plots.get(PlotType.SILO).stream()
                 .map(plot -> (SiloPlot) plot)
                 .filter(siloPlot -> !siloPlot.isFull())
                 .max(Comparator.comparingInt(SiloPlot::getCapacity));
+    }
+
+    /**
+     * @return Barn that is not full and has the largest capacity out of the free silos
+     */
+    public Optional<BarnPlot> getFreeBarn() {
+        return this.plots.get(PlotType.BARN).stream()
+                .map(plot -> (BarnPlot) plot)
+                .filter(barnPlot -> !barnPlot.isFull())
+                .max(Comparator.comparingInt(BarnPlot::getCapacity));
     }
 
 

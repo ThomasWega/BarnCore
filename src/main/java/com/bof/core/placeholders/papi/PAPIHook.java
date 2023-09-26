@@ -5,6 +5,7 @@ import com.bof.core.region.BarnRegion;
 import com.bof.core.region.plot.HarvestablePlot;
 import com.bof.core.region.plot.Plot;
 import com.bof.core.region.plot.PlotType;
+import com.bof.core.region.plot.barn.BarnPlot;
 import com.bof.core.region.plot.silo.SiloPlot;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
@@ -45,10 +46,14 @@ public class PAPIHook extends PlaceholderExpansion {
         BarnRegion region = optRegion.get();
 
         switch (params) {
-            case "inv":
+            case "silo_inv":
                 return String.valueOf(region.getCropsInventory().size());
-            case "inv_size":
+            case "silo_inv_size":
                 return String.valueOf(region.getCropsInventorySize());
+            case "barn_inv":
+                return String.valueOf(region.getAnimalInventory().size());
+            case "barn_inv_size":
+                return String.valueOf(region.getAnimalInventorySize());
             case "farmcoins":
                 return String.valueOf(region.getFarmCoins());
         }
@@ -90,11 +95,25 @@ public class PAPIHook extends PlaceholderExpansion {
                 return String.valueOf(((SiloPlot) optPlot.get()).getCapacity());
         }
 
+        if (params.startsWith("plot_barn_capacity_")) {
+            int plotId = Integer.parseInt(params.substring(19));
+            Optional<Plot> optPlot = region.getPlot(PlotType.BARN, plotId);
+            if (optPlot.isPresent())
+                return String.valueOf(((BarnPlot) optPlot.get()).getCapacity());
+        }
+
         if (params.startsWith("plot_silo_filled_")) {
             int plotId = Integer.parseInt(params.substring(17));
             Optional<Plot> optPlot = region.getPlot(PlotType.SILO, plotId);
             if (optPlot.isPresent())
                 return String.valueOf(((SiloPlot) optPlot.get()).getFilledAmount());
+        }
+
+        if (params.startsWith("plot_barn_filled_")) {
+            int plotId = Integer.parseInt(params.substring(17));
+            Optional<Plot> optPlot = region.getPlot(PlotType.BARN, plotId);
+            if (optPlot.isPresent())
+                return String.valueOf(((BarnPlot) optPlot.get()).getFilledAmount());
         }
 
         if (params.startsWith("plot_silo_percentage_filled_")) {
@@ -104,6 +123,13 @@ public class PAPIHook extends PlaceholderExpansion {
                 return String.valueOf(((SiloPlot) optPlot.get()).getFilledPercentageRounded(2));
         }
 
+        if (params.startsWith("plot_barn_percentage_filled_")) {
+            int plotId = Integer.parseInt(params.substring(28));
+            Optional<Plot> optPlot = region.getPlot(PlotType.BARN, plotId);
+            if (optPlot.isPresent())
+                return String.valueOf(((BarnPlot) optPlot.get()).getFilledPercentageRounded(2));
+        }
+
         if (params.startsWith("plot_silo_autosell_")) {
             int plotId = Integer.parseInt(params.substring(19));
             Optional<Plot> optPlot = region.getPlot(PlotType.SILO, plotId);
@@ -111,11 +137,18 @@ public class PAPIHook extends PlaceholderExpansion {
                 return String.valueOf(((SiloPlot) optPlot.get()).isAutoSell());
         }
 
-        if (params.startsWith("plot_silo_colored_status_autosell_")) {
-            int plotId = Integer.parseInt(params.substring(34));
-            Optional<Plot> optPlot = region.getPlot(PlotType.SILO, plotId);
+        if (params.startsWith("plot_barn_autosell_")) {
+            int plotId = Integer.parseInt(params.substring(19));
+            Optional<Plot> optPlot = region.getPlot(PlotType.BARN, plotId);
             if (optPlot.isPresent())
-                return ((SiloPlot) optPlot.get()).isAutoSell() ? "§aON" : "§cOFF";
+                return String.valueOf(((BarnPlot) optPlot.get()).isAutoSell());
+        }
+
+        if (params.startsWith("plot_barn_colored_status_autosell_")) {
+            int plotId = Integer.parseInt(params.substring(34));
+            Optional<Plot> optPlot = region.getPlot(PlotType.BARN, plotId);
+            if (optPlot.isPresent())
+                return ((BarnPlot) optPlot.get()).isAutoSell() ? "§aON" : "§cOFF";
         }
 
         return null;

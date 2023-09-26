@@ -73,7 +73,7 @@ public class FarmPlot implements HarvestablePlot<CropType> {
         int count = 0;
 
         // there is nothing to harvest
-        if (currentlyHarvesting == CropType.NONE || !isCropPresent()) {
+        if (this.currentlyHarvesting == CropType.NONE || !isCropPresent()) {
             return count;
         }
 
@@ -85,15 +85,15 @@ public class FarmPlot implements HarvestablePlot<CropType> {
                 ItemStack item = new ItemStack(block.getType());
                 if (this.isAutoStore()) {
                     // first tries putting into silo, then tries inventory, if both fails, returns list of items which failed
-                    if (!this.addCropsToSilo(player, item).isEmpty()) {
+                    if (!this.addCropsToSilo(item).isEmpty()) {
                         player.sendMessage("TO ADD - All silos are full. Putting the items to inventory");
-                        if (!this.addCropsToInventory(player, item).isEmpty()) {
+                        if (!this.addCropsToInventory(item).isEmpty()) {
                             player.sendMessage("TO ADD - Crops inventory is full 1");
                         }
                         break;
                     }
                 } else {
-                    if (!this.addCropsToInventory(player, item).isEmpty()) {
+                    if (!this.addCropsToInventory(item).isEmpty()) {
                         player.sendMessage("TO ADD - Crops inventory is full 2");
                         break;
                     }
@@ -112,11 +112,11 @@ public class FarmPlot implements HarvestablePlot<CropType> {
         return count;
     }
 
-    public @NotNull List<ItemStack> addCropsToInventory(@NotNull Player player, @NotNull ItemStack... items) {
-        return this.addCropsToInventory(player, Arrays.asList(items));
+    public @NotNull List<ItemStack> addCropsToInventory(@NotNull ItemStack... items) {
+        return this.addCropsToInventory(Arrays.asList(items));
     }
 
-    public @NotNull List<ItemStack> addCropsToInventory(@NotNull Player player, @NotNull Collection<ItemStack> crops) {
+    public @NotNull List<ItemStack> addCropsToInventory(@NotNull Collection<ItemStack> crops) {
         List<ItemStack> unAdded = new ArrayList<>();
 
         for (ItemStack item : crops) {
@@ -128,11 +128,11 @@ public class FarmPlot implements HarvestablePlot<CropType> {
         return unAdded;
     }
 
-    public @NotNull List<ItemStack> addCropsToSilo(@NotNull Player player, @NotNull ItemStack... crops) {
-        return this.addCropsToSilo(player, Arrays.asList(crops));
+    public @NotNull List<ItemStack> addCropsToSilo(@NotNull ItemStack... crops) {
+        return this.addCropsToSilo(Arrays.asList(crops));
     }
 
-    public @NotNull List<ItemStack> addCropsToSilo(@NotNull Player player, @NotNull Collection<ItemStack> items) {
+    public @NotNull List<ItemStack> addCropsToSilo(@NotNull Collection<ItemStack> items) {
         List<ItemStack> unAdded = new ArrayList<>();
         Optional<SiloPlot> optSilo = this.getOwningRegion().getFreeSilo();
 
@@ -154,14 +154,14 @@ public class FarmPlot implements HarvestablePlot<CropType> {
     }
 
     public int getRemainingCrops() {
-        return (int) boxBlocks.stream()
+        return (int) this.boxBlocks.stream()
                 .filter(block -> block.getType() != Material.AIR)
                 .filter(block -> CropType.getByMaterial(block.getType()).isPresent())
                 .count();
     }
 
     private boolean isCropPresent() {
-        Set<Material> boxBlocksMat = boxBlocks.stream()
+        Set<Material> boxBlocksMat = this.boxBlocks.stream()
                 .map(Block::getType)
                 .collect(Collectors.toSet());
 
@@ -173,7 +173,7 @@ public class FarmPlot implements HarvestablePlot<CropType> {
         this.hologram.getLines().stream()
                 .filter(iLine -> iLine instanceof BlockLine)
                 .map(iLine -> ((BlockLine) iLine))
-                .forEach(blockLine -> blockLine.setObj(new ItemStack(currentlyHarvesting.getItemMaterial())));
+                .forEach(blockLine -> blockLine.setObj(new ItemStack(this.currentlyHarvesting.getItemMaterial())));
 
         this.hologram.getLines().forEach(iLine -> iLine.update(this.owningRegion.getAllPlayers()));
     }

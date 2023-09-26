@@ -9,6 +9,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,25 +21,25 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Getter
 public enum AnimalType implements HarvestableType {
-    NONE(-1, new ItemStack(Material.BARRIER), Component.text("None", NamedTextColor.RED), 0f),
-    COW(18, new SkullBuilder()
+    NONE(EntityType.UNKNOWN, new ItemStack(Material.BARRIER), Component.text("None", NamedTextColor.RED), 0f),
+    COW(EntityType.COW, new SkullBuilder()
             .skin(new Skin("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzVhOWNkNThkNGM2N2JjY2M4ZmIxZjVmNzU2YTJkMzgxYzlmZmFjMjkyNGI3ZjRjYjcxYWE5ZmExM2ZiNWMifX19", null))
             .build(),
             Component.text("Cow", TextColor.fromHexString("#A36B21")), 1f),
-    PIG(72, new SkullBuilder()
+    PIG(EntityType.PIG, new SkullBuilder()
             .skin(new Skin("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmVlODUxNDg5MmYzZDc4YTMyZTg0NTZmY2JiOGM2MDgxZTIxYjI0NmQ4MmYzOThiZDk2OWZlYzE5ZDNjMjdiMyJ9fX0=", null))
             .build(),
             Component.text("Pig", TextColor.fromHexString("#FFC0CB")), 2f),
-    CHICKEN(15, new SkullBuilder()
+    CHICKEN(EntityType.CHICKEN, new SkullBuilder()
             .skin(new Skin("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2EzNTgyY2U0ODg5MzMzZGFkMzI5ZTRlMjQzNzJhMDNhNWRhYTJjMzQyODBjNTYyNTZhZjUyODNlZGIwNDNmOCJ9fX0=", null))
             .build(),
             Component.text("Chicken", TextColor.fromHexString("#D0D28C")), 3f),
-    SHEEP(82, new SkullBuilder()
+    SHEEP(EntityType.SHEEP, new SkullBuilder()
             .skin(new Skin("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjMxZjljY2M2YjNlMzJlY2YxM2I4YTExYWMyOWNkMzNkMThjOTVmYzczZGI4YTY2YzVkNjU3Y2NiOGJlNzAifX19", null))
             .build(),
             Component.text("Sheep", TextColor.fromHexString("#FFFFFF")), 4f);
 
-    private final int entityTypeID;
+    private final EntityType entityType;
     private final ItemStack item;
     private final Component displayName;
     private final float value;
@@ -56,9 +57,9 @@ public enum AnimalType implements HarvestableType {
         return Optional.empty();
     }
 
-    public static Optional<AnimalType> getByEntityTypeID(@NotNull int entityTypeID) {
+    public static Optional<AnimalType> getByEntityType(@NotNull EntityType entityType) {
         for (AnimalType type : AnimalType.values()) {
-            if (type.getEntityTypeID() == entityTypeID) return Optional.of(type);
+            if (type.getEntityType() == entityType) return Optional.of(type);
         }
         return Optional.empty();
     }

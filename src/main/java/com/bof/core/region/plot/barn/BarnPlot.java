@@ -1,9 +1,8 @@
-package com.bof.core.region.plot.silo;
+package com.bof.core.region.plot.barn;
 
 import com.bof.core.region.BarnRegion;
 import com.bof.core.region.plot.Plot;
 import com.bof.core.region.plot.PlotType;
-import com.bof.core.region.plot.silo.menu.SiloPlotMainMenu;
 import com.bof.core.utils.BoxUtils;
 import com.github.unldenis.hologram.Hologram;
 import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
@@ -21,7 +20,7 @@ import java.util.*;
 import java.util.function.Consumer;
 
 @Data
-public class SiloPlot implements Plot {
+public class BarnPlot implements Plot {
     private final BarnRegion owningRegion;
     private final PlotType type = PlotType.SILO;
     private final BoundingBox box;
@@ -29,10 +28,10 @@ public class SiloPlot implements Plot {
     private final Set<Block> boxBlocks;
     private Hologram hologram;
     private final int capacity = 1000;
-    private final List<ItemStack> cropsStored = new ArrayList<>();
+    private final List<ItemStack> animalsStored = new ArrayList<>();
     private boolean autoSell = false;
 
-    public SiloPlot(BarnRegion owningRegion, BoundingBox box, int id) {
+    public BarnPlot(BarnRegion owningRegion, BoundingBox box, int id) {
         this.owningRegion = owningRegion;
         this.box = box;
         this.id = id;
@@ -44,7 +43,7 @@ public class SiloPlot implements Plot {
     }
 
     public int getFilledAmount() {
-        return this.cropsStored.stream()
+        return this.animalsStored.stream()
                 .mapToInt(ItemStack::getAmount)
                 .sum();
     }
@@ -71,22 +70,22 @@ public class SiloPlot implements Plot {
         this.hologram.getLines().forEach(iLine -> iLine.update(this.owningRegion.getAllPlayers()));
     }
 
-    public @NotNull List<ItemStack> addCropsToSilo(@NotNull ItemStack... crops) {
-        return this.addCropsToSilo(Arrays.asList(crops));
+    public @NotNull List<ItemStack> addAnimalsToBarn(@NotNull ItemStack... animals) {
+        return this.addAnimalsToBarn(Arrays.asList(animals));
     }
 
-    public @NotNull List<ItemStack> addCropsToSilo(@NotNull Collection<ItemStack> crops) {
+    public @NotNull List<ItemStack> addAnimalsToBarn(@NotNull Collection<ItemStack> animals) {
         List<ItemStack> unAdded = new ArrayList<>();
-        for (ItemStack itemStack : crops) {
+        for (ItemStack itemStack : animals) {
             if (this.isFull()) {
                 unAdded.add(itemStack);
                 continue;
             }
 
             if (this.isAutoSell()) {
-                this.sellCrops(itemStack);
+                this.sellAnimals(itemStack);
             } else {
-                this.cropsStored.add(itemStack);
+                this.animalsStored.add(itemStack);
             }
         }
 
@@ -94,13 +93,13 @@ public class SiloPlot implements Plot {
         return unAdded;
     }
 
-    public float sellCrops(@NotNull ItemStack... crops) {
-        return this.sellCrops(Arrays.asList(crops));
+    public float sellAnimals(@NotNull ItemStack... animals) {
+        return this.sellAnimals(Arrays.asList(animals));
     }
 
 
-    public float sellCrops(@NotNull Collection<ItemStack> crops) {
-        float value = this.getOwningRegion().removeCropsFromInventory(crops);
+    public float sellAnimals(@NotNull Collection<ItemStack> animals) {
+        float value = this.getOwningRegion().removeAnimalsFromInventory(animals);
         this.getOwningRegion().addFarmCoins(value);
         this.updateHologram();
         return value;
@@ -117,22 +116,22 @@ public class SiloPlot implements Plot {
     public Consumer<PlayerHologramInteractEvent> getHologramAction() {
         return event -> {
             if (event.getHologram().equals(this.hologram)) {
-                new SiloPlotMainMenu(this).show(event.getPlayer());
+                // new SiloPlotMainMenu(this).show(event.getPlayer());
             }
         };
     }
 
     @Override
     public Component getDisplayName() {
-        return MiniMessage.miniMessage().deserialize("<b><color:#CCD609>Silo " + id + "</color></b>");
+        return MiniMessage.miniMessage().deserialize("<b><color:#ff2d26>Barn</color></b>");
     }
 
     @Override
     public List<Component> getLore() {
         return List.of(
-                MiniMessage.miniMessage().deserialize("<color:#FCDB03>Capacity: <red>%barn_plot_silo_capacity_" + this.id + "%</red></color>"),
-                MiniMessage.miniMessage().deserialize("<color:#D4F542>Filled: <red>%barn_plot_silo_filled_" + this.id + "%/%barn_plot_silo_capacity_" + this.id + "% (%barn_plot_silo_percentage_filled_" + this.id + "%%)</red></color>"),
-                MiniMessage.miniMessage().deserialize("<color:#2B84FF>Auto Sell: %barn_plot_silo_colored_status_autosell_" + this.id + "%</color>")
+                MiniMessage.miniMessage().deserialize("<color:#FCDB03>Capacity: <red>%barn_plot_barn_capacity_" + this.id + "%</red></color>"),
+                MiniMessage.miniMessage().deserialize("<color:#D4F542>Filled: <red>%barn_plot_barn_filled_" + this.id + "%/%barn_plot_barn_capacity_" + this.id + "% (%barn_plot_barn_percentage_filled_" + this.id + "%%)</red></color>"),
+                MiniMessage.miniMessage().deserialize("<color:#2B84FF>Auto Sell: %barn_plot_barn_colored_status_autosell_" + this.id + "%</color>")
         );
     }
 }

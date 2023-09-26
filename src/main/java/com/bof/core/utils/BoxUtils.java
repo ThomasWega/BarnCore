@@ -123,4 +123,24 @@ public class BoxUtils {
                 .filter(block -> block.getType().name().contains(matContainsString))
                 .collect(Collectors.toSet());
     }
+
+    /**
+     * Get a random location inside the given BoundingBox.
+     *
+     * @param box The BoundingBox to generate a random location inside.
+     * @return A random Location within the specified BoundingBox.
+     */
+    public static Location getRandomLocation(@NotNull BoundingBox box) {
+        World world = Bukkit.getWorld("world");
+        assert world != null;
+
+        Vector min = box.getMin();
+        Vector max = box.getMax();
+
+        double randomX = min.getX() + Math.random() * (max.getX() - min.getX());
+        double randomY = min.getY() + Math.random() * (max.getY() - min.getY());
+        double randomZ = min.getZ() + Math.random() * (max.getZ() - min.getZ());
+
+        return new Location(world, randomX, randomY, randomZ);
+    }
 }

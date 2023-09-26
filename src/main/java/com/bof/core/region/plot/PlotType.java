@@ -12,7 +12,8 @@ import java.util.Optional;
 public enum PlotType {
     FARM("farm"),
     ANIMAL("animal"),
-    SILO("silo");
+    SILO("silo"),
+    BARN("barn");
 
     private final String identifier;
 

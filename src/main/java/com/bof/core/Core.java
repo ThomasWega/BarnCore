@@ -1,6 +1,7 @@
 package com.bof.core;
 
 import com.bof.barn.world_generator.event.GridLoadedEvent;
+import com.bof.core.region.plot.animal.handler.PlayerKillAnimalHandler;
 import com.bof.core.region.plot.farm.handler.CropsTrampingHandler;
 import com.bof.core.region.plot.farm.handler.PlayerFarmPlotHandler;
 import com.bof.core.region.handler.PlayerRegionAssignHandler;
@@ -61,6 +62,7 @@ public final class Core extends JavaPlugin implements Listener {
         p.registerEvents(regionManager, this);
         p.registerEvents(new PlayerFarmPlotHandler(), this);
         p.registerEvents(new CropsTrampingHandler(), this);
+        p.registerEvents(new PlayerKillAnimalHandler(), this);
     }
 
     private void loadFiles() {
