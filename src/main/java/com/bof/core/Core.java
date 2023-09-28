@@ -44,7 +44,6 @@ public final class Core extends JavaPlugin implements Listener {
         this.registerPAPIPlaceholders();
     }
 
-    // TODO fix killer null on animal type change
     // TODO add main menu
     // TODO add comments to everywhere!
 
