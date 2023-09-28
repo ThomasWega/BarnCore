@@ -1,8 +1,8 @@
 package com.bof.core.region.plot.harvestable.animal;
 
 import com.bof.core.region.BarnRegion;
-import com.bof.core.region.plot.harvestable.HarvestablePlot;
 import com.bof.core.region.plot.PlotType;
+import com.bof.core.region.plot.harvestable.HarvestablePlot;
 import com.bof.core.region.plot.harvestable.animal.menu.AnimalPlotMainMenu;
 import com.bof.core.region.plot.selling.barn.BarnPlot;
 import com.bof.core.utils.BoxUtils;
@@ -46,7 +46,7 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
         this.id = id;
     }
 
-    public void setCurrentlyHarvesting(@NotNull AnimalType type) {
+    private void setCurrentlyHarvesting(@NotNull AnimalType type) {
         this.currentlyHarvesting = type;
         this.updateHologram();
     }
@@ -57,7 +57,7 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
         this.animals.forEach(uuid -> {
             LivingEntity entity = ((LivingEntity) Bukkit.getWorld("world").getEntity(uuid));
             if (entity != null) {
-                entity.setHealth(0);
+                entity.remove();
             }
         });
         this.animals.clear();
@@ -65,11 +65,16 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
         // add new mobs
         if (type != AnimalType.NONE) {
             for (int i = 0; i < animalCount; i++) {
-                Location location = BoxUtils.getRandomLocation(this.getBox());
-                this.animals.add(Bukkit.getWorld("world").spawnEntity(location, type.getEntityType(), CreatureSpawnEvent.SpawnReason.CUSTOM).getUniqueId());
+                this.addAnimal(type);
             }
         }
+
         this.setCurrentlyHarvesting(type);
+    }
+
+    public void addAnimal(AnimalType type) {
+        Location location = BoxUtils.getRandomLocation(this.getBox());
+        this.animals.add(Bukkit.getWorld("world").spawnEntity(location, type.getEntityType(), CreatureSpawnEvent.SpawnReason.CUSTOM).getUniqueId());
     }
 
     private Set<LivingEntity> getEntities() {
@@ -93,7 +98,8 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
             return count;
         }
 
-        for (LivingEntity entity : entities) {
+        LivingEntity[] entitiesCopy = entities.clone();
+        for (LivingEntity entity : entitiesCopy) {
             Optional<AnimalType> optAnimalType = AnimalType.getByEntityType(entity.getType())
                     .filter(type -> type != AnimalType.NONE);
 

@@ -48,8 +48,8 @@ public class FarmPlot implements HarvestablePlot<CropType> {
         this.updateHologram();
     }
 
-    public void changeCrops(CropType type) {
-        boxBlocks.forEach(block -> {
+    public void changeCrops(@NotNull CropType type) {
+        this.boxBlocks.forEach(block -> {
             if (block.getRelative(BlockFace.DOWN).getType() == Material.FARMLAND) {
                 block.setType(type.getMaterial());
                 if (block.getBlockData() instanceof Ageable ageable) {
