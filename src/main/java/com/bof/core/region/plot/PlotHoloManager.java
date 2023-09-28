@@ -4,7 +4,7 @@ import com.bof.core.Core;
 import com.bof.core.item.SkullBuilder;
 import com.bof.core.placeholders.holo.HoloPlaceholders;
 import com.bof.core.region.plot.event.PlotCreatedEvent;
-import com.bof.core.region.plot.farm.FarmPlot;
+import com.bof.core.region.plot.harvestable.farm.FarmPlot;
 import com.bof.core.skin.Skin;
 import com.bof.core.utils.PlotUtils;
 import com.bof.toolkit.utils.ComponentUtils;

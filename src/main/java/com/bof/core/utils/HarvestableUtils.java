@@ -1,7 +1,7 @@
 package com.bof.core.utils;
 
-import com.bof.core.region.plot.animal.AnimalType;
-import com.bof.core.region.plot.farm.CropType;
+import com.bof.core.region.plot.harvestable.animal.AnimalType;
+import com.bof.core.region.plot.harvestable.farm.CropType;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 

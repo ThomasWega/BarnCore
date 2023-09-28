@@ -1,11 +1,11 @@
 package com.bof.core.region;
 
 
-import com.bof.core.region.plot.HarvestablePlot;
+import com.bof.core.region.plot.harvestable.HarvestablePlot;
 import com.bof.core.region.plot.Plot;
 import com.bof.core.region.plot.PlotType;
-import com.bof.core.region.plot.barn.BarnPlot;
-import com.bof.core.region.plot.silo.SiloPlot;
+import com.bof.core.region.plot.selling.barn.BarnPlot;
+import com.bof.core.region.plot.selling.silo.SiloPlot;
 import com.bof.core.utils.HarvestableUtils;
 import com.github.unldenis.hologram.HologramPool;
 import com.github.unldenis.hologram.InteractiveHologramPool;
@@ -151,6 +151,11 @@ public class BarnRegion {
                 .map(plot -> ((BarnPlot) plot))
                 .mapToInt(BarnPlot::getCapacity)
                 .sum();
+    }
+
+    public Set<Plot> getLockedPlots(@NotNull PlotType type) {
+        // TODO get actual locked plots when locked plots mechanism exists
+        return this.plots.get(type);
     }
 
     public boolean hasFreeAutoStoreSlots() {

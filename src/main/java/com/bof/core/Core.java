@@ -1,9 +1,9 @@
 package com.bof.core;
 
 import com.bof.barn.world_generator.event.GridLoadedEvent;
-import com.bof.core.region.plot.animal.handler.PlayerKillAnimalHandler;
-import com.bof.core.region.plot.farm.handler.CropsTrampingHandler;
-import com.bof.core.region.plot.farm.handler.PlayerFarmPlotHandler;
+import com.bof.core.region.plot.harvestable.animal.handler.PlayerKillAnimalHandler;
+import com.bof.core.region.plot.harvestable.farm.handler.CropsTrampingHandler;
+import com.bof.core.region.plot.harvestable.farm.handler.PlayerFarmPlotHandler;
 import com.bof.core.region.handler.PlayerRegionAssignHandler;
 import com.bof.core.placeholders.papi.PAPIHook;
 import com.bof.core.region.plot.PlotHoloManager;
@@ -44,9 +44,8 @@ public final class Core extends JavaPlugin implements Listener {
         this.registerPAPIPlaceholders();
     }
 
-    // TODO add the multiple auto store menu for animals as well
+    // TODO add main menu
     // TODO add comments to everywhere!
-    // TODO take the plot amount from the plots map, remove it from the config
 
     @Override
     public void onDisable() {

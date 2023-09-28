@@ -2,11 +2,11 @@ package com.bof.core.placeholders.papi;
 
 import com.bof.core.player.GamePlayer;
 import com.bof.core.region.BarnRegion;
-import com.bof.core.region.plot.HarvestablePlot;
+import com.bof.core.region.plot.harvestable.HarvestablePlot;
 import com.bof.core.region.plot.Plot;
 import com.bof.core.region.plot.PlotType;
-import com.bof.core.region.plot.barn.BarnPlot;
-import com.bof.core.region.plot.silo.SiloPlot;
+import com.bof.core.region.plot.selling.barn.BarnPlot;
+import com.bof.core.region.plot.selling.silo.SiloPlot;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;

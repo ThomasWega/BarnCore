@@ -1,10 +1,10 @@
 package com.bof.core.region.plot;
 
 import com.bof.core.region.BarnRegion;
-import com.bof.core.region.plot.animal.AnimalPlot;
-import com.bof.core.region.plot.barn.BarnPlot;
-import com.bof.core.region.plot.farm.FarmPlot;
-import com.bof.core.region.plot.silo.SiloPlot;
+import com.bof.core.region.plot.harvestable.animal.AnimalPlot;
+import com.bof.core.region.plot.selling.barn.BarnPlot;
+import com.bof.core.region.plot.harvestable.farm.FarmPlot;
+import com.bof.core.region.plot.selling.silo.SiloPlot;
 import com.github.unldenis.hologram.Hologram;
 import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
 import net.kyori.adventure.text.Component;
