@@ -25,9 +25,9 @@ public class BarnRegion {
     private final BoundingBox box;
     private final Set<UUID> members = new HashSet<>();
     private final List<ItemStack> cropsInventory = new ArrayList<>();
-    private final int cropsInventorySize = 100;
+    private final int cropsInventoryCapacity = 100;
     private final List<ItemStack> animalInventory = new ArrayList<>();
-    private final int animalInventorySize = 100;
+    private final int animalInventoryCapacity = 100;
     private final int autoStoreSlots = 2;
     private boolean isAssigned = false;
     private Player owner;
@@ -46,11 +46,11 @@ public class BarnRegion {
     }
 
     public boolean isCropsInvFull() {
-        return this.cropsInventory.size() >= this.cropsInventorySize;
+        return this.cropsInventory.size() >= this.cropsInventoryCapacity;
     }
 
     public boolean isAnimalInvFull() {
-        return this.animalInventory.size() >= this.animalInventorySize;
+        return this.animalInventory.size() >= this.animalInventoryCapacity;
     }
 
     public @NotNull List<ItemStack> addCropsToInventory(@NotNull ItemStack... itemStack) {
@@ -103,14 +103,14 @@ public class BarnRegion {
         return unAdded;
     }
 
-    public float removeAnimalsFromInventory(@NotNull ItemStack... crops) {
-        return this.removeAnimalsFromInventory(Arrays.asList(crops));
+    public float removeAnimalsFromInventory(@NotNull ItemStack... animals) {
+        return this.removeAnimalsFromInventory(Arrays.asList(animals));
     }
 
-    public float removeAnimalsFromInventory(@NotNull Collection<ItemStack> crops) {
+    public float removeAnimalsFromInventory(@NotNull Collection<ItemStack> animals) {
         // Create a copy of the collection to avoid ConcurrentModificationException
-        // (the animals can be referenced from cropStored)
-        List<ItemStack> animalsToRemove = new ArrayList<>(crops);
+        // (the animals can be referenced from animalsStored)
+        List<ItemStack> animalsToRemove = new ArrayList<>(animals);
         // can't use removeAll, because that will remove all animals of the same type
         animalsToRemove.forEach(this.animalInventory::remove);
 
@@ -118,11 +118,25 @@ public class BarnRegion {
     }
 
     public int getAutoStorePlotsCount() {
-        return (int) plots.values().stream()
+        return (int) this.plots.values().stream()
                 .flatMap(Set::stream)
                 .filter(plot -> plot instanceof HarvestablePlot)
                 .filter(plot -> ((HarvestablePlot<?>) plot).isAutoStore())
                 .count();
+    }
+
+    public int getAllSilosFilledAmount() {
+        return this.plots.get(PlotType.SILO).stream()
+                .map(plot -> ((SiloPlot) plot))
+                .mapToInt(SiloPlot::getFilledAmount)
+                .sum();
+    }
+
+    public int getAllSilosCapacityAmount() {
+        return this.plots.get(PlotType.SILO).stream()
+                .map(plot -> ((SiloPlot) plot))
+                .mapToInt(SiloPlot::getCapacity)
+                .sum();
     }
 
     public boolean hasFreeAutoStoreSlots() {

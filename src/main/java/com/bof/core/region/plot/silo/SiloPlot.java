@@ -1,10 +1,11 @@
 package com.bof.core.region.plot.silo;
 
 import com.bof.core.region.BarnRegion;
-import com.bof.core.region.plot.Plot;
 import com.bof.core.region.plot.PlotType;
+import com.bof.core.region.plot.SellingPlot;
 import com.bof.core.region.plot.silo.menu.SiloPlotMainMenu;
 import com.bof.core.utils.BoxUtils;
+import com.bof.core.utils.HarvestableUtils;
 import com.github.unldenis.hologram.Hologram;
 import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
 import com.github.unldenis.hologram.line.BlockLine;
@@ -21,7 +22,7 @@ import java.util.*;
 import java.util.function.Consumer;
 
 @Data
-public class SiloPlot implements Plot {
+public class SiloPlot implements SellingPlot {
     private final BarnRegion owningRegion;
     private final PlotType type = PlotType.SILO;
     private final BoundingBox box;
@@ -100,10 +101,16 @@ public class SiloPlot implements Plot {
 
 
     public float sellCrops(@NotNull Collection<ItemStack> crops) {
-        float value = this.getOwningRegion().removeCropsFromInventory(crops);
+        float value = HarvestableUtils.getValueOfCrops(crops);
+        this.removeCropsFromSilo(crops);
         this.getOwningRegion().addFarmCoins(value);
         this.updateHologram();
         return value;
+    }
+
+    private void removeCropsFromSilo(Collection<ItemStack> crops) {
+        List<ItemStack> cropsToRemove = new ArrayList<>(crops);
+        cropsToRemove.forEach(this.cropsStored::remove);
     }
 
 

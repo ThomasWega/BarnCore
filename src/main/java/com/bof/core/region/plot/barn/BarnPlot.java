@@ -1,9 +1,11 @@
 package com.bof.core.region.plot.barn;
 
 import com.bof.core.region.BarnRegion;
-import com.bof.core.region.plot.Plot;
 import com.bof.core.region.plot.PlotType;
+import com.bof.core.region.plot.SellingPlot;
+import com.bof.core.region.plot.barn.menu.BarnPlotMainMenu;
 import com.bof.core.utils.BoxUtils;
+import com.bof.core.utils.HarvestableUtils;
 import com.github.unldenis.hologram.Hologram;
 import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
 import com.github.unldenis.hologram.line.BlockLine;
@@ -20,7 +22,7 @@ import java.util.*;
 import java.util.function.Consumer;
 
 @Data
-public class BarnPlot implements Plot {
+public class BarnPlot implements SellingPlot {
     private final BarnRegion owningRegion;
     private final PlotType type = PlotType.SILO;
     private final BoundingBox box;
@@ -99,10 +101,16 @@ public class BarnPlot implements Plot {
 
 
     public float sellAnimals(@NotNull Collection<ItemStack> animals) {
-        float value = this.getOwningRegion().removeAnimalsFromInventory(animals);
+        float value = HarvestableUtils.getValueOfAnimals(animals);
+        this.removeAnimalsFromBarn(animals);
         this.getOwningRegion().addFarmCoins(value);
         this.updateHologram();
         return value;
+    }
+
+    private void removeAnimalsFromBarn(Collection<ItemStack> animals) {
+        List<ItemStack> cropsToRemove = new ArrayList<>(animals);
+        cropsToRemove.forEach(this.animalsStored::remove);
     }
 
 
@@ -116,7 +124,7 @@ public class BarnPlot implements Plot {
     public Consumer<PlayerHologramInteractEvent> getHologramAction() {
         return event -> {
             if (event.getHologram().equals(this.hologram)) {
-                // new SiloPlotMainMenu(this).show(event.getPlayer());
+                 new BarnPlotMainMenu(this).show(event.getPlayer());
             }
         };
     }

@@ -1,10 +1,10 @@
-package com.bof.core.region.plot.silo.menu;
+package com.bof.core.region.plot.barn.menu;
 
 import com.bof.core.item.ItemBuilder;
 import com.bof.core.item.SkullBuilder;
 import com.bof.core.menu.premade.back.GoBackPane;
 import com.bof.core.region.BarnRegion;
-import com.bof.core.region.plot.silo.SiloPlot;
+import com.bof.core.region.plot.barn.BarnPlot;
 import com.bof.core.skin.Skin;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
@@ -23,12 +23,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class SiloPlotMainMenu extends ChestGui {
-    private final SiloPlot plot;
+public class BarnPlotMainMenu extends ChestGui {
+    private final BarnPlot plot;
     private final StaticPane mainPane = new StaticPane(1, 1, 7, 1);
 
-    public SiloPlotMainMenu(@NotNull SiloPlot plot) {
-        super(3, ComponentHolder.of(Component.text("Silo " + plot.getId())));
+    public BarnPlotMainMenu(@NotNull BarnPlot plot) {
+        super(3, ComponentHolder.of(Component.text("Barn")));
         this.plot = plot;
         this.initialize();
     }
@@ -43,14 +43,14 @@ public class SiloPlotMainMenu extends ChestGui {
     }
 
     private void addSections() {
-        this.mainPane.addItem(getSellCropsItem(), 0, 0);
-        this.mainPane.addItem(getOpenSiloItem(), 2, 0);
-        this.mainPane.addItem(getPutCropsItem(), 4, 0);
+        this.mainPane.addItem(getSellAnimalsItem(), 0, 0);
+        this.mainPane.addItem(getSeeAnimalsItem(), 2, 0);
+        this.mainPane.addItem(getPutAnimalsItem(), 4, 0);
         this.mainPane.addItem(getAutoSellItem(), 6, 0);
     }
 
-    private GuiItem getSellCropsItem() {
-        Component name = MiniMessage.miniMessage().deserialize("<b><color:#4AFF98>Sell Crops</color></b>");
+    private GuiItem getSellAnimalsItem() {
+        Component name = MiniMessage.miniMessage().deserialize("<b><color:#4AFF98>Sell Animals</color></b>");
         return new GuiItem(
                 new SkullBuilder()
                         .displayName(name)
@@ -66,25 +66,25 @@ public class SiloPlotMainMenu extends ChestGui {
     private Consumer<InventoryClickEvent> handleSellAll() {
         return event -> {
             Player player = ((Player) event.getWhoClicked());
-            float value = this.plot.sellCrops(this.plot.getCropsStored());
+            float value = this.plot.sellAnimals(this.plot.getAnimalsStored());
             if (value == 0) {
-                player.sendMessage("TO ADD - No crops are in this silo");
+                player.sendMessage("TO ADD - No animals are in this silo");
                 return;
             }
-            player.sendMessage("TO ADD - Sold all crops for " + value);
+            player.sendMessage("TO ADD - Sold all animals for " + value);
             player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
         };
     }
 
-    private GuiItem getOpenSiloItem() {
-        Component name = MiniMessage.miniMessage().deserialize("<b><color:#ffa83d>Open Silo</color></b>");
+    private GuiItem getSeeAnimalsItem() {
+        Component name = MiniMessage.miniMessage().deserialize("<b><color:#ffa83d>See Animals</color></b>");
         return new GuiItem(new ItemBuilder(Material.BARREL)
                 .displayName(name)
                 .lore(List.of(
                         Component.empty(),
-                        Component.text("Click to open silo", NamedTextColor.DARK_GRAY)
+                        Component.text("Click to see animals in barn", NamedTextColor.DARK_GRAY)
                 ))
-                .build(), event -> new SiloContainerMenu(this.plot).show(event.getWhoClicked())
+                .build(), event -> new BarnContainerMenu(this.plot).show(event.getWhoClicked())
         );
     }
 
@@ -112,27 +112,27 @@ public class SiloPlotMainMenu extends ChestGui {
         );
     }
 
-    private GuiItem getPutCropsItem() {
-        Component name = MiniMessage.miniMessage().deserialize("<b><color:#FF5A36>Put Crops</color></b>");
+    private GuiItem getPutAnimalsItem() {
+        Component name = MiniMessage.miniMessage().deserialize("<b><color:#FF5A36>Put Animals</color></b>");
         return new GuiItem(new ItemBuilder(Material.HOPPER)
                 .displayName(name)
                 .lore(List.of(
                         Component.empty(),
-                        Component.text("Click to put crops into the silo", NamedTextColor.DARK_GRAY)
+                        Component.text("Click to put animals into the barn", NamedTextColor.DARK_GRAY)
                 ))
-                .build(), handlePutCropsToSilo()
+                .build(), handlePutAnimalsToSilo()
         );
     }
 
-    private Consumer<InventoryClickEvent> handlePutCropsToSilo() {
+    private Consumer<InventoryClickEvent> handlePutAnimalsToSilo() {
         return event -> {
             Player player = ((Player) event.getWhoClicked());
             BarnRegion region = this.plot.getOwningRegion();
-            this.plot.addCropsToSilo(region.getCropsInventory());
-            float value = region.removeCropsFromInventory(region.getCropsInventory());
+            this.plot.addAnimalsToBarn(region.getAnimalInventory());
+            float value = region.removeAnimalsFromInventory(region.getAnimalInventory());
 
             if (value != 0) {
-                player.sendMessage("TO ADD - Put crops of value " + value + " FarmCoins into the silo");
+                player.sendMessage("TO ADD - Put animals of value " + value + " FarmCoins into the barn");
             }
             player.closeInventory();
         };
