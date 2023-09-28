@@ -137,6 +137,13 @@ public class PAPIHook extends PlaceholderExpansion {
                 return String.valueOf(((SiloPlot) optPlot.get()).isAutoSell());
         }
 
+        if (params.startsWith("plot_silo_colored_status_autosell_")) {
+            int plotId = Integer.parseInt(params.substring(34));
+            Optional<Plot> optPlot = region.getPlot(PlotType.SILO, plotId);
+            if (optPlot.isPresent())
+                return ((SiloPlot) optPlot.get()).isAutoSell() ? "§aON" : "§cOFF";
+        }
+
         if (params.startsWith("plot_barn_autosell_")) {
             int plotId = Integer.parseInt(params.substring(19));
             Optional<Plot> optPlot = region.getPlot(PlotType.BARN, plotId);
