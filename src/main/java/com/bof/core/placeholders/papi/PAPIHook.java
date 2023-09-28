@@ -58,6 +58,10 @@ public class PAPIHook extends PlaceholderExpansion {
                 return String.valueOf(region.getAllSilosFilledAmount());
             case "silos_capacity":
                 return String.valueOf(region.getAllSilosCapacityAmount());
+            case "barns_filled":
+                return String.valueOf(region.getAllBarnsFilledAmount());
+            case "barns_capacity":
+                return String.valueOf(region.getAllBarnsCapacityAmount());
             case "farmcoins":
                 return String.valueOf(region.getFarmCoins());
         }

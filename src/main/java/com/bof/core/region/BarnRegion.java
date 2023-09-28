@@ -139,6 +139,20 @@ public class BarnRegion {
                 .sum();
     }
 
+    public int getAllBarnsFilledAmount() {
+        return this.plots.get(PlotType.BARN).stream()
+                .map(plot -> ((BarnPlot) plot))
+                .mapToInt(BarnPlot::getFilledAmount)
+                .sum();
+    }
+
+    public int getAllBarnsCapacityAmount() {
+        return this.plots.get(PlotType.BARN).stream()
+                .map(plot -> ((BarnPlot) plot))
+                .mapToInt(BarnPlot::getCapacity)
+                .sum();
+    }
+
     public boolean hasFreeAutoStoreSlots() {
         return this.getAutoStorePlotsCount() < this.autoStoreSlots;
     }
