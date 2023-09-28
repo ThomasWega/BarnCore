@@ -49,6 +49,7 @@ public class RegionManager implements Listener {
                 .peek(barnRegion -> {
                     barnRegion.setOwner(null);
                     barnRegion.setAssigned(false);
+
                 })
                 .findAny()
                 .isPresent();

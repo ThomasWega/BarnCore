@@ -44,6 +44,11 @@ public final class Core extends JavaPlugin implements Listener {
         this.registerPAPIPlaceholders();
     }
 
+    // TODO add the multiple auto store menu for animals as well
+    // TODO add comments to everywhere!
+    // TODO take the plot amount from the plots map, remove it from the config
+    // TODO add barns total placeholders
+
     @Override
     public void onDisable() {
     }

@@ -24,7 +24,7 @@ import java.util.function.Consumer;
 @Data
 public class BarnPlot implements SellingPlot {
     private final BarnRegion owningRegion;
-    private final PlotType type = PlotType.SILO;
+    private final PlotType type = PlotType.BARN;
     private final BoundingBox box;
     private final int id;
     private final Set<Block> boxBlocks;

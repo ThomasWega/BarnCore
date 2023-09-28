@@ -1,8 +1,6 @@
 package com.bof.core.region.plot.animal;
 
-import com.bof.core.item.SkullBuilder;
 import com.bof.core.region.plot.HarvestableType;
-import com.bof.core.skin.Skin;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
@@ -22,21 +20,13 @@ import java.util.stream.Collectors;
 @Getter
 public enum AnimalType implements HarvestableType {
     NONE(EntityType.UNKNOWN, new ItemStack(Material.BARRIER), Component.text("None", NamedTextColor.RED), 0f),
-    COW(EntityType.COW, new SkullBuilder()
-            .skin(new Skin("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzVhOWNkNThkNGM2N2JjY2M4ZmIxZjVmNzU2YTJkMzgxYzlmZmFjMjkyNGI3ZjRjYjcxYWE5ZmExM2ZiNWMifX19", null))
-            .build(),
+    COW(EntityType.COW, new ItemStack(Material.BEEF),
             Component.text("Cow", TextColor.fromHexString("#A36B21")), 1f),
-    PIG(EntityType.PIG, new SkullBuilder()
-            .skin(new Skin("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmVlODUxNDg5MmYzZDc4YTMyZTg0NTZmY2JiOGM2MDgxZTIxYjI0NmQ4MmYzOThiZDk2OWZlYzE5ZDNjMjdiMyJ9fX0=", null))
-            .build(),
+    PIG(EntityType.PIG, new ItemStack(Material.PORKCHOP),
             Component.text("Pig", TextColor.fromHexString("#FFC0CB")), 2f),
-    CHICKEN(EntityType.CHICKEN, new SkullBuilder()
-            .skin(new Skin("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2EzNTgyY2U0ODg5MzMzZGFkMzI5ZTRlMjQzNzJhMDNhNWRhYTJjMzQyODBjNTYyNTZhZjUyODNlZGIwNDNmOCJ9fX0=", null))
-            .build(),
+    CHICKEN(EntityType.CHICKEN, new ItemStack(Material.CHICKEN),
             Component.text("Chicken", TextColor.fromHexString("#D0D28C")), 3f),
-    SHEEP(EntityType.SHEEP, new SkullBuilder()
-            .skin(new Skin("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjMxZjljY2M2YjNlMzJlY2YxM2I4YTExYWMyOWNkMzNkMThjOTVmYzczZGI4YTY2YzVkNjU3Y2NiOGJlNzAifX19", null))
-            .build(),
+    SHEEP(EntityType.SHEEP, new ItemStack(Material.MUTTON),
             Component.text("Sheep", TextColor.fromHexString("#FFFFFF")), 4f);
 
     private final EntityType entityType;

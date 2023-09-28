@@ -2,5 +2,26 @@ plots:
   farm:
     # amount of these plots that the barn has in total
     amount: 10
+    # offset to align the hologram properly
+    holo-item-offset:
+      x: 0.5
+      y: 0.75
+      z: 0
   animal:
     amount: 10
+    holo-item-offset:
+      x: 0.5
+      y: 1
+      z: -0.25
+  silo:
+    amount: 1
+    holo-item-offset:
+      x: 0.75
+      y: 1.25
+      z: 0.5
+  barn:
+    amount: 1
+    holo-item-offset:
+      x: 0.5
+      y: 1.25
+      z: 0.25
