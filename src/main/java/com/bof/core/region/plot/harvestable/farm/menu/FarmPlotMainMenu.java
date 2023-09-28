@@ -37,7 +37,7 @@ public class FarmPlotMainMenu extends ChestGui {
         if (this.closeOnGoBack) {
             this.addPane(new GoBackPane(4, 3, null));
         } else {
-            this.addPane(new GoBackPane(4, 3, new CropsMainMenu(this.plot.getOwningRegion())));
+            this.addPane(new GoBackPane(4, 3, new FarmMainMenu(this.plot.getOwningRegion())));
         }
         this.addPane(mainPane);
 

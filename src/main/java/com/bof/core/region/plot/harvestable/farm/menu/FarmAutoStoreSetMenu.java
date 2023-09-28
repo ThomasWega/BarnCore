@@ -3,10 +3,10 @@ package com.bof.core.region.plot.harvestable.farm.menu;
 import com.bof.core.item.ItemBuilder;
 import com.bof.core.item.SkullBuilder;
 import com.bof.core.menu.premade.back.GoBackPane;
-import com.bof.core.region.BarnRegion;
 import com.bof.core.region.plot.Plot;
 import com.bof.core.region.plot.PlotType;
 import com.bof.core.region.plot.harvestable.farm.FarmPlot;
+import com.bof.core.region.BarnRegion;
 import com.bof.core.skin.Skin;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
@@ -17,6 +17,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -24,14 +25,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
-public class CropsMainMenu extends ChestGui {
+public class FarmAutoStoreSetMenu extends ChestGui {
     private final BarnRegion region;
     private final OutlinePane mainPane = new OutlinePane(1, 1, 7, 2);
     private final OutlinePane lockedPane = mainPane.copy();
+    @Nullable
+    private final FarmPlot previousSelectedPlot;
 
-    public CropsMainMenu(@NotNull BarnRegion region) {
-        super(4, ComponentHolder.of(Component.text("Crop Plots Menu")));
+    public FarmAutoStoreSetMenu(@NotNull BarnRegion region, @Nullable FarmPlot previousSelectedPlot) {
+        super(4, ComponentHolder.of(Component.text("Select plot to Auto Store")));
         this.region = region;
+        this.previousSelectedPlot = previousSelectedPlot;
         this.initialize();
     }
 
@@ -42,7 +46,7 @@ public class CropsMainMenu extends ChestGui {
         this.addLockedPlots();
         this.addActivePlots();
 
-        this.addPane(new GoBackPane(4, 3, null));
+        this.addPane(new GoBackPane(4, 3, new FarmAutoStoreMenu(this.region)));
         this.addPane(mainPane);
         this.addPane(lockedPane);
 
@@ -67,17 +71,25 @@ public class CropsMainMenu extends ChestGui {
                         // sort by id, so first plot is always 1, second is 2, etc.
                         .sorted(Comparator.comparingInt(Plot::getId))
                         .map(plot -> ((FarmPlot) plot))
+                        .filter(farmPlot -> !farmPlot.isAutoStore())
                         .forEach(plot -> {
                             List<Component> lore = new ArrayList<>(plot.getLore());
                             lore.addAll(List.of(
                                     Component.empty(),
-                                    Component.text("Click to modify this plot", NamedTextColor.DARK_GRAY)
+                                    Component.text("Click to select this plot plot", NamedTextColor.DARK_GRAY)
                             ));
                             this.mainPane.addItem(new GuiItem(
                                     new ItemBuilder(plot.getCurrentlyHarvesting().getItemMaterial())
                                             .displayName(plot.getDisplayName())
                                             .lore(lore)
-                                            .build(), event -> new FarmPlotMainMenu(plot, false).show(event.getWhoClicked())
+                                            .build(),
+                                    event -> {
+                                        if (previousSelectedPlot != null) {
+                                            previousSelectedPlot.setAutoStore(false);
+                                        }
+                                        plot.setAutoStore(true);
+                                        new FarmAutoStoreMenu(region).show(event.getWhoClicked());
+                                    }
                             ));
                         }));
     }

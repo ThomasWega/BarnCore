@@ -4,6 +4,7 @@ import com.bof.core.Core;
 import com.bof.core.player.GamePlayer;
 import com.bof.core.region.BarnRegion;
 import com.bof.core.region.RegionManager;
+import com.bof.core.region.menu.RegionMainMenu;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -48,5 +49,7 @@ public class PlayerRegionAssignHandler implements Listener {
     private void test(PlayerChatEvent event) {
         Player player = event.getPlayer();
         BarnRegion region = regionManager.getRegionOf(player).get();
+
+        new RegionMainMenu(region).show(player);
     }
 }

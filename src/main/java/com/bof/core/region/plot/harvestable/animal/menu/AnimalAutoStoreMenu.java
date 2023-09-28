@@ -1,4 +1,4 @@
-package com.bof.core.region.plot.harvestable.farm.menu;
+package com.bof.core.region.plot.harvestable.animal.menu;
 
 import com.bof.core.item.ItemBuilder;
 import com.bof.core.item.SkullBuilder;
@@ -6,7 +6,7 @@ import com.bof.core.menu.premade.back.GoBackPane;
 import com.bof.core.region.BarnRegion;
 import com.bof.core.region.plot.Plot;
 import com.bof.core.region.plot.PlotType;
-import com.bof.core.region.plot.harvestable.farm.FarmPlot;
+import com.bof.core.region.plot.harvestable.animal.AnimalPlot;
 import com.bof.core.skin.Skin;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
@@ -27,14 +27,14 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
-public class CropsAutoStoreMenu extends ChestGui {
+public class AnimalAutoStoreMenu extends ChestGui {
     private final BarnRegion region;
     private final OutlinePane selectedPane = new OutlinePane(1, 1, 7, 2);
     private final OutlinePane unlockedSlotsPane = selectedPane.copy();
     private final OutlinePane lockedSlotsPane = unlockedSlotsPane.copy();
     private final int unlockedSlots;
 
-    public CropsAutoStoreMenu(@NotNull BarnRegion region) {
+    public AnimalAutoStoreMenu(@NotNull BarnRegion region) {
         super(4, ComponentHolder.of(Component.text("Auto Store Menu")));
         this.region = region;
         this.unlockedSlots = region.getAutoStoreSlots();
@@ -60,13 +60,13 @@ public class CropsAutoStoreMenu extends ChestGui {
 
     private void addSelectedPlots() {
         region.getPlots().entrySet().stream()
-                .filter(entry -> entry.getKey() == PlotType.FARM)
+                .filter(entry -> entry.getKey() == PlotType.ANIMAL)
                 .map(Map.Entry::getValue)
                 .forEach(plots -> plots.stream()
                         // sort by id, so first plot is always 1, second is 2, etc.
                         .sorted(Comparator.comparingInt(Plot::getId))
-                        .map(plot -> ((FarmPlot) plot))
-                        .filter(FarmPlot::isAutoStore)
+                        .map(plot -> ((AnimalPlot) plot))
+                        .filter(AnimalPlot::isAutoStore)
                         .forEach(plot -> {
                                     List<Component> lore = new ArrayList<>(plot.getLore());
                                     lore.addAll(List.of(
@@ -75,7 +75,7 @@ public class CropsAutoStoreMenu extends ChestGui {
                                             Component.text("Shift-click to change plot", NamedTextColor.DARK_GRAY)
                                     ));
                                     this.selectedPane.addItem(new GuiItem(
-                                            new ItemBuilder(plot.getCurrentlyHarvesting().getItemMaterial())
+                                            new ItemBuilder(plot.getCurrentlyHarvesting().getItem())
                                                     .displayName(plot.getDisplayName())
                                                     .lore(lore)
                                                     .build(), handleSelectAction(plot)
@@ -90,7 +90,7 @@ public class CropsAutoStoreMenu extends ChestGui {
     }
 
     private void addLockedSlots() {
-        IntStream.rangeClosed(1, this.region.getLockedPlots(PlotType.FARM).size()).forEach(value ->
+        IntStream.rangeClosed(1, this.region.getLockedPlots(PlotType.ANIMAL).size()).forEach(value ->
                 this.lockedSlotsPane.addItem(this.getLockedSlotButton()));
     }
 
@@ -117,20 +117,20 @@ public class CropsAutoStoreMenu extends ChestGui {
     }
 
     private Consumer<InventoryClickEvent> handleSelectAction() {
-        return event -> new CropsAutoStoreSetMenu(region, null).show(event.getWhoClicked());
+        return event -> new AnimalAutoStoreSetMenu(region, null).show(event.getWhoClicked());
     }
 
-    private Consumer<InventoryClickEvent> handleSelectAction(FarmPlot plot) {
+    private Consumer<InventoryClickEvent> handleSelectAction(AnimalPlot plot) {
         return event -> {
             if (event.getClick() == ClickType.SHIFT_LEFT || event.getClick() == ClickType.SHIFT_RIGHT) {
                 plot.setAutoStore(false);
                 // this doesn't work for some reason
                 // this.update()
-                new CropsAutoStoreMenu(this.region).show(event.getWhoClicked());
+                new AnimalAutoStoreMenu(this.region).show(event.getWhoClicked());
                 return;
             }
             // if not click shift, open the select menu
-            new CropsAutoStoreSetMenu(region, plot).show(event.getWhoClicked());
+            new AnimalAutoStoreSetMenu(region, plot).show(event.getWhoClicked());
         };
     }
 }

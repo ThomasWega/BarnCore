@@ -4,6 +4,7 @@ import com.bof.core.item.ItemBuilder;
 import com.bof.core.item.SkullBuilder;
 import com.bof.core.menu.premade.back.GoBackPane;
 import com.bof.core.region.BarnRegion;
+import com.bof.core.region.menu.RegionMainMenu;
 import com.bof.core.region.plot.selling.silo.SiloPlot;
 import com.bof.core.skin.Skin;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
@@ -36,7 +37,7 @@ public class SiloPlotMainMenu extends ChestGui {
     private void initialize() {
         this.addSections();
 
-        this.addPane(new GoBackPane(4, 2, null));
+        this.addPane(new GoBackPane(4, 2, new RegionMainMenu(this.plot.getOwningRegion())));
         this.addPane(mainPane);
 
         this.setOnGlobalClick(event -> event.setCancelled(true));

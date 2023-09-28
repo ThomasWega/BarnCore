@@ -18,6 +18,8 @@ public class PlayerKillAnimalHandler implements Listener {
         LivingEntity entity = event.getEntity();
 
         Player player = entity.getKiller();
+        if (player == null) return;
+
         GamePlayer gamePlayer = GamePlayer.get(player);
 
         gamePlayer.getBarnRegion().ifPresent(region -> region.getPlots().get(PlotType.ANIMAL).stream()
