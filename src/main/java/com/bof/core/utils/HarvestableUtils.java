@@ -9,22 +9,28 @@ import java.util.Collection;
 
 public class HarvestableUtils {
 
-    private HarvestableUtils() {}
+    private HarvestableUtils() {
+    }
 
+
+    /**
+     * @param crops ItemStacks which are crops
+     * @return total value of all the crops
+     */
     public static float getValueOfCrops(@NotNull Collection<ItemStack> crops) {
-        // should never happen, as the only items which are sold should be valid items
-        //noinspection OptionalGetWithoutIsPresent
         return (float) crops.stream()
-                .map(itemStack -> CropType.getByMaterial(itemStack.getType()).get())
+                .map(itemStack -> CropType.getByMaterial(itemStack.getType()).orElse(CropType.NONE))
                 .mapToDouble(CropType::getValue)
                 .sum();
     }
 
+    /**
+     * @param crops ItemStacks which are animal items
+     * @return total value of all the animals
+     */
     public static float getValueOfAnimals(@NotNull Collection<ItemStack> crops) {
-        // should never happen, as the only items which are sold should be valid items
-        //noinspection OptionalGetWithoutIsPresent
         return (float) crops.stream()
-                .map(itemStack -> AnimalType.getByItem(itemStack).get())
+                .map(itemStack -> AnimalType.getByItem(itemStack).orElse(AnimalType.NONE))
                 .mapToDouble(AnimalType::getValue)
                 .sum();
     }

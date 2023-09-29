@@ -1,6 +1,6 @@
 package com.bof.core.item;
 
-import com.bof.core.skin.Skin;
+import com.bof.toolkit.skin.Skin;
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
 import net.kyori.adventure.text.Component;

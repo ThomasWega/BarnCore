@@ -78,7 +78,7 @@ public class FarmChangeCropsMenu extends ChestGui {
                             Player player = ((Player) event.getWhoClicked());
                             player.sendMessage("TO ADD - changed the crops type to " + cropName);
                             player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
-                            this.plot.changeCrops(cropsType);
+                            this.plot.changeType(cropsType);
                         }
                 ));
             }

@@ -13,7 +13,7 @@ import com.bof.core.region.plot.selling.barn.BarnPlot;
 import com.bof.core.region.plot.selling.barn.menu.BarnPlotMainMenu;
 import com.bof.core.region.plot.selling.silo.SiloPlot;
 import com.bof.core.region.plot.selling.silo.menu.SiloPlotMainMenu;
-import com.bof.core.skin.Skin;
+import com.bof.toolkit.skin.Skin;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;

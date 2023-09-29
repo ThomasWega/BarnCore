@@ -14,6 +14,10 @@ import java.util.stream.Collectors;
 public class RegionStorage {
     public Set<BarnRegion> regions = new HashSet<>();
 
+    /**
+     * Converts the {@link org.bukkit.util.BoundingBox} from schematics to {@link BarnRegion} instance
+     * and calls the {@link RegionCreatedEvent}
+     */
     public void convertToRegions() {
         this.regions = SchematicsStorage.getPastedRegions().stream()
                 .map(BarnRegion::new)

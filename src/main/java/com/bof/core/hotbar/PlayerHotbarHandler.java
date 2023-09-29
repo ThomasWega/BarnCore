@@ -8,6 +8,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Handles adding the hotbar items to the player
+ */
 public class PlayerHotbarHandler implements Listener {
     private final Core core;
 

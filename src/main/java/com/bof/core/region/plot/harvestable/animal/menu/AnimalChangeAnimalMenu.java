@@ -78,7 +78,7 @@ public class AnimalChangeAnimalMenu extends ChestGui {
                             Player player = ((Player) event.getWhoClicked());
                             player.sendMessage("TO ADD - changed the animal type to " + animalName);
                             player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
-                            this.plot.changeAnimals(animalType);
+                            this.plot.changeType(animalType);
                         }
                 ));
             }

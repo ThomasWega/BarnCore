@@ -10,6 +10,9 @@ import org.bukkit.event.Listener;
 
 import java.util.Optional;
 
+/**
+ * Handles setting the spawn location for {@link BarnRegion}
+ */
 public class SpawnManager implements Listener {
 
     @EventHandler

@@ -4,7 +4,7 @@ import com.bof.core.item.SkullBuilder;
 import com.bof.core.menu.premade.back.GoBackPane;
 import com.bof.core.region.BarnRegion;
 import com.bof.core.region.plot.harvestable.menu.HarvestableSettingsMainMenu;
-import com.bof.core.skin.Skin;
+import com.bof.toolkit.skin.Skin;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;

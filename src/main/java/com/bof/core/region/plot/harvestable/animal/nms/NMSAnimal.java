@@ -20,7 +20,8 @@ import java.util.UUID;
 
 public class NMSAnimal {
 
-    private NMSAnimal() {}
+    private NMSAnimal() {
+    }
 
     public static int spawnNew(@NotNull AnimalPlot plot, @NotNull AnimalType type) {
         PacketContainer packet = new PacketContainer(PacketType.Play.Server.SPAWN_ENTITY);
@@ -38,7 +39,7 @@ public class NMSAnimal {
                 .write(2, location.getZ());
 
         try {
-            for(Player player : Bukkit.getOnlinePlayers()) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
                 ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet);
             }
         } catch (InvocationTargetException e) {
@@ -52,7 +53,7 @@ public class NMSAnimal {
         PacketContainer packet = new PacketContainer(PacketType.Play.Server.ENTITY_DESTROY);
         packet.getModifier().write(0, new IntArrayList(entityIds));
         try {
-            for(Player player : Bukkit.getOnlinePlayers()) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
                 ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet);
             }
         } catch (InvocationTargetException e) {

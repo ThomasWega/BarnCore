@@ -9,7 +9,9 @@ import com.bof.core.region.plot.selling.silo.SiloPlot;
 import com.bof.core.utils.HarvestableUtils;
 import com.github.unldenis.hologram.HologramPool;
 import com.github.unldenis.hologram.InteractiveHologramPool;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -39,26 +41,46 @@ public class BarnRegion {
     private InteractiveHologramPool interactiveHologramPool;
     private float farmCoins = 0;
 
+    /**
+     * @param addValue Amount to be added to the total
+     */
     public void addFarmCoins(float addValue) {
         this.farmCoins += addValue;
     }
 
+    /**
+     * @param removeValue Amount to remove from the total
+     */
     public void removeFarmCoins(float removeValue) {
         this.farmCoins -= removeValue;
     }
 
+    /**
+     * @return Whether the items in {@link #getCropsInventory()} count exceeds or equals the {@link #getCropsInventoryCapacity()}
+     */
     public boolean isCropsInvFull() {
         return this.cropsInventory.size() >= this.cropsInventoryCapacity;
     }
 
+    /**
+     * @return Whether the items in {@link #getAnimalInventory()} count exceeds or equals the {@link #getAnimalInventoryCapacity()}
+     */
     public boolean isAnimalInvFull() {
         return this.animalInventory.size() >= this.animalInventoryCapacity;
     }
 
-    public @NotNull List<ItemStack> addCropsToInventory(@NotNull ItemStack... itemStack) {
-        return this.addCropsToInventory(Arrays.asList(itemStack));
+    /**
+     * @param crops Crop items to try to add
+     * @return List of items that couldn't be added to the inventory
+     */
+    public @NotNull List<ItemStack> addCropsToInventory(@NotNull ItemStack... crops) {
+        return this.addCropsToInventory(Arrays.asList(crops));
     }
 
+    /**
+     * @param itemStacks Crop items to try to add
+     * @return List of items that couldn't be added to the inventory
+     */
     public @NotNull List<ItemStack> addCropsToInventory(@NotNull Collection<ItemStack> itemStacks) {
         List<ItemStack> unAdded = new ArrayList<>();
         for (ItemStack itemStack : itemStacks) {
@@ -73,10 +95,22 @@ public class BarnRegion {
         return unAdded;
     }
 
+    /**
+     * Removes the given crops items from the regions inventory
+     *
+     * @param crops Crops to remove
+     * @return Value of the crops removed
+     */
     public float removeCropsFromInventory(@NotNull ItemStack... crops) {
         return this.removeCropsFromInventory(Arrays.asList(crops));
     }
 
+    /**
+     * Removes the given crops items from the regions inventory
+     *
+     * @param crops Crops to remove
+     * @return Value of the crops removed
+     */
     public float removeCropsFromInventory(@NotNull Collection<ItemStack> crops) {
         // Create a copy of the collection to avoid ConcurrentModificationException
         // (the crops can be referenced from cropStored)
@@ -87,10 +121,19 @@ public class BarnRegion {
         return HarvestableUtils.getValueOfCrops(cropsToRemove);
     }
 
-    public @NotNull List<ItemStack> addAnimalsToInventory(@NotNull ItemStack... itemStack) {
-        return this.addAnimalsToInventory(Arrays.asList(itemStack));
+    /**
+     * @param animals Animal items to try to add
+     * @return List of items that couldn't be added to the inventory
+     */
+    public @NotNull List<ItemStack> addAnimalsToInventory(@NotNull ItemStack... animals) {
+        return this.addAnimalsToInventory(Arrays.asList(animals));
     }
 
+
+    /**
+     * @param itemStacks Animal items to try to add
+     * @return List of items that couldn't be added to the inventory
+     */
     public @NotNull List<ItemStack> addAnimalsToInventory(@NotNull Collection<ItemStack> itemStacks) {
         List<ItemStack> unAdded = new ArrayList<>();
         for (ItemStack itemStack : itemStacks) {
@@ -105,10 +148,22 @@ public class BarnRegion {
         return unAdded;
     }
 
+    /**
+     * Removes the given animal items from the regions inventory
+     *
+     * @param animals Animals to remove
+     * @return Value of the animals removed
+     */
     public float removeAnimalsFromInventory(@NotNull ItemStack... animals) {
         return this.removeAnimalsFromInventory(Arrays.asList(animals));
     }
 
+    /**
+     * Removes the given animal items from the regions inventory
+     *
+     * @param animals Animals to remove
+     * @return Value of the animals removed
+     */
     public float removeAnimalsFromInventory(@NotNull Collection<ItemStack> animals) {
         // Create a copy of the collection to avoid ConcurrentModificationException
         // (the animals can be referenced from animalsStored)
@@ -119,10 +174,18 @@ public class BarnRegion {
         return HarvestableUtils.getValueOfAnimals(animalsToRemove);
     }
 
+    /**
+     * @return The amount of plots that have {@link HarvestablePlot#isAutoStore()} set to true
+     * @see #getAutoStorePlots()
+     */
     public int getAutoStorePlotsCount() {
         return this.getAutoStorePlots().size();
     }
 
+    /**
+     * @return Plots which have {@link HarvestablePlot#isAutoStore()} set to true
+     * @see #getNonAutoStorePlots()
+     */
     public Set<HarvestablePlot<?>> getAutoStorePlots() {
         return this.plots.values().stream()
                 .flatMap(Set::stream)
@@ -132,6 +195,10 @@ public class BarnRegion {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * @return Plots which have {@link HarvestablePlot#isAutoStore()} set to false
+     * @see #getAutoStorePlots()
+     */
     public Set<HarvestablePlot<?>> getNonAutoStorePlots() {
         return this.plots.values().stream()
                 .flatMap(Set::stream)
@@ -142,6 +209,9 @@ public class BarnRegion {
     }
 
 
+    /**
+     * @return Filled amount of all silos combined
+     */
     public int getAllSilosFilledAmount() {
         return this.plots.get(PlotType.SILO).stream()
                 .map(plot -> ((SiloPlot) plot))
@@ -149,6 +219,9 @@ public class BarnRegion {
                 .sum();
     }
 
+    /**
+     * @return Capacity of all silos combined
+     */
     public int getAllSilosCapacityAmount() {
         return this.plots.get(PlotType.SILO).stream()
                 .map(plot -> ((SiloPlot) plot))
@@ -156,6 +229,9 @@ public class BarnRegion {
                 .sum();
     }
 
+    /**
+     * @return Filled amount of all barns combined
+     */
     public int getAllBarnsFilledAmount() {
         return this.plots.get(PlotType.BARN).stream()
                 .map(plot -> ((BarnPlot) plot))
@@ -163,6 +239,9 @@ public class BarnRegion {
                 .sum();
     }
 
+    /**
+     * @return Capacity of all barns combined
+     */
     public int getAllBarnsCapacityAmount() {
         return this.plots.get(PlotType.BARN).stream()
                 .map(plot -> ((BarnPlot) plot))
@@ -170,11 +249,18 @@ public class BarnRegion {
                 .sum();
     }
 
+    /**
+     * @param type Type of the plot
+     * @return Plot that is locked
+     */
     public Set<Plot> getLockedPlots(@NotNull PlotType type) {
         // TODO get actual locked plots when locked plots mechanism exists
         return this.plots.get(type);
     }
 
+    /**
+     * @return If any of auto store slots are not assigned to plots
+     */
     public boolean hasFreeAutoStoreSlots() {
         return this.getAutoStorePlotsCount() < this.autoStoreSlots;
     }
@@ -200,23 +286,36 @@ public class BarnRegion {
     }
 
 
+    /**
+     * @return if any silo is not fully filled
+     */
     public boolean hasFreeSiloPlot() {
         return this.getFreeSilo().isPresent();
     }
 
+    /**
+     * @param type Type of the plot
+     * @param id   ID of the plot
+     * @return Option if any plot was found, empty otherwise
+     */
     public Optional<Plot> getPlot(@NotNull PlotType type, int id) {
         return this.plots.get(type).stream()
                 .filter(plot -> plot.getId() == id)
                 .findAny();
     }
 
-    public Set<Player> getAllPlayers() {
+    /**
+     * @return Set of all currently online members + owner (if online)
+     */
+    public Set<Player> getAllOnlinePlayers() {
         Set<Player> onlineMembers = members.stream()
                 .map(Bukkit::getPlayer)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
 
-        onlineMembers.add(owner);
+        if (owner.isOnline()) {
+            onlineMembers.add(owner);
+        }
 
         return onlineMembers;
     }

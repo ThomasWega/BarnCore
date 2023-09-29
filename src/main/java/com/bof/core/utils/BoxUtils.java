@@ -25,6 +25,14 @@ public class BoxUtils {
     private BoxUtils() {
     }
 
+    /**
+     * Checks for 2 signs with the same id in the given {@link BoundingBox} with the same {@link PlotType#getIdentifier()}.
+     * Creates a new {@link BoundingBox} with the 2 signs location and removes the signs
+     *
+     * @param type Type of plot to try to identify
+     * @param box  Box to check in
+     * @return Map with plot id and box
+     */
     public static Map<String, BoundingBox> identifyPlots(@NotNull PlotType type, @NotNull BoundingBox box) {
         // get the signs of the specified PlotType only
         Set<Sign> signsInBox = getBlocksInBox(box, "SIGN").stream()
@@ -59,15 +67,29 @@ public class BoxUtils {
                 ));
     }
 
+    /**
+     * @param box Box to get the Center block for
+     * @return Center block of the given box
+     */
     public static Block getCenterBlock(@NotNull BoundingBox box) {
         Vector center = box.getCenter();
         return Bukkit.getWorld("world").getBlockAt(center.getBlockX(), center.getBlockY(), center.getBlockZ());
     }
 
+    /**
+     * @param box Box to get the Center location for
+     * @return Center location of the given box
+     */
     public static Location getCenterLocation(@NotNull BoundingBox box) {
         return getCenterBlock(box).getLocation();
     }
 
+    /**
+     * Removes the given signs. If type is {@link PlotType#FARM}, it sets the block below to max moisturised {@link Material#FARMLAND}
+     *
+     * @param type  Type of the plot
+     * @param signs Signs to remove
+     */
     private static void removeSignsForPlot(PlotType type, Set<Sign> signs) {
         signs.forEach(sign -> {
             Block block = sign.getBlock();
@@ -83,6 +105,12 @@ public class BoxUtils {
         });
     }
 
+    /**
+     * Identify sign with spawn tag
+     *
+     * @param box Box to check in
+     * @return Optional with location of the sign, or empty if no sign was found
+     */
     public static Optional<Location> identifySpawn(@NotNull BoundingBox box) {
         return getBlocksInBox(box, "SIGN").stream()
                 .map(block -> ((Sign) block.getState()))
@@ -91,6 +119,13 @@ public class BoxUtils {
                 .findFirst();
     }
 
+    /**
+     * Get all blocks that are present in the {@link BoundingBox}
+     *
+     * @param box        Box to check in
+     * @param includeAir Whether to include blocks with type {@link Material#AIR}
+     * @return Set of blocks present in the box
+     */
     public static Set<Block> getBlocksInBox(@NotNull BoundingBox box, boolean includeAir) {
         World world = Bukkit.getWorld("world");
         assert world != null;
@@ -112,12 +147,26 @@ public class BoxUtils {
         return blocks;
     }
 
+    /**
+     * Get all blocks that are present in the {@link BoundingBox} with the specific {@link Material}
+     *
+     * @param box      Box to check in
+     * @param material Only blocks with this material will be returned
+     * @return Set of blocks present in the box
+     */
     public static Set<Block> getBlocksInBox(@NotNull BoundingBox box, @NotNull Material material) {
         return getBlocksInBox(box, false).stream()
                 .filter(block -> block.getType() == material)
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * Get all blocks that are present in the {@link BoundingBox} with type {@link Material#name()} containing the given {@link String}
+     *
+     * @param box               Box to check in
+     * @param matContainsString Only blocks which contain this String in Material type name will be returned
+     * @return Set of blocks present in the box
+     */
     public static Set<Block> getBlocksInBox(@NotNull BoundingBox box, @NotNull String matContainsString) {
         return getBlocksInBox(box, false).stream()
                 .filter(block -> block.getType().name().contains(matContainsString))

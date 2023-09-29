@@ -30,9 +30,9 @@ public class SiloPlot implements SellingPlot {
     private final BoundingBox box;
     private final int id;
     private final Set<Block> boxBlocks;
-    private Hologram hologram;
     private final int capacity = 1000;
-    private final List<ItemStack> cropsStored = new ArrayList<>();
+    private final List<ItemStack> stored = new ArrayList<>();
+    private Hologram hologram;
     private boolean autoSell = false;
 
     public SiloPlot(BarnRegion owningRegion, BoundingBox box, int id) {
@@ -42,26 +42,31 @@ public class SiloPlot implements SellingPlot {
         this.boxBlocks = BoxUtils.getBlocksInBox(box, true);
     }
 
+    @Override
     public boolean isFull() {
         return this.getFilledAmount() >= capacity;
     }
 
+
+    @Override
     public int getFilledAmount() {
-        return this.cropsStored.stream()
+        return this.stored.stream()
                 .mapToInt(ItemStack::getAmount)
                 .sum();
     }
 
+    @Override
     public float getFilledPercentage() {
         float percentage = (float) this.getFilledAmount() / this.capacity * 100;
         return Math.min(100, percentage); // Ensure the percentage doesn't exceed 100
     }
 
+    @Override
     public float getFilledPercentageRounded(int roundNum) {
         return Math.round(this.getFilledPercentage() * Math.pow(10, roundNum)) / (float) Math.pow(10, roundNum);
     }
 
-
+    @Override
     public void updateHologram() {
         this.hologram.getLines().stream()
                 .filter(iLine -> iLine instanceof BlockLine)
@@ -71,13 +76,25 @@ public class SiloPlot implements SellingPlot {
                     blockLine.setObj(new ItemStack(material));
                 });
 
-        this.hologram.getLines().forEach(iLine -> iLine.update(this.owningRegion.getAllPlayers()));
+        this.hologram.getLines().forEach(iLine -> iLine.update(this.owningRegion.getAllOnlinePlayers()));
     }
 
+    /**
+     * Tries to add the items to the silo. Handles the {@link #autoSell}
+     *
+     * @param crops Crops items to try to add
+     * @return List of items that couldn't be added
+     */
     public @NotNull List<ItemStack> addCropsToSilo(@NotNull ItemStack... crops) {
         return this.addCropsToSilo(Arrays.asList(crops));
     }
 
+    /**
+     * Tries to add the items to the silo. Handles the {@link #autoSell}
+     *
+     * @param crops Crops items to try to add
+     * @return List of items that couldn't be added
+     */
     public @NotNull List<ItemStack> addCropsToSilo(@NotNull Collection<ItemStack> crops) {
         List<ItemStack> unAdded = new ArrayList<>();
         for (ItemStack itemStack : crops) {
@@ -89,7 +106,7 @@ public class SiloPlot implements SellingPlot {
             if (this.isAutoSell()) {
                 this.sellCrops(itemStack);
             } else {
-                this.cropsStored.add(itemStack);
+                this.stored.add(itemStack);
             }
         }
 
@@ -97,11 +114,25 @@ public class SiloPlot implements SellingPlot {
         return unAdded;
     }
 
+    /**
+     * Remove the crops from the silo inventory and calculate the value of them.
+     * Then add that value in farm coins to the regions balance
+     *
+     * @param crops Crops items to sell
+     * @return Value of the crops sold
+     */
     public float sellCrops(@NotNull ItemStack... crops) {
         return this.sellCrops(Arrays.asList(crops));
     }
 
 
+    /**
+     * Remove the crops from the silo inventory and calculate the value of them.
+     * Then add that value in farm coins to the regions balance
+     *
+     * @param crops Crops items to sell
+     * @return Value of the crops sold
+     */
     public float sellCrops(@NotNull Collection<ItemStack> crops) {
         float value = HarvestableUtils.getValueOfCrops(crops);
         this.removeCropsFromSilo(crops);
@@ -110,12 +141,17 @@ public class SiloPlot implements SellingPlot {
         return value;
     }
 
+    /**
+     * Remove the given crops from the silo inventory
+     *
+     * @param crops Crops items to remove
+     */
     private void removeCropsFromSilo(Collection<ItemStack> crops) {
         List<ItemStack> cropsToRemove = new ArrayList<>(crops);
-        cropsToRemove.forEach(this.cropsStored::remove);
+        cropsToRemove.forEach(this.stored::remove);
     }
 
-
+    @Override
     public void setAutoSell(boolean autoSell) {
         this.autoSell = autoSell;
         this.updateHologram();

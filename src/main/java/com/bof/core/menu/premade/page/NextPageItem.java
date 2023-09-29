@@ -1,7 +1,7 @@
 package com.bof.core.menu.premade.page;
 
 import com.bof.core.item.SkullBuilder;
-import com.bof.core.skin.Skin;
+import com.bof.toolkit.skin.Skin;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;

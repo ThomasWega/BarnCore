@@ -6,7 +6,7 @@ import com.bof.core.menu.premade.back.GoBackPane;
 import com.bof.core.region.BarnRegion;
 import com.bof.core.region.menu.RegionMainMenu;
 import com.bof.core.region.plot.selling.barn.BarnPlot;
-import com.bof.core.skin.Skin;
+import com.bof.toolkit.skin.Skin;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
@@ -66,7 +66,7 @@ public class BarnPlotMainMenu extends ChestGui {
     private Consumer<InventoryClickEvent> handleSellAll() {
         return event -> {
             Player player = ((Player) event.getWhoClicked());
-            float value = this.plot.sellAnimals(this.plot.getAnimalsStored());
+            float value = this.plot.sellAnimals(this.plot.getStored());
             if (value == 0) {
                 player.sendMessage("TO ADD - No animals are in this silo");
                 return;

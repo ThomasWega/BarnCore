@@ -16,6 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+/**
+ * Item which will be placed into the player's inventory and has action when clicked.
+ * Any movement of the item will be blocked
+ */
 @Data
 public abstract class HotbarItem implements Listener {
     private final ItemStack itemStack;
@@ -36,9 +40,16 @@ public abstract class HotbarItem implements Listener {
         Bukkit.getPluginManager().registerEvents(this, core);
     }
 
+    /**
+     * Put the item to the index in the player's inventory
+     *
+     * @param player Player to give the item to
+     * @param index  Index to put the item at
+     */
     public void setToPlayer(@NotNull Player player, int index) {
         player.getInventory().setItem(index, this.itemStack);
     }
+
 
     // needs to be public, otherwise won't listen!
     @EventHandler
@@ -49,6 +60,7 @@ public abstract class HotbarItem implements Listener {
         }
     }
 
+    // needs to be public, otherwise won't listen!
     @EventHandler
     public void onClick(InventoryClickEvent e) {
         if (e.getWhoClicked() instanceof Player && e.getClickedInventory() != null) {

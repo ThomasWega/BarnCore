@@ -5,7 +5,7 @@ import com.bof.core.hotbar.HotbarItem;
 import com.bof.core.item.SkullBuilder;
 import com.bof.core.player.GamePlayer;
 import com.bof.core.region.menu.RegionMainMenu;
-import com.bof.core.skin.Skin;
+import com.bof.toolkit.skin.Skin;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;

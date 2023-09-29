@@ -7,7 +7,7 @@ import com.bof.core.region.BarnRegion;
 import com.bof.core.region.menu.RegionMainMenu;
 import com.bof.core.region.plot.harvestable.animal.menu.AnimalSettingsMainMenu;
 import com.bof.core.region.plot.harvestable.farm.menu.FarmSettingsMainMenu;
-import com.bof.core.skin.Skin;
+import com.bof.toolkit.skin.Skin;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;

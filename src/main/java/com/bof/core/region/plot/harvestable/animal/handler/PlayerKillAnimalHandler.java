@@ -11,6 +11,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 
+/**
+ * Handles when an animal is hit or killed
+ */
 public class PlayerKillAnimalHandler implements Listener {
 
     @EventHandler(ignoreCancelled = true)

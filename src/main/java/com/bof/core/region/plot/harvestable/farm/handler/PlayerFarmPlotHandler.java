@@ -20,18 +20,18 @@ public class PlayerFarmPlotHandler implements Listener {
         event.setCancelled(true);
 
         gamePlayer.getBarnRegion().ifPresent(region -> region.getPlots().get(PlotType.FARM).stream()
-                    .map(plot -> ((FarmPlot) plot))
-                    .forEach(plot -> {
-                        if (!plot.getBoxBlocks().contains(block)) return;
-                        event.setDropItems(false);
+                .map(plot -> ((FarmPlot) plot))
+                .forEach(plot -> {
+                    if (!plot.getBoxBlocks().contains(block)) return;
+                    event.setDropItems(false);
 
-                        if (plot.handleCropBreak(player, block) == 0) {
-                            player.sendMessage("TO ADD - Crops inventory is full 3");
-                            return;
-                        }
+                    if (plot.handleCropBreak(player, block) == 0) {
+                        player.sendMessage("TO ADD - Crops inventory is full 3");
+                        return;
+                    }
 
-                        event.setCancelled(false);
-                    })
+                    event.setCancelled(false);
+                })
         );
     }
 }

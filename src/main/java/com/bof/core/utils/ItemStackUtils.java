@@ -9,8 +9,15 @@ import java.util.stream.Collectors;
 
 public class ItemStackUtils {
 
-    private ItemStackUtils() {}
+    private ItemStackUtils() {
+    }
 
+    /**
+     * Merges the ItemStacks from the given list to their maximum stack amount
+     *
+     * @param inputItems ItemStack to stack up
+     * @return List of stacked up items
+     */
     public static List<ItemStack> mergeItemStacks(List<ItemStack> inputItems) {
         List<ItemStack> copiedItems = new ArrayList<>(inputItems);
 

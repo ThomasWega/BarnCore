@@ -1,8 +1,8 @@
 package com.bof.core.region.plot.harvestable.farm;
 
 import com.bof.core.region.BarnRegion;
-import com.bof.core.region.plot.harvestable.HarvestablePlot;
 import com.bof.core.region.plot.PlotType;
+import com.bof.core.region.plot.harvestable.HarvestablePlot;
 import com.bof.core.region.plot.harvestable.farm.menu.FarmPlotMainMenu;
 import com.bof.core.region.plot.selling.silo.SiloPlot;
 import com.bof.core.utils.BoxUtils;
@@ -10,7 +10,9 @@ import com.bof.toolkit.utils.ColorUtils;
 import com.github.unldenis.hologram.Hologram;
 import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
 import com.github.unldenis.hologram.line.BlockLine;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Setter;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -36,6 +38,7 @@ public class FarmPlot implements HarvestablePlot<CropType> {
     private final Set<Block> boxBlocks;
     private CropType currentlyHarvesting = CropType.NONE;
     private Hologram hologram;
+    @Setter(AccessLevel.NONE)
     private boolean autoStore = false;
 
     public FarmPlot(@NotNull BarnRegion owningRegion, @NotNull BoundingBox box, int id) {
@@ -45,12 +48,8 @@ public class FarmPlot implements HarvestablePlot<CropType> {
         this.id = id;
     }
 
-    public void setCurrentlyHarvesting(@NotNull CropType type) {
-        this.currentlyHarvesting = type;
-        this.updateHologram();
-    }
-
-    public void changeCrops(@NotNull CropType type) {
+    @Override
+    public void changeType(@NotNull CropType type) {
         this.boxBlocks.forEach(block -> {
             if (block.getRelative(BlockFace.DOWN).getType() == Material.FARMLAND) {
                 block.setType(type.getMaterial());
@@ -61,21 +60,43 @@ public class FarmPlot implements HarvestablePlot<CropType> {
             }
         });
         this.setCurrentlyHarvesting(type);
+        this.updateHologram();
     }
 
-    public int harvestCrops(@NotNull Player player) {
+    @Override
+    public int harvest(@NotNull Player player) {
         return this.handleCropBreak(player, this.boxBlocks);
     }
 
+    /**
+     * Handles the breakage of block.
+     * Changes the {@link #currentlyHarvesting} type, puts the items into {@link SiloPlot} on {@link #autoStore},
+     * if the silo is full, tries putting it into {@link BarnRegion#getCropsInventory()}.
+     * If that is full as well, sends a message to the player
+     *
+     * @param player Player that broke the crop
+     * @param blocks Blocks that were broken
+     * @return amount of crops that were successfully broken
+     */
     public int handleCropBreak(@NotNull Player player, @NotNull Block... blocks) {
         return this.handleCropBreak(player, Arrays.asList(blocks));
     }
-    
+
+    /**
+     * Handles the breakage of block.
+     * Changes the {@link #currentlyHarvesting} type, puts the items into {@link SiloPlot} on {@link #autoStore},
+     * if the silo is full, tries putting it into {@link BarnRegion#getCropsInventory()}.
+     * If that is full as well, sends a message to the player
+     *
+     * @param player Player that broke the crop
+     * @param blocks Blocks that were broken
+     * @return amount of crops that were successfully broken
+     */
     public int handleCropBreak(@NotNull Player player, @NotNull Collection<Block> blocks) {
         int count = 0;
 
         // there is nothing to harvest
-        if (this.currentlyHarvesting == CropType.NONE || !isCropPresent()) {
+        if (this.currentlyHarvesting == CropType.NONE || !isHarvestablePresent()) {
             return count;
         }
 
@@ -87,15 +108,15 @@ public class FarmPlot implements HarvestablePlot<CropType> {
                 ItemStack item = new ItemStack(block.getType());
                 if (this.isAutoStore()) {
                     // first tries putting into silo, then tries inventory, if both fails, returns list of items which failed
-                    if (!this.addCropsToSilo(item).isEmpty()) {
+                    if (!this.addToContainer(item).isEmpty()) {
                         player.sendMessage("TO ADD - All silos are full. Putting the items to inventory");
-                        if (!this.addCropsToInventory(item).isEmpty()) {
+                        if (!this.addToInventory(item).isEmpty()) {
                             player.sendMessage("TO ADD - Crops inventory is full 1");
                         }
                         break;
                     }
                 } else {
-                    if (!this.addCropsToInventory(item).isEmpty()) {
+                    if (!this.addToInventory(item).isEmpty()) {
                         player.sendMessage("TO ADD - Crops inventory is full 2");
                         break;
                     }
@@ -107,21 +128,23 @@ public class FarmPlot implements HarvestablePlot<CropType> {
         }
 
         // everything was harvested
-        if (this.getRemainingCrops() == 0) {
+        if (this.getRemainingHarvestables() == 0) {
             this.setCurrentlyHarvesting(CropType.NONE);
         }
 
         return count;
     }
 
-    public @NotNull List<ItemStack> addCropsToInventory(@NotNull ItemStack... items) {
-        return this.addCropsToInventory(Arrays.asList(items));
+    @Override
+    public @NotNull List<ItemStack> addToInventory(@NotNull ItemStack... items) {
+        return this.addToInventory(Arrays.asList(items));
     }
 
-    public @NotNull List<ItemStack> addCropsToInventory(@NotNull Collection<ItemStack> crops) {
+    @Override
+    public @NotNull List<ItemStack> addToInventory(@NotNull Collection<ItemStack> items) {
         List<ItemStack> unAdded = new ArrayList<>();
 
-        for (ItemStack item : crops) {
+        for (ItemStack item : items) {
             if (!this.getOwningRegion().addCropsToInventory(item).isEmpty()) {
                 unAdded.add(item);
             }
@@ -130,11 +153,13 @@ public class FarmPlot implements HarvestablePlot<CropType> {
         return unAdded;
     }
 
-    public @NotNull List<ItemStack> addCropsToSilo(@NotNull ItemStack... crops) {
-        return this.addCropsToSilo(Arrays.asList(crops));
+    @Override
+    public @NotNull List<ItemStack> addToContainer(@NotNull ItemStack... crops) {
+        return this.addToContainer(Arrays.asList(crops));
     }
 
-    public @NotNull List<ItemStack> addCropsToSilo(@NotNull Collection<ItemStack> items) {
+    @Override
+    public @NotNull List<ItemStack> addToContainer(@NotNull Collection<ItemStack> items) {
         List<ItemStack> unAdded = new ArrayList<>();
         Optional<SiloPlot> optSilo = this.getOwningRegion().getFreeSilo();
 
@@ -155,14 +180,16 @@ public class FarmPlot implements HarvestablePlot<CropType> {
         return unAdded;
     }
 
-    public int getRemainingCrops() {
+    @Override
+    public int getRemainingHarvestables() {
         return (int) this.boxBlocks.stream()
                 .filter(block -> block.getType() != Material.AIR)
                 .filter(block -> CropType.getByMaterial(block.getType()).isPresent())
                 .count();
     }
 
-    private boolean isCropPresent() {
+    @Override
+    public boolean isHarvestablePresent() {
         Set<Material> boxBlocksMat = this.boxBlocks.stream()
                 .map(Block::getType)
                 .collect(Collectors.toSet());
@@ -171,23 +198,25 @@ public class FarmPlot implements HarvestablePlot<CropType> {
                 .anyMatch(boxBlocksMat::contains);
     }
 
+    @Override
     public void updateHologram() {
         this.hologram.getLines().stream()
                 .filter(iLine -> iLine instanceof BlockLine)
                 .map(iLine -> ((BlockLine) iLine))
                 .forEach(blockLine -> blockLine.setObj(new ItemStack(this.currentlyHarvesting.getItemMaterial())));
 
-        this.hologram.getLines().forEach(iLine -> iLine.update(this.owningRegion.getAllPlayers()));
+        this.hologram.getLines().forEach(iLine -> iLine.update(this.owningRegion.getAllOnlinePlayers()));
     }
 
-    public void setAutoStore(@NotNull Player player, boolean autoStore) {
+    @Override
+    public boolean setAutoStore(boolean autoStore) {
         if (!this.getOwningRegion().hasFreeAutoStoreSlots() && autoStore) {
-            player.sendMessage("TO ADD - No free AutoStore slots");
-            return;
+            return false;
         }
 
         this.autoStore = autoStore;
         this.updateHologram();
+        return true;
     }
 
     @Override

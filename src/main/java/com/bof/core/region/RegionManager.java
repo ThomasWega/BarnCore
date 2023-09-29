@@ -14,9 +14,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+/**
+ * Handles the assigning and de-assigning of regions for players
+ */
 public class RegionManager implements Listener {
     private final Core plugin;
     private final RegionStorage storage;
@@ -46,18 +50,30 @@ public class RegionManager implements Listener {
         return false;
     }
 
+    /**
+     * De-assign region from player
+     *
+     * @param player Player to de-assign the region for
+     * @return true if de-assign was successful, false otherwise
+     */
     public boolean deAssignRegion(@NotNull Player player) {
         return this.storage.getRegions().stream()
                 .filter(barnRegion -> barnRegion.getOwner() == player)
                 .peek(barnRegion -> {
                     barnRegion.setOwner(null);
                     barnRegion.setAssigned(false);
-
                 })
                 .findAny()
                 .isPresent();
     }
 
+    /**
+     * Get region that the player owns
+     *
+     * @param player Player to check for
+     * @return Optional of owned region or empty if none was found
+     */
+    // todo get from members as well
     public Optional<BarnRegion> getRegionOf(@NotNull Player player) {
         return this.storage.getRegions().stream()
                 .filter(barnRegion -> barnRegion.getOwner() == player)
@@ -65,10 +81,16 @@ public class RegionManager implements Listener {
     }
 
 
+    /**
+     * @return If any free region is available
+     */
     public boolean isFreeRegionAvailable() {
         return getFreeRegion().isPresent();
     }
 
+    /**
+     * @return A free region (un-assigned)
+     */
     public Optional<BarnRegion> getFreeRegion() {
         return this.storage.getRegions().stream()
                 .filter(barnRegion -> !barnRegion.isAssigned())
@@ -76,32 +98,36 @@ public class RegionManager implements Listener {
     }
 
     /**
-     * @return List of all free regions, or empty list if none are free
+     * @return Set of all free regions, or empty list if none are free
      */
-    public @NotNull List<BarnRegion> getAllFreeRegions() {
+    public @NotNull Set<BarnRegion> getAllFreeRegions() {
         return this.storage.getRegions().stream()
                 .filter(barnRegion -> !barnRegion.isAssigned())
-                .toList();
+                .collect(Collectors.toSet());
     }
 
-    public @NotNull List<BarnRegion> getAllOccupiedRegions() {
+    /**
+     * @return Set of all regions that are currently occupied
+     */
+    public @NotNull Set<BarnRegion> getAllOccupiedRegions() {
         return this.storage.getRegions().stream()
                 .filter(BarnRegion::isAssigned)
-                .toList();
+                .collect(Collectors.toSet());
     }
 
     @EventHandler
     private void onHologramInteract(PlayerHologramInteractEvent event) {
+        // apply the action the plot has set for the hologram
         getAllOccupiedRegions().forEach(region -> region.getPlots().values().forEach(plots -> plots.forEach(plot ->
                 plot.getHologramAction().accept(event))));
     }
 
     @EventHandler(priority = EventPriority.LOW)
     private void onRegionCreate(RegionCreatedEvent event) {
-        this.handleHologram(event.getRegion());
+        this.createHoloPools(event.getRegion());
     }
 
-    private void handleHologram(BarnRegion region) {
+    private void createHoloPools(BarnRegion region) {
         HologramPool holoPool = new HologramPool(plugin, 100);
         region.setHologramPool(holoPool);
 

@@ -14,6 +14,9 @@ import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+/**
+ * Calls the assignation and de-assignation of {@link BarnRegion} for the player
+ */
 public class PlayerRegionAssignHandler implements Listener {
     private final Core plugin;
     private final RegionManager regionManager;

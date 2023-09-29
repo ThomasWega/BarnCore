@@ -39,7 +39,7 @@ public class BarnContainerMenu extends PaginatedNavGUI {
     }
 
     private void fillWithAnimals() {
-        List<ItemStack> mergedItems = ItemStackUtils.mergeItemStacks(this.plot.getAnimalsStored());
+        List<ItemStack> mergedItems = ItemStackUtils.mergeItemStacks(this.plot.getStored());
         List<GuiItem> items = mergedItems.stream()
                 .map(itemStack -> {
                     // should always return okay, as the only items which are put into the inventory are animals

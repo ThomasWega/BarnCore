@@ -2,14 +2,14 @@ package com.bof.core;
 
 import com.bof.barn.world_generator.event.GridLoadedEvent;
 import com.bof.core.hotbar.PlayerHotbarHandler;
+import com.bof.core.placeholders.papi.PAPIHook;
+import com.bof.core.region.RegionManager;
+import com.bof.core.region.handler.PlayerRegionAssignHandler;
+import com.bof.core.region.plot.PlotHoloManager;
+import com.bof.core.region.plot.PlotManager;
 import com.bof.core.region.plot.harvestable.animal.handler.PlayerKillAnimalHandler;
 import com.bof.core.region.plot.harvestable.farm.handler.CropsTrampingHandler;
 import com.bof.core.region.plot.harvestable.farm.handler.PlayerFarmPlotHandler;
-import com.bof.core.region.handler.PlayerRegionAssignHandler;
-import com.bof.core.placeholders.papi.PAPIHook;
-import com.bof.core.region.plot.PlotHoloManager;
-import com.bof.core.region.plot.PlotManager;
-import com.bof.core.region.RegionManager;
 import com.bof.core.region.spawn.SpawnManager;
 import com.bof.core.region.storage.RegionStorage;
 import com.bof.toolkit.file.FileLoader;
@@ -45,8 +45,7 @@ public final class Core extends JavaPlugin implements Listener {
         this.registerPAPIPlaceholders();
     }
 
-    // TODO add comments to everywhere!
-    // TODO cleanup the code. Separate a bit more (getLore etc..)
+    // TODO Separate the code a bit more (getLore, Menus etc..)
 
     @Override
     public void onDisable() {

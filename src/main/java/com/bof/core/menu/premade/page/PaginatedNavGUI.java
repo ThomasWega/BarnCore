@@ -6,6 +6,9 @@ import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Premade gui with pagination. Handles the removal of navigation buttons on first and last page
+ */
 public class PaginatedNavGUI extends ChestGui {
     public final StaticPane navPane;
     public final PaginatedPane paginatedPane;

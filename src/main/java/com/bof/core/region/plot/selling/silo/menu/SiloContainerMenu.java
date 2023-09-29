@@ -39,7 +39,7 @@ public class SiloContainerMenu extends PaginatedNavGUI {
     }
 
     private void fillWithCrops() {
-        List<ItemStack> mergedItems = ItemStackUtils.mergeItemStacks(this.plot.getCropsStored());
+        List<ItemStack> mergedItems = ItemStackUtils.mergeItemStacks(this.plot.getStored());
         List<GuiItem> items = mergedItems.stream()
                 .map(itemStack -> {
                     // should always return okay, as the only items which are put into the inventory are crops

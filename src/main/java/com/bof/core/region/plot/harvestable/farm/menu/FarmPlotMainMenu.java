@@ -4,7 +4,7 @@ import com.bof.core.item.ItemBuilder;
 import com.bof.core.item.SkullBuilder;
 import com.bof.core.menu.premade.back.GoBackPane;
 import com.bof.core.region.plot.harvestable.farm.FarmPlot;
-import com.bof.core.skin.Skin;
+import com.bof.toolkit.skin.Skin;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
@@ -106,7 +106,7 @@ public class FarmPlotMainMenu extends ChestGui {
                 event -> {
                     Player player = ((Player) event.getWhoClicked());
 
-                    int harvestedCount = this.plot.harvestCrops(player);
+                    int harvestedCount = this.plot.harvest(player);
                     if (harvestedCount > 0) {
                         player.sendMessage("TO ADD - Harvested " + harvestedCount + " crops");
                     } else {
@@ -122,21 +122,24 @@ public class FarmPlotMainMenu extends ChestGui {
         String statusStr = plot.isAutoStore() ? "<green>ON</green>" : "<red>OFF</red>";
         Component status = MiniMessage.miniMessage().deserialize("<white>Status: " + statusStr + "</white>");
         return new GuiItem(new SkullBuilder()
-                        .displayName(name)
-                        .lore(List.of(
-                                Component.text("Automatically puts crops into silo", NamedTextColor.GRAY),
-                                Component.empty(),
-                                status,
-                                Component.empty(),
-                                Component.text("Click to change status", NamedTextColor.DARK_GRAY)
-                        ))
-                        .skin(new Skin("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTVhMGIwN2UzNmVhZmRlY2YwNTljOGNiMTM0YTdiZjBhMTY3ZjkwMDk2NmYxMDk5MjUyZDkwMzI3NjQ2MWNjZSJ9fX0=", null))
-                        .hideFlags()
-                        .build(),
+                .displayName(name)
+                .lore(List.of(
+                        Component.text("Automatically puts crops into silo", NamedTextColor.GRAY),
+                        Component.empty(),
+                        status,
+                        Component.empty(),
+                        Component.text("Click to change status", NamedTextColor.DARK_GRAY)
+                ))
+                .skin(new Skin("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTVhMGIwN2UzNmVhZmRlY2YwNTljOGNiMTM0YTdiZjBhMTY3ZjkwMDk2NmYxMDk5MjUyZDkwMzI3NjQ2MWNjZSJ9fX0=", null))
+                .hideFlags()
+                .build(),
                 event -> {
                     Player player = ((Player) event.getWhoClicked());
-                    this.plot.setAutoStore(player, !plot.isAutoStore());
-                    player.sendMessage("TO ADD - changed auto store status 1");
+                    if (this.plot.setAutoStore(!plot.isAutoStore())) {
+                        player.sendMessage("TO ADD - No free AutoStore slots 1");
+                    } else {
+                        player.sendMessage("TO ADD - changed auto store status 1");
+                    }
                     player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
                 }
         );
