@@ -8,7 +8,7 @@ import com.bof.core.region.plot.Plot;
 import com.bof.core.region.plot.PlotType;
 import com.bof.core.region.plot.harvestable.animal.menu.AnimalMainMenu;
 import com.bof.core.region.plot.harvestable.farm.menu.FarmMainMenu;
-import com.bof.core.region.plot.harvestable.menu.HarvestableAutoStoreMainMenu;
+import com.bof.core.region.plot.harvestable.menu.HarvestableSettingsMainMenu;
 import com.bof.core.region.plot.selling.barn.BarnPlot;
 import com.bof.core.region.plot.selling.barn.menu.BarnPlotMainMenu;
 import com.bof.core.region.plot.selling.silo.SiloPlot;
@@ -122,7 +122,7 @@ public class RegionMainMenu extends ChestGui {
                                 Component.text("Click to open modify menu", NamedTextColor.DARK_GRAY)
                         ))
                         .build(),
-                event -> new HarvestableAutoStoreMainMenu(this.region).show(event.getWhoClicked())
+                event -> new HarvestableSettingsMainMenu(this.region).show(event.getWhoClicked())
         );
     }
 }

@@ -3,7 +3,7 @@ package com.bof.core.region.plot.harvestable.farm.menu;
 import com.bof.core.item.SkullBuilder;
 import com.bof.core.menu.premade.back.GoBackPane;
 import com.bof.core.region.BarnRegion;
-import com.bof.core.region.plot.harvestable.menu.HarvestableAutoStoreMainMenu;
+import com.bof.core.region.plot.harvestable.menu.HarvestableSettingsMainMenu;
 import com.bof.core.skin.Skin;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
@@ -29,7 +29,7 @@ public class FarmSettingsMainMenu extends ChestGui {
     private void initialize() {
         this.mainPane.addItem(this.getAutoStoreItem(), 1, 0);
 
-        this.addPane(new GoBackPane(4, 2, new HarvestableAutoStoreMainMenu(this.region)));
+        this.addPane(new GoBackPane(4, 2, new HarvestableSettingsMainMenu(this.region)));
         this.addPane(this.mainPane);
 
         this.setOnGlobalClick(event -> event.setCancelled(true));

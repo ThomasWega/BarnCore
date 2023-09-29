@@ -20,11 +20,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class HarvestableAutoStoreMainMenu extends ChestGui {
+public class HarvestableSettingsMainMenu extends ChestGui {
     private final BarnRegion region;
     private final StaticPane mainPane = new StaticPane(1, 1, 7, 1);
 
-    public HarvestableAutoStoreMainMenu(@NotNull BarnRegion region) {
+    public HarvestableSettingsMainMenu(@NotNull BarnRegion region) {
         super(3, ComponentHolder.of(Component.text("Select plot type")));
         this.region = region;
         this.initialize();
