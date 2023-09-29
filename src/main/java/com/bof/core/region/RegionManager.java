@@ -1,11 +1,13 @@
 package com.bof.core.region;
 
 import com.bof.core.Core;
+import com.bof.core.region.event.RegionAssignedEvent;
 import com.bof.core.region.event.RegionCreatedEvent;
 import com.bof.core.region.storage.RegionStorage;
 import com.github.unldenis.hologram.HologramPool;
 import com.github.unldenis.hologram.InteractiveHologramPool;
 import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -31,13 +33,14 @@ public class RegionManager implements Listener {
      * @return true if assign was successful, false otherwise
      */
     public boolean assignRegion(@NotNull Player player) {
-        Optional<BarnRegion> optRegion = getFreeRegion();
+        Optional<BarnRegion> optRegion = this.getFreeRegion();
         if (optRegion.isPresent()) {
             BarnRegion region = optRegion.get();
             region.setOwner(player);
             region.setAssigned(true);
             player.teleport(region.getSpawnLocation());
             player.sendMessage("TO ADD - assigned region to you");
+            Bukkit.getPluginManager().callEvent(new RegionAssignedEvent(region, player));
             return true;
         }
         return false;

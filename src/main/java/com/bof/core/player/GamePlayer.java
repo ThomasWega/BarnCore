@@ -15,18 +15,18 @@ public class GamePlayer {
     private static final Map<Player, GamePlayer> cachedPlayers = new HashMap<>();
     private final Core plugin;
     private final Player bukkitPlayer;
-    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-    private final Optional<BarnRegion> barnRegion;
 
     public GamePlayer(@NotNull Core plugin, @NotNull Player bukkitPlayer) {
         this.plugin = plugin;
         this.bukkitPlayer = bukkitPlayer;
-        this.barnRegion = plugin.getRegionManager().getRegionOf(bukkitPlayer);
 
         if (!cachedPlayers.containsKey(bukkitPlayer)) {
             cachedPlayers.put(bukkitPlayer, this);
         }
+    }
 
+    public Optional<BarnRegion> getBarnRegion() {
+        return this.plugin.getRegionManager().getRegionOf(bukkitPlayer);
     }
 
     public static void cache(@NotNull Core plugin, @NotNull Player player) {

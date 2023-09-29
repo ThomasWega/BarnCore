@@ -34,11 +34,11 @@ public class PlayerRegionAssignHandler implements Listener {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     private void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        regionManager.assignRegion(player);
         GamePlayer.cache(plugin, player);
+        regionManager.assignRegion(player);
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     private void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         regionManager.deAssignRegion(player);

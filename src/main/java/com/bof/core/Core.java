@@ -1,6 +1,7 @@
 package com.bof.core;
 
 import com.bof.barn.world_generator.event.GridLoadedEvent;
+import com.bof.core.hotbar.PlayerHotbarHandler;
 import com.bof.core.region.plot.harvestable.animal.handler.PlayerKillAnimalHandler;
 import com.bof.core.region.plot.harvestable.farm.handler.CropsTrampingHandler;
 import com.bof.core.region.plot.harvestable.farm.handler.PlayerFarmPlotHandler;
@@ -44,7 +45,6 @@ public final class Core extends JavaPlugin implements Listener {
         this.registerPAPIPlaceholders();
     }
 
-    // TODO add hotbar item to open main menu
     // TODO add comments to everywhere!
 
     @Override
@@ -66,6 +66,7 @@ public final class Core extends JavaPlugin implements Listener {
         p.registerEvents(new PlayerFarmPlotHandler(), this);
         p.registerEvents(new CropsTrampingHandler(), this);
         p.registerEvents(new PlayerKillAnimalHandler(), this);
+        p.registerEvents(new PlayerHotbarHandler(this), this);
     }
 
     private void loadFiles() {
