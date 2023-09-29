@@ -50,7 +50,7 @@ public class FarmAutoStoreMenu extends ChestGui {
         this.addUnlockedSlots();
         this.addLockedSlots();
 
-        this.addPane(new GoBackPane(4, 3, null));
+        this.addPane(new GoBackPane(4, 3, new FarmSettingsMainMenu(this.region)));
         this.addPane(selectedPane);
         this.addPane(unlockedSlotsPane);
         this.addPane(lockedSlotsPane);

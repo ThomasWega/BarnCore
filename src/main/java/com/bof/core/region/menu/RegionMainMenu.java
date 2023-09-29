@@ -8,6 +8,7 @@ import com.bof.core.region.plot.Plot;
 import com.bof.core.region.plot.PlotType;
 import com.bof.core.region.plot.harvestable.animal.menu.AnimalMainMenu;
 import com.bof.core.region.plot.harvestable.farm.menu.FarmMainMenu;
+import com.bof.core.region.plot.harvestable.menu.HarvestableAutoStoreMainMenu;
 import com.bof.core.region.plot.selling.barn.BarnPlot;
 import com.bof.core.region.plot.selling.barn.menu.BarnPlotMainMenu;
 import com.bof.core.region.plot.selling.silo.SiloPlot;
@@ -30,18 +31,20 @@ public class RegionMainMenu extends ChestGui {
     private final StaticPane mainPane = new StaticPane(1, 1, 7, 2);
 
     public RegionMainMenu(@NotNull BarnRegion region) {
-        super(3, ComponentHolder.of(Component.text("Main Menu")));
+        super(4, ComponentHolder.of(Component.text("Main Menu")));
         this.region = region;
         this.initialize();
     }
 
     private void initialize() {
         this.mainPane.addItem(this.getFarmPlotsItem(), 0, 0);
-        this.mainPane.addItem(this.getAnimalPlotsItem(), 2, 0);
-        this.mainPane.addItem(this.getSiloPlotItem(), 4, 0);
-        this.mainPane.addItem(this.getBarnPlotItem(), 6, 0);
+        this.mainPane.addItem(this.getAnimalPlotsItem(), 3, 0);
+        this.mainPane.addItem(this.getSiloPlotItem(), 6, 0);
 
-        this.addPane(new GoBackPane(4, 2, null));
+        this.mainPane.addItem(this.getBarnPlotItem(), 1, 1);
+        this.mainPane.addItem(this.getModifyPlotsItem(), 5, 1);
+
+        this.addPane(new GoBackPane(4, 3, null));
         this.addPane(this.mainPane);
 
         this.setOnGlobalClick(event -> event.setCancelled(true));
@@ -106,6 +109,20 @@ public class RegionMainMenu extends ChestGui {
                     SiloPlot siloPlot = (SiloPlot) this.region.getPlots().get(PlotType.SILO).toArray(Plot[]::new)[0];
                     new SiloPlotMainMenu(siloPlot).show(event.getWhoClicked());
                 }
+        );
+    }
+
+    private GuiItem getModifyPlotsItem() {
+        Component name = MiniMessage.miniMessage().deserialize("<b><color:#FF8378>Modify Plots</color></b>");
+        return new GuiItem(
+                new ItemBuilder(Material.COMMAND_BLOCK)
+                        .displayName(name)
+                        .lore(List.of(
+                                Component.empty(),
+                                Component.text("Click to open modify menu", NamedTextColor.DARK_GRAY)
+                        ))
+                        .build(),
+                event -> new HarvestableAutoStoreMainMenu(this.region).show(event.getWhoClicked())
         );
     }
 }

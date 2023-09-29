@@ -47,7 +47,7 @@ public final class Core extends JavaPlugin implements Listener {
 
     // TODO add comments to everywhere!
     // TODO cleanup the code. Separate a bit more (getLore etc..)
-    // TODO add multiple auto store buttons to menu (idk what menu :D)
+    // TODO add unlocked and selected slots count to lore in autostore settings
 
     @Override
     public void onDisable() {

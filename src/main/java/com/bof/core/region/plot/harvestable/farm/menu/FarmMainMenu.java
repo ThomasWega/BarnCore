@@ -27,11 +27,11 @@ import java.util.stream.IntStream;
 
 public class FarmMainMenu extends ChestGui {
     private final BarnRegion region;
-    private final OutlinePane mainPane = new OutlinePane(1, 1, 7, 2);
+    private final OutlinePane mainPane = new OutlinePane(1, 2, 7, 2);
     private final OutlinePane lockedPane = mainPane.copy();
 
     public FarmMainMenu(@NotNull BarnRegion region) {
-        super(4, ComponentHolder.of(Component.text("Farm Plots Menu")));
+        super(5, ComponentHolder.of(Component.text("Farm Plots Menu")));
         this.region = region;
         this.initialize();
     }
@@ -43,7 +43,7 @@ public class FarmMainMenu extends ChestGui {
         this.addLockedPlots();
         this.addActivePlots();
 
-        this.addPane(new GoBackPane(4, 3, new RegionMainMenu(this.region)));
+        this.addPane(new GoBackPane(4, 4, new RegionMainMenu(this.region)));
         this.addPane(mainPane);
         this.addPane(lockedPane);
 
