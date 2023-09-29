@@ -263,7 +263,6 @@ public class ItemBuilder {
      *
      * @return The ItemBuilder
      */
-    @SuppressWarnings("UnusedReturnValue")
     public ItemBuilder clearLore() {
         lore.clear();
         meta.lore(lore);

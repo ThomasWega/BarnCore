@@ -42,7 +42,6 @@ public class SiloContainerMenu extends PaginatedNavGUI {
         List<ItemStack> mergedItems = ItemStackUtils.mergeItemStacks(this.plot.getCropsStored());
         List<GuiItem> items = mergedItems.stream()
                 .map(itemStack -> {
-                    @SuppressWarnings("OptionalGetWithoutIsPresent")
                     // should always return okay, as the only items which are put into the inventory are crops
                     CropType cropType = CropType.getByMaterial(itemStack.getType()).get();
                     GuiItem guiItem = this.getCropItem(itemStack, cropType);

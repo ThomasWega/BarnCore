@@ -42,7 +42,6 @@ public class BarnContainerMenu extends PaginatedNavGUI {
         List<ItemStack> mergedItems = ItemStackUtils.mergeItemStacks(this.plot.getAnimalsStored());
         List<GuiItem> items = mergedItems.stream()
                 .map(itemStack -> {
-                    @SuppressWarnings("OptionalGetWithoutIsPresent")
                     // should always return okay, as the only items which are put into the inventory are animals
                     AnimalType animalType = AnimalType.getByItem(itemStack, true).get();
                     GuiItem guiItem = this.getAnimalItem(itemStack, animalType);
