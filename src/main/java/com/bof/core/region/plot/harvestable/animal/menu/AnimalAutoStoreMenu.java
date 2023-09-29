@@ -23,7 +23,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
@@ -59,29 +58,26 @@ public class AnimalAutoStoreMenu extends ChestGui {
     }
 
     private void addSelectedPlots() {
-        region.getPlots().entrySet().stream()
-                .filter(entry -> entry.getKey() == PlotType.ANIMAL)
-                .map(Map.Entry::getValue)
-                .forEach(plots -> plots.stream()
-                        // sort by id, so first plot is always 1, second is 2, etc.
-                        .sorted(Comparator.comparingInt(Plot::getId))
-                        .map(plot -> ((AnimalPlot) plot))
-                        .filter(AnimalPlot::isAutoStore)
-                        .forEach(plot -> {
-                                    List<Component> lore = new ArrayList<>(plot.getLore());
-                                    lore.addAll(List.of(
-                                            Component.empty(),
-                                            Component.text("Click to change plot", NamedTextColor.DARK_GRAY),
-                                            Component.text("Shift-click to change plot", NamedTextColor.DARK_GRAY)
-                                    ));
-                                    this.selectedPane.addItem(new GuiItem(
-                                            new ItemBuilder(plot.getCurrentlyHarvesting().getItem())
-                                                    .displayName(plot.getDisplayName())
-                                                    .lore(lore)
-                                                    .build(), handleSelectAction(plot)
-                                    ));
-                                }
-                        ));
+        this.region.getAutoStorePlots().stream()
+                .filter(plot -> plot instanceof AnimalPlot)
+                // sort by id, so first plot is always 1, second is 2, etc.
+                .sorted(Comparator.comparingInt(Plot::getId))
+                .map(plot -> ((AnimalPlot) plot))
+                .forEach(plot -> {
+                            List<Component> lore = new ArrayList<>(plot.getLore());
+                            lore.addAll(List.of(
+                                    Component.empty(),
+                                    Component.text("Click to change plot", NamedTextColor.DARK_GRAY),
+                                    Component.text("Shift-click to change plot", NamedTextColor.DARK_GRAY)
+                            ));
+                            this.selectedPane.addItem(new GuiItem(
+                                    new ItemBuilder(plot.getCurrentlyHarvesting().getItem())
+                                            .displayName(plot.getDisplayName())
+                                            .lore(lore)
+                                            .build(), handleSelectAction(plot)
+                            ));
+                        }
+                );
 
     }
 

@@ -37,10 +37,13 @@ public class FarmSettingsMainMenu extends ChestGui {
 
     private GuiItem getAutoStoreItem() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#2b84ff>Auto Store</color></b>");
+        Component unlockedPlots = MiniMessage.miniMessage().deserialize("<white>Unlocked Slots: <green>" + this.region.getAutoStorePlotsCount() + "/" + this.region.getAutoStoreSlots() + "</green></white>");
         return new GuiItem(new SkullBuilder()
                 .displayName(name)
                 .lore(List.of(
                         Component.text("Automatically puts crops into the silo", NamedTextColor.GRAY),
+                        Component.empty(),
+                        unlockedPlots,
                         Component.empty(),
                         Component.text("Click to select plots", NamedTextColor.DARK_GRAY)
                 ))

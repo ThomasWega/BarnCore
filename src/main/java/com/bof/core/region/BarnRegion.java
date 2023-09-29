@@ -1,15 +1,15 @@
 package com.bof.core.region;
 
 
-import com.bof.core.region.plot.harvestable.HarvestablePlot;
 import com.bof.core.region.plot.Plot;
 import com.bof.core.region.plot.PlotType;
+import com.bof.core.region.plot.harvestable.HarvestablePlot;
 import com.bof.core.region.plot.selling.barn.BarnPlot;
 import com.bof.core.region.plot.selling.silo.SiloPlot;
 import com.bof.core.utils.HarvestableUtils;
 import com.github.unldenis.hologram.HologramPool;
 import com.github.unldenis.hologram.InteractiveHologramPool;
-import lombok.Data;
+import lombok.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -32,6 +32,8 @@ public class BarnRegion {
     private boolean isAssigned = false;
     private Player owner;
     private Location spawnLocation;
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Map<PlotType, Set<Plot>> plots;
     private HologramPool hologramPool;
     private InteractiveHologramPool interactiveHologramPool;
@@ -118,12 +120,27 @@ public class BarnRegion {
     }
 
     public int getAutoStorePlotsCount() {
-        return (int) this.plots.values().stream()
+        return this.getAutoStorePlots().size();
+    }
+
+    public Set<HarvestablePlot<?>> getAutoStorePlots() {
+        return this.plots.values().stream()
                 .flatMap(Set::stream)
                 .filter(plot -> plot instanceof HarvestablePlot)
-                .filter(plot -> ((HarvestablePlot<?>) plot).isAutoStore())
-                .count();
+                .map(plot -> ((HarvestablePlot<?>) plot))
+                .filter(HarvestablePlot::isAutoStore)
+                .collect(Collectors.toSet());
     }
+
+    public Set<HarvestablePlot<?>> getNonAutoStorePlots() {
+        return this.plots.values().stream()
+                .flatMap(Set::stream)
+                .filter(plot -> plot instanceof HarvestablePlot)
+                .map(plot -> ((HarvestablePlot<?>) plot))
+                .filter(plot -> !plot.isAutoStore())
+                .collect(Collectors.toSet());
+    }
+
 
     public int getAllSilosFilledAmount() {
         return this.plots.get(PlotType.SILO).stream()
