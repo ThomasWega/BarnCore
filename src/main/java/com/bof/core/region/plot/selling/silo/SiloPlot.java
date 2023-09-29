@@ -6,10 +6,12 @@ import com.bof.core.region.plot.selling.SellingPlot;
 import com.bof.core.region.plot.selling.silo.menu.SiloPlotMainMenu;
 import com.bof.core.utils.BoxUtils;
 import com.bof.core.utils.HarvestableUtils;
+import com.bof.toolkit.utils.ColorUtils;
 import com.github.unldenis.hologram.Hologram;
 import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
 import com.github.unldenis.hologram.line.BlockLine;
 import lombok.Data;
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
@@ -136,10 +138,25 @@ public class SiloPlot implements SellingPlot {
 
     @Override
     public List<Component> getLore() {
-        return List.of(
-                MiniMessage.miniMessage().deserialize("<color:#FCDB03>Capacity: <red>%barn_plot_silo_capacity_" + this.id + "%</red></color>"),
-                MiniMessage.miniMessage().deserialize("<color:#D4F542>Filled: <red>%barn_plot_silo_filled_" + this.id + "%/%barn_plot_silo_capacity_" + this.id + "% (%barn_plot_silo_percentage_filled_" + this.id + "%%)</red></color>"),
-                MiniMessage.miniMessage().deserialize("<color:#2B84FF>Auto Sell: %barn_plot_silo_colored_status_autosell_" + this.id + "%</color>")
+        List<String> unformatted = List.of(
+                "<color:#FCDB03>Capacity: <red>%barn_plot_silo_capacity_" + this.id + "%</red></color>",
+                "<color:#D4F542>Filled: <red>%barn_plot_silo_filled_" + this.id + "%/%barn_plot_silo_capacity_" + this.id + "% (%barn_plot_silo_percentage_filled_" + this.id + "%%)</red></color>",
+                "<color:#2B84FF>Auto Sell: %barn_plot_silo_colored_status_autosell_" + this.id + "%</color>"
         );
+
+        List<String> parsedPlaceholders = unformatted.stream()
+                .map(s -> {
+                    if (this.owningRegion.getOwner() != null) {
+                        return PlaceholderAPI.setPlaceholders(this.owningRegion.getOwner(), s);
+                    } else {
+                        return s;
+                    }
+                })
+                .toList();
+
+        return parsedPlaceholders.stream()
+                .map(ColorUtils::convertLegacyToMiniMessage)
+                .map(MiniMessage.miniMessage()::deserialize)
+                .toList();
     }
 }
