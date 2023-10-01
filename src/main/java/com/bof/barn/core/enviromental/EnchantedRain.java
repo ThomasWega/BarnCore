@@ -4,6 +4,10 @@ import java.util.Random;
 
 import static com.bof.barn.core.Core.WORLD;
 
+/**
+ * Enchanted Rain boosts the drops of harvestables (doubles)
+ * Handles the starting and stopping.
+ */
 public class EnchantedRain {
     private final Random random = new Random();
     public static boolean isRunning = false;
