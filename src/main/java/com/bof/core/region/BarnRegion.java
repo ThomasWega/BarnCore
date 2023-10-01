@@ -313,7 +313,7 @@ public class BarnRegion {
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
 
-        if (owner.isOnline()) {
+        if (owner != null && owner.isOnline()) {
             onlineMembers.add(owner);
         }
 

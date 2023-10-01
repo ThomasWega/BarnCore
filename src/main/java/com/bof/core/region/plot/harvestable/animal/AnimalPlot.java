@@ -259,25 +259,10 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
 
     @Override
     public List<Component> getLore() {
-        List<String> unformatted = List.of(
+        return this.parsePlaceholdersAndConvertToComponent(List.of(
                 "<color:#FCDB03>Upgrades: <red>OFF</red></color>",
                 "<color:#D4F542>Enchanted Rain: <red>OFF</red></color>",
                 "<color:#2B84FF>Auto Store: %barn_plot_animal_colored_status_autostore_" + this.id + "%</color>"
-        );
-
-        List<String> parsedPlaceholders = unformatted.stream()
-                .map(s -> {
-                    if (this.owningRegion.getOwner() != null) {
-                        return PlaceholderAPI.setPlaceholders(this.owningRegion.getOwner(), s);
-                    } else {
-                        return s;
-                    }
-                })
-                .toList();
-
-        return parsedPlaceholders.stream()
-                .map(ColorUtils::convertLegacyToMiniMessage)
-                .map(MiniMessage.miniMessage()::deserialize)
-                .toList();
+        ));
     }
 }

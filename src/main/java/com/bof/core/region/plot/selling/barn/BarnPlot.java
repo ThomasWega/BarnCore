@@ -172,25 +172,10 @@ public class BarnPlot implements SellingPlot {
 
     @Override
     public List<Component> getLore() {
-        List<String> unformatted = List.of(
+        return this.parsePlaceholdersAndConvertToComponent(List.of(
                 "<color:#FCDB03>Capacity: <red>%barn_plot_barn_capacity_" + this.id + "%</red></color>",
                 "<color:#D4F542>Filled: <red>%barn_plot_barn_filled_" + this.id + "%/%barn_plot_barn_capacity_" + this.id + "% (%barn_plot_barn_percentage_filled_" + this.id + "%%)</red></color>",
                 "<color:#2B84FF>Auto Sell: %barn_plot_barn_colored_status_autosell_" + this.id + "%</color>"
-        );
-
-        List<String> parsedPlaceholders = unformatted.stream()
-                .map(s -> {
-                    if (this.owningRegion.getOwner() != null) {
-                        return PlaceholderAPI.setPlaceholders(this.owningRegion.getOwner(), s);
-                    } else {
-                        return s;
-                    }
-                })
-                .toList();
-
-        return parsedPlaceholders.stream()
-                .map(ColorUtils::convertLegacyToMiniMessage)
-                .map(MiniMessage.miniMessage()::deserialize)
-                .toList();
+        ));
     }
 }

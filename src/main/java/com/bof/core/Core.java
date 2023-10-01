@@ -45,7 +45,7 @@ public final class Core extends JavaPlugin implements Listener {
         this.registerPAPIPlaceholders();
     }
 
-    // TODO Separate the code a bit more (getLore, Menus etc..)
+    // TODO Separate the code a bit more (Menus etc..)
 
     @Override
     public void onDisable() {
