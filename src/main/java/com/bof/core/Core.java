@@ -1,6 +1,7 @@
 package com.bof.core;
 
 import com.bof.barn.world_generator.event.GridLoadedEvent;
+import com.bof.core.enviromental.EnvironmentalHandler;
 import com.bof.core.hotbar.PlayerHotbarHandler;
 import com.bof.core.placeholders.papi.PAPIHook;
 import com.bof.core.region.RegionManager;
@@ -41,14 +42,17 @@ public final class Core extends JavaPlugin implements Listener {
     public void onEnable() {
         LOGGER = getComponentLogger();
         this.loadFiles();
+        this.registerHandlers();
         this.registerEvents();
         this.registerPAPIPlaceholders();
     }
 
-    // TODO Separate the code a bit more (Menus etc..)
-
     @Override
     public void onDisable() {
+    }
+
+    private void registerHandlers() {
+        new EnvironmentalHandler(this);
     }
 
     private void registerEvents() {
