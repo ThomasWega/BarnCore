@@ -84,7 +84,7 @@ public class SiloContainerMenu extends PaginatedNavGUI {
                         }
 
                         // sell only one
-                        float value = this.plot.sellCrops(new ItemStack(cropType.getMaterial()));
+                        float value = this.plot.sellCrops(cropType.getItem());
                         this.update();
                         player.sendMessage("TO ADD - Sold crop for " + value);
                     });
