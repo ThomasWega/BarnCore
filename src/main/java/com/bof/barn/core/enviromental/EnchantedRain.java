@@ -13,7 +13,7 @@ public class EnchantedRain {
     public static boolean isRunning = false;
 
     public boolean shouldStartEnchantedRain() {
-       return this.random.nextDouble() <= 0.075;
+       return this.random.nextDouble() <= 1; //0.075;
     }
 
     public boolean start() {

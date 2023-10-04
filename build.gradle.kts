@@ -24,6 +24,10 @@ repositories {
         url = uri("https://repo.extendedclip.com/content/repositories/placeholderapi/")
     }
     maven { url = uri("https://repo.dmulloy2.net/repository/public/") }
+    maven {
+        name = "CodeMC"
+        url = uri("https://repo.codemc.io/repository/maven-public/")
+    }
 }
 
 dependencies {
@@ -32,6 +36,7 @@ dependencies {
     api("com.github.unldenis:Hologram-Lib:2.6.0")
     api("com.github.stefvanschie.inventoryframework:IF:0.10.11")
     api("cloud.commandframework", "cloud-paper", "1.8.4")
+    api("de.tr7zw:item-nbt-api:2.12.0")
     implementation(platform("com.intellectualsites.bom:bom-newest:1.37"))
     compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core")
     compileOnly("com.bof.barn:world-generator:1.0.0-SNAPSHOT")
@@ -48,6 +53,7 @@ tasks {
 
     shadowJar {
         archiveFileName.set("BoFBarnCore-${project.version}.jar")
+        relocate("de.tr7zw.changeme.nbtapi", "com.bof.barn.core")
     }
 
     compileJava {

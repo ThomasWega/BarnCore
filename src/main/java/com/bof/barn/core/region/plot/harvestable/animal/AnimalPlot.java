@@ -133,7 +133,7 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
 
             if (optAnimalType.isPresent()) {
                 AnimalType animalType = optAnimalType.get();
-                ItemStack item = new ItemStack(animalType.getItem());
+                ItemStack item = HarvestableManager.tryEnchantedDrop(new ItemStack(animalType.getItem()));
                 AdditionResult result = this.handleAddition(item);
                 switch (result) {
                     case CONTAINER_FULL -> player.sendMessage("TO ADD - All barns are full. Putting the items to inventory");
@@ -149,14 +149,14 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
             }
         }
 
-        // everything was harvested
-        if (this.getRemainingHarvestables() == 0) {
-            this.setCurrentlyHarvesting(AnimalType.NONE);
-        }
-
         int bonusCount = HarvestableManager.handleBonusDrops(this, entitiesCopy);
         if (bonusCount > 0) {
             player.sendMessage("TO ADD - bonus drops " + bonusCount);
+        }
+
+        // everything was harvested
+        if (this.getRemainingHarvestables() == 0) {
+            this.setCurrentlyHarvesting(AnimalType.NONE);
         }
 
         return count;

@@ -105,7 +105,7 @@ public class FarmPlot implements HarvestablePlot<CropType> {
                     .filter(cropType -> cropType != CropType.NONE)
                     .isPresent()) {
 
-                ItemStack item = new ItemStack(block.getType());
+                ItemStack item = HarvestableManager.tryEnchantedDrop(new ItemStack(block.getType()));
                 AdditionResult result = this.handleAddition(item);
                 switch (result) {
                     case CONTAINER_FULL -> player.sendMessage("TO ADD - All silos are full. Putting the items to inventory");
@@ -118,14 +118,14 @@ public class FarmPlot implements HarvestablePlot<CropType> {
             }
         }
 
-        // everything was harvested
-        if (this.getRemainingHarvestables() == 0) {
-            this.setCurrentlyHarvesting(CropType.NONE);
-        }
-
         int bonusCount = HarvestableManager.handleBonusDrops(this, blocks);
         if (bonusCount > 0) {
             player.sendMessage("TO ADD - bonus drops " + bonusCount);
+        }
+
+        // everything was harvested
+        if (this.getRemainingHarvestables() == 0) {
+            this.setCurrentlyHarvesting(CropType.NONE);
         }
 
         return count;

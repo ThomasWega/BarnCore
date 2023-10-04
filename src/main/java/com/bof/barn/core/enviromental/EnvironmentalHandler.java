@@ -39,7 +39,7 @@ public class EnvironmentalHandler {
             if (this.enchantedRain.stop()) {
                 this.handleRainStop();
             }
-        }, 300 * 20, // start checking after first 5 mins
+        }, 20, //300 * 20, // start checking after first 5 mins
                 600 * 20); // check every 10 mins
     }
 
