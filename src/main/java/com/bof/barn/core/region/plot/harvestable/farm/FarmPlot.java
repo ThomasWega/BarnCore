@@ -1,5 +1,7 @@
 package com.bof.barn.core.region.plot.harvestable.farm;
 
+import com.bof.barn.core.HarvestableManager;
+import com.bof.barn.core.region.plot.harvestable.AdditionResult;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.PlotType;
 import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
@@ -104,30 +106,26 @@ public class FarmPlot implements HarvestablePlot<CropType> {
                     .isPresent()) {
 
                 ItemStack item = new ItemStack(block.getType());
-                if (this.isAutoStore()) {
-                    // first tries putting into silo, then tries inventory, if both fails, returns list of items which failed
-                    if (!this.addToContainer(item).isEmpty()) {
-                        player.sendMessage("TO ADD - All silos are full. Putting the items to inventory");
-                        if (!this.addToInventory(item).isEmpty()) {
-                            player.sendMessage("TO ADD - Crops inventory is full 1");
-                        }
-                        break;
-                    }
-                } else {
-                    if (!this.addToInventory(item).isEmpty()) {
-                        player.sendMessage("TO ADD - Crops inventory is full 2");
-                        break;
+                AdditionResult result = this.handleAddition(item);
+                switch (result) {
+                    case CONTAINER_FULL -> player.sendMessage("TO ADD - All silos are full. Putting the items to inventory");
+                    case INV_FULL -> player.sendMessage("TO ADD - Crops inventory is full 1");
+                    case SUCCESS -> {
+                        block.setType(Material.AIR);
+                        count++;
                     }
                 }
-
-                block.setType(Material.AIR);
-                count++;
             }
         }
 
         // everything was harvested
         if (this.getRemainingHarvestables() == 0) {
             this.setCurrentlyHarvesting(CropType.NONE);
+        }
+
+        int bonusCount = HarvestableManager.handleBonusDrops(this, blocks);
+        if (bonusCount > 0) {
+            player.sendMessage("TO ADD - bonus drops " + bonusCount);
         }
 
         return count;

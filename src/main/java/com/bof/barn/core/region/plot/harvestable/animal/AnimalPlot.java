@@ -1,9 +1,11 @@
 package com.bof.barn.core.region.plot.harvestable.animal;
 
-import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
-import com.bof.barn.core.region.plot.harvestable.animal.menu.AnimalPlotMainMenu;
+import com.bof.barn.core.HarvestableManager;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.PlotType;
+import com.bof.barn.core.region.plot.harvestable.AdditionResult;
+import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
+import com.bof.barn.core.region.plot.harvestable.animal.menu.AnimalPlotMainMenu;
 import com.bof.barn.core.region.plot.selling.barn.BarnPlot;
 import com.bof.barn.core.utils.BoxUtils;
 import com.github.unldenis.hologram.Hologram;
@@ -28,6 +30,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static com.bof.barn.core.Core.WORLD;
+
 
 @Data
 public class AnimalPlot implements HarvestablePlot<AnimalType> {
@@ -131,34 +134,29 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
             if (optAnimalType.isPresent()) {
                 AnimalType animalType = optAnimalType.get();
                 ItemStack item = new ItemStack(animalType.getItem());
-                if (this.isAutoStore()) {
-                    // first tries putting into barn, then tries inventory, if both fails, returns list of items which failed
-                    if (!this.addToContainer(item).isEmpty()) {
-                        player.sendMessage("TO ADD - The barn is full. Putting the items to inventory");
-                        if (!this.addToInventory(item).isEmpty()) {
-                            player.sendMessage("TO ADD - Animals inventory is full 1");
-                        }
-                        break;
-                    }
-                } else {
-                    if (!this.addToInventory(item).isEmpty()) {
-                        player.sendMessage("TO ADD - Animals inventory is full 2");
-                        break;
+                AdditionResult result = this.handleAddition(item);
+                switch (result) {
+                    case CONTAINER_FULL -> player.sendMessage("TO ADD - All barns are full. Putting the items to inventory");
+                    case INV_FULL -> player.sendMessage("TO ADD - Animal inventory is full 1");
+                    case SUCCESS -> {
+                        entity.setKiller(player);
+                        entity.setHealth(0);
+                        count++;
+                        // needs to be after killing the mob
+                        this.animals.remove(entity.getUniqueId());
                     }
                 }
-
-                entity.setKiller(player);
-                entity.setHealth(0);
-                count++;
-
-                // needs to be after killing the mob
-                this.animals.remove(entity.getUniqueId());
             }
         }
 
         // everything was harvested
         if (this.getRemainingHarvestables() == 0) {
             this.setCurrentlyHarvesting(AnimalType.NONE);
+        }
+
+        int bonusCount = HarvestableManager.handleBonusDrops(this, entitiesCopy);
+        if (bonusCount > 0) {
+            player.sendMessage("TO ADD - bonus drops " + bonusCount);
         }
 
         return count;

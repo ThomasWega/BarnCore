@@ -83,4 +83,20 @@ public interface HarvestablePlot<T extends HarvestableType> extends Plot {
      * @return Items that couldn't be added to the silo
      */
     @NotNull List<ItemStack> addToContainer(@NotNull Collection<ItemStack> items);
+
+    default AdditionResult handleAddition(@NotNull ItemStack item) {
+        if (this.isAutoStore()) {
+            if (!this.addToContainer(item).isEmpty()) {
+                if (!this.addToInventory(item).isEmpty()) {
+                    return AdditionResult.INV_FULL;
+                }
+                return AdditionResult.CONTAINER_FULL;
+            }
+        } else {
+            if (!this.addToInventory(item).isEmpty()) {
+                return AdditionResult.INV_FULL;
+            }
+        }
+        return AdditionResult.SUCCESS;
+    }
 }

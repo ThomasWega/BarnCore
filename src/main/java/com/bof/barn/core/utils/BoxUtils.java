@@ -1,9 +1,9 @@
 package com.bof.barn.core.utils;
 
-import com.bof.barn.core.Core;
 import com.bof.barn.core.region.plot.PlotType;
 import com.bof.toolkit.utils.ColorUtils;
 import org.apache.commons.lang3.tuple.MutablePair;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -18,6 +18,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.bof.barn.core.Core.WORLD;
 
 public class BoxUtils {
 
@@ -72,7 +74,7 @@ public class BoxUtils {
      */
     public static Block getCenterBlock(@NotNull BoundingBox box) {
         Vector center = box.getCenter();
-        return Core.WORLD.getBlockAt(center.getBlockX(), center.getBlockY(), center.getBlockZ());
+        return WORLD.getBlockAt(center.getBlockX(), center.getBlockY(), center.getBlockZ());
     }
 
     /**
@@ -134,7 +136,7 @@ public class BoxUtils {
         for (int x = min.getBlockX(); x <= max.getBlockX(); x++) {
             for (int y = min.getBlockY(); y <= max.getBlockY(); y++) {
                 for (int z = min.getBlockZ(); z <= max.getBlockZ(); z++) {
-                    Block block = Core.WORLD.getBlockAt(x, y, z);
+                    Block block = WORLD.getBlockAt(x, y, z);
                     if (!includeAir && block.getType() == Material.AIR) continue;
 
                     blocks.add(block);
@@ -184,6 +186,6 @@ public class BoxUtils {
         double randomY = min.getY() + Math.random() * (max.getY() - min.getY());
         double randomZ = min.getZ() + Math.random() * (max.getZ() - min.getZ());
 
-        return new Location(Core.WORLD, randomX, randomY, randomZ);
+        return new Location(Bukkit.getWorld("world"), randomX, randomY, randomZ);
     }
 }

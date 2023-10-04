@@ -32,21 +32,26 @@ public final class Core extends JavaPlugin implements Listener {
     public static ComponentLogger LOGGER;
     private final RegionStorage regionStorage = new RegionStorage();
     private RegionManager regionManager;
-    public static final World WORLD = WorldGenerator.WORLD;
+    public static World WORLD;
 
     @EventHandler(priority = EventPriority.LOWEST)
     private void onGridLoad(GridLoadedEvent event) {
+        WORLD = WorldGenerator.WORLD;
         this.regionManager = new RegionManager(this);
         this.registerEventsAfterGridLoad();
         this.regionStorage.convertToRegions();
+        this.onFullEnable();
     }
 
     @Override
     public void onEnable() {
         LOGGER = getComponentLogger();
         this.loadFiles();
-        this.registerHandlers();
         this.registerEvents();
+    }
+
+    public void onFullEnable() {
+        this.registerHandlers();
         this.registerPAPIPlaceholders();
     }
 
