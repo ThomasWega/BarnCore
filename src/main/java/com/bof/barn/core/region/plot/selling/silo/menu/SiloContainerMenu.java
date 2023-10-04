@@ -53,7 +53,7 @@ public class SiloContainerMenu extends PaginatedNavGUI {
     }
 
     private GuiItem getCropItem(ItemStack itemStack, CropType cropType) {
-        GuiItem guiItem = new GuiItem(new ItemBuilder(cropType.getItemMaterial())
+        GuiItem guiItem = new GuiItem(new ItemBuilder(itemStack)
                 .displayName(Component.text(itemStack.getAmount() + "x ", NamedTextColor.GRAY).append(cropType.getDisplayName()))
                 .lore(List.of(
                         Component.text("Price per piece: ", NamedTextColor.WHITE).append(Component.text(cropType.getValue(), NamedTextColor.RED)),

@@ -23,7 +23,7 @@ public class ItemStackUtils {
 
         return new ArrayList<>(copiedItems.stream()
                 .collect(Collectors.toMap(
-                        ItemStack::getType,
+                        itemStack -> itemStack,
                         Function.identity(),
                         (existing, replacement) -> {
                             ItemStack mergedItem = existing.clone();

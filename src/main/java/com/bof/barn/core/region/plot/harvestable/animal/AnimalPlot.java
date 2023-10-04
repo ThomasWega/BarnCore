@@ -119,34 +119,32 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
      * @return amount of animals that were successfully killed
      */
     public int handleAnimalKill(@NotNull Player player, @NotNull Collection<LivingEntity> entities) {
-        int count = 0;
+        final int[] count = {0};
 
         // there is nothing to harvest
         if (currentlyHarvesting == AnimalType.NONE || !isHarvestablePresent()) {
-            return count;
+            return count[0];
         }
 
         List<LivingEntity> entitiesCopy = new ArrayList<>(entities);
         for (LivingEntity entity : entitiesCopy) {
-            Optional<AnimalType> optAnimalType = AnimalType.getByEntityType(entity.getType())
-                    .filter(type -> type != AnimalType.NONE);
-
-            if (optAnimalType.isPresent()) {
-                AnimalType animalType = optAnimalType.get();
-                ItemStack item = HarvestableManager.tryEnchantedDrop(new ItemStack(animalType.getItem()));
-                AdditionResult result = this.handleAddition(item);
-                switch (result) {
-                    case CONTAINER_FULL -> player.sendMessage("TO ADD - All barns are full. Putting the items to inventory");
-                    case INV_FULL -> player.sendMessage("TO ADD - Animal inventory is full 1");
-                    case SUCCESS -> {
-                        entity.setKiller(player);
-                        entity.setHealth(0);
-                        count++;
-                        // needs to be after killing the mob
-                        this.animals.remove(entity.getUniqueId());
-                    }
-                }
-            }
+            AnimalType.getByEntityType(entity.getType())
+                    .filter(type -> type != AnimalType.NONE)
+                    .ifPresent(animalType -> {
+                        ItemStack item = HarvestableManager.tryEnchantedDrop(new ItemStack(animalType.getItem()));
+                        AdditionResult result = this.handleAddition(item);
+                        switch (result) {
+                            case CONTAINER_FULL -> player.sendMessage("TO ADD - All barns are full. Putting the items to inventory");
+                            case INV_FULL -> player.sendMessage("TO ADD - Animal inventory is full 1");
+                            case SUCCESS -> {
+                                entity.setKiller(player);
+                                entity.setHealth(0);
+                                count[0]++;
+                                // needs to be after killing the mob
+                                this.animals.remove(entity.getUniqueId());
+                            }
+                        }
+                    });
         }
 
         int bonusCount = HarvestableManager.handleBonusDrops(this, entitiesCopy);
@@ -159,7 +157,7 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
             this.setCurrentlyHarvesting(AnimalType.NONE);
         }
 
-        return count;
+        return count[0];
     }
 
 

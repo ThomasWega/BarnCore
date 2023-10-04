@@ -22,7 +22,7 @@ public class HarvestableManager {
         ItemStack clone = itemStack.clone();
 
         // TODO change to 0.001 (1 in 1000)
-        if (random.nextDouble() <= 0.5) {
+        if (random.nextDouble() <= -1) {
             clone = new ItemBuilder(itemStack)
                     .addEnchantment(Enchantment.DURABILITY, 1)
                     .hideFlags()

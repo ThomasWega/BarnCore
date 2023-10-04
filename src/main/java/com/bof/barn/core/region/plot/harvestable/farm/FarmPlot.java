@@ -1,9 +1,9 @@
 package com.bof.barn.core.region.plot.harvestable.farm;
 
 import com.bof.barn.core.HarvestableManager;
-import com.bof.barn.core.region.plot.harvestable.AdditionResult;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.PlotType;
+import com.bof.barn.core.region.plot.harvestable.AdditionResult;
 import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
 import com.bof.barn.core.region.plot.harvestable.farm.menu.FarmPlotMainMenu;
 import com.bof.barn.core.region.plot.selling.silo.SiloPlot;
@@ -93,29 +93,28 @@ public class FarmPlot implements HarvestablePlot<CropType> {
      * @return amount of crops that were successfully broken
      */
     public int handleCropBreak(@NotNull Player player, @NotNull Collection<Block> blocks) {
-        int count = 0;
+        final int[] count = {0};
 
         // there is nothing to harvest
         if (this.currentlyHarvesting == CropType.NONE || !isHarvestablePresent()) {
-            return count;
+            return count[0];
         }
 
         for (Block block : blocks) {
-            if (CropType.getByMaterial(block.getType())
+            CropType.getByMaterial(block.getType())
                     .filter(cropType -> cropType != CropType.NONE)
-                    .isPresent()) {
-
-                ItemStack item = HarvestableManager.tryEnchantedDrop(new ItemStack(block.getType()));
-                AdditionResult result = this.handleAddition(item);
-                switch (result) {
-                    case CONTAINER_FULL -> player.sendMessage("TO ADD - All silos are full. Putting the items to inventory");
-                    case INV_FULL -> player.sendMessage("TO ADD - Crops inventory is full 1");
-                    case SUCCESS -> {
-                        block.setType(Material.AIR);
-                        count++;
-                    }
-                }
-            }
+                    .ifPresent(cropType -> {
+                        ItemStack item = HarvestableManager.tryEnchantedDrop(new ItemStack(cropType.getMaterial()));
+                        AdditionResult result = this.handleAddition(item);
+                        switch (result) {
+                            case CONTAINER_FULL -> player.sendMessage("TO ADD - All silos are full. Putting the items to inventory");
+                            case INV_FULL -> player.sendMessage("TO ADD - Crops inventory is full 1");
+                            case SUCCESS -> {
+                                block.setType(Material.AIR);
+                                count[0]++;
+                            }
+                        }
+                    });
         }
 
         int bonusCount = HarvestableManager.handleBonusDrops(this, blocks);
@@ -128,7 +127,7 @@ public class FarmPlot implements HarvestablePlot<CropType> {
             this.setCurrentlyHarvesting(CropType.NONE);
         }
 
-        return count;
+        return count[0];
     }
 
     @Override
