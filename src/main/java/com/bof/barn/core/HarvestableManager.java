@@ -22,15 +22,16 @@ public class HarvestableManager {
         ItemStack clone = itemStack.clone();
 
         // TODO change to 0.001 (1 in 1000)
-        if (random.nextDouble() <= -1) {
+        if (random.nextDouble() <= 0.5) {
             clone = new ItemBuilder(itemStack)
                     .addEnchantment(Enchantment.DURABILITY, 1)
                     .hideFlags()
                     .build();
+
+            NBT.modify(clone, nbt -> {
+                nbt.setBoolean("barn-enchanted-harvestable", true);
+            });
         }
-        NBT.modify(clone, nbt -> {
-            nbt.setBoolean("barn-enchanted-harvestable", true);
-        });
 
         return clone;
     }
@@ -74,7 +75,8 @@ public class HarvestableManager {
     public static int handleBonusDrops(@NotNull HarvestablePlot<?> plot, int bonusDropAmount) {
         int bonusCount = 0;
         for (int i = 0; i < bonusDropAmount; i++) {
-            AdditionResult result = plot.handleAddition(new ItemStack(plot.getCurrentlyHarvesting().getItem()));
+            ItemStack itemStack = new ItemStack(plot.getCurrentlyHarvesting().getItem());
+            AdditionResult result = plot.handleAddition(itemStack);
             if (result == AdditionResult.SUCCESS) {
                 bonusCount++;
             }

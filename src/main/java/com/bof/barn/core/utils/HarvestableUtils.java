@@ -19,7 +19,7 @@ public class HarvestableUtils {
      */
     public static float getValueOfCrops(@NotNull Collection<ItemStack> crops) {
         return (float) crops.stream()
-                .map(itemStack -> CropType.getByMaterial(itemStack.getType()).orElse(CropType.NONE))
+                .map(itemStack -> CropType.getByItemMaterial(itemStack.getType()).orElse(CropType.NONE))
                 .mapToDouble(CropType::getValue)
                 .sum();
     }
@@ -30,7 +30,7 @@ public class HarvestableUtils {
      */
     public static float getValueOfAnimals(@NotNull Collection<ItemStack> crops) {
         return (float) crops.stream()
-                .map(itemStack -> AnimalType.getByItem(itemStack).orElse(AnimalType.NONE))
+                .map(itemStack -> AnimalType.getByItemMaterial(itemStack.getType()).orElse(AnimalType.NONE))
                 .mapToDouble(AnimalType::getValue)
                 .sum();
     }

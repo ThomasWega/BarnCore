@@ -43,7 +43,7 @@ public class SiloContainerMenu extends PaginatedNavGUI {
         List<GuiItem> items = mergedItems.stream()
                 .map(itemStack -> {
                     // should always return okay, as the only items which are put into the inventory are crops
-                    CropType cropType = CropType.getByMaterial(itemStack.getType()).get();
+                    CropType cropType = CropType.getByItemMaterial(itemStack.getType()).get();
                     GuiItem guiItem = this.getCropItem(itemStack, cropType);
                     guiItem.setAction(handleSell(guiItem, cropType));
                     return guiItem;

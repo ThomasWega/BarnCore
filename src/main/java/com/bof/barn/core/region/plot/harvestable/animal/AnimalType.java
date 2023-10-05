@@ -40,17 +40,9 @@ public enum AnimalType implements HarvestableType {
                 .collect(Collectors.toSet());
     }
 
-    public static Optional<AnimalType> getByItem(@NotNull ItemStack itemStack) {
-        return getByItem(itemStack, false);
-    }
-
-    public static Optional<AnimalType> getByItem(@NotNull ItemStack itemStack, boolean ignoreAmount) {
-        ItemStack clone = itemStack.clone();
-        if (ignoreAmount) {
-            clone.setAmount(1);
-        }
+    public static Optional<AnimalType> getByItemMaterial(@NotNull Material material) {
         for (AnimalType type : AnimalType.values()) {
-            if (type.getItem().equals(clone)) return Optional.of(type);
+            if (type.getItem().getType() == material) return Optional.of(type);
         }
         return Optional.empty();
     }

@@ -43,7 +43,7 @@ public class BarnContainerMenu extends PaginatedNavGUI {
         List<GuiItem> items = mergedItems.stream()
                 .map(itemStack -> {
                     // should always return okay, as the only items which are put into the inventory are animals
-                    AnimalType animalType = AnimalType.getByItem(itemStack, true).get();
+                    AnimalType animalType = AnimalType.getByItemMaterial(itemStack.getType()).get();
                     GuiItem guiItem = this.getAnimalItem(itemStack, animalType);
                     guiItem.setAction(handleSell(guiItem, animalType));
                     return guiItem;
@@ -53,7 +53,7 @@ public class BarnContainerMenu extends PaginatedNavGUI {
     }
 
     private GuiItem getAnimalItem(ItemStack itemStack, AnimalType animalType) {
-        GuiItem guiItem = new GuiItem(new ItemBuilder(animalType.getItem())
+        GuiItem guiItem = new GuiItem(new ItemBuilder(itemStack)
                 .displayName(Component.text(itemStack.getAmount() + "x ", NamedTextColor.GRAY).append(animalType.getDisplayName()))
                 .lore(List.of(
                         Component.text("Price per piece: ", NamedTextColor.WHITE).append(Component.text(animalType.getValue(), NamedTextColor.RED)),
