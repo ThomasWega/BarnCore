@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Premade gui with pagination. Handles the removal of navigation buttons on first and last page
  */
-public class PaginatedNavGUI extends ChestGui {
+public abstract class PaginatedNavGUI extends ChestGui {
     public final StaticPane navPane;
     public final PaginatedPane paginatedPane;
     public final NextPageItem nextPageItem;

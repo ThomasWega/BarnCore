@@ -55,10 +55,11 @@ public final class Core extends JavaPlugin implements Listener {
         this.registerPAPIPlaceholders();
     }
 
-    //TODO add sounds
     //TODO need to separate the menus a lot more, to prevent so much code duplication
-    //TODO close menu on every button click
     //TODO maybe handleRemoval method for ContainerPlot?
+
+    //TODO add sounds
+    //TODO close menu on every button click
 
     @Override
     public void onDisable() {
