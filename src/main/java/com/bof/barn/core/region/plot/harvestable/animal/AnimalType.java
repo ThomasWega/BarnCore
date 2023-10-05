@@ -4,6 +4,7 @@ import com.bof.barn.core.region.plot.harvestable.HarvestableType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Material;
@@ -31,7 +32,7 @@ public enum AnimalType implements HarvestableType {
 
     private final EntityType entityType;
     private final ItemStack item;
-    private final Component displayName;
+    private final TextComponent displayName;
     private final float value;
 
     public static Set<ItemStack> getItemMaterials() {

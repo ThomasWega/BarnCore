@@ -1,7 +1,6 @@
 package com.bof.barn.core.enviromental;
 
 import com.bof.barn.core.Core;
-import com.bof.toolkit.utils.ColorUtils;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -45,9 +44,8 @@ public class EnvironmentalHandler {
 
     // send title and play sound for all
     private void handleRainStart() {
-        Component title = ColorUtils.color("&#ff0000&l&oE&#ff2a00&l&on&#ff5500&l&oc&#ff7f00&l&oh&#ffaa00&l&oa&#ffd400&l&on&#ffff00&l&ot&#aaff00&l&oe&#55ff00&l&od &#00ff00&l&oR&#00aa55&l&oa&#0055aa&l&oi&#0000ff&l&on");
         WORLD.showTitle(Title.title(
-                title,
+                enchantedRain.getTitle(),
                 Component.text("Drops are now doubled", NamedTextColor.GRAY)
         ));
         WORLD.playSound(Sound.sound(
@@ -59,9 +57,8 @@ public class EnvironmentalHandler {
 
     // send title and sound for all
     private void handleRainStop() {
-        Component title = ColorUtils.color("&#ff0000&l&oE&#ff2a00&l&on&#ff5500&l&oc&#ff7f00&l&oh&#ffaa00&l&oa&#ffd400&l&on&#ffff00&l&ot&#aaff00&l&oe&#55ff00&l&od &#00ff00&l&oR&#00aa55&l&oa&#0055aa&l&oi&#0000ff&l&on");
         WORLD.showTitle(Title.title(
-                title,
+                enchantedRain.getTitle(),
                 Component.text("has ended", NamedTextColor.GRAY)
         ));
         // TODO don't know what sound to play yet

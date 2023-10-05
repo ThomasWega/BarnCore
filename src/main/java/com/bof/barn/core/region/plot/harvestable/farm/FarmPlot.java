@@ -104,7 +104,7 @@ public class FarmPlot implements HarvestablePlot<CropType> {
             CropType.getByMaterial(block.getType())
                     .filter(cropType -> cropType != CropType.NONE)
                     .ifPresent(cropType -> {
-                        ItemStack item = HarvestableManager.tryEnchantedDrop(cropType.getItem());
+                        ItemStack item = HarvestableManager.getDrop(cropType);
                         AdditionResult result = this.handleAddition(item);
                         switch (result) {
                             case CONTAINER_FULL -> player.sendMessage("TO ADD - All silos are full. Putting the items to inventory");

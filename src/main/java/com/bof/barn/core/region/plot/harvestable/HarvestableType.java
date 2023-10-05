@@ -1,6 +1,6 @@
 package com.bof.barn.core.region.plot.harvestable;
 
-import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,5 +17,5 @@ public interface HarvestableType {
     /**
      * @return Display name of the item
      */
-    Component getDisplayName();
+    TextComponent getDisplayName();
 }

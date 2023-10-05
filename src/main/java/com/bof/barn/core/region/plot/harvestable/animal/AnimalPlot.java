@@ -131,7 +131,7 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
             AnimalType.getByEntityType(entity.getType())
                     .filter(type -> type != AnimalType.NONE)
                     .ifPresent(animalType -> {
-                        ItemStack item = HarvestableManager.tryEnchantedDrop(new ItemStack(animalType.getItem()));
+                        ItemStack item = HarvestableManager.getDrop(animalType);
                         AdditionResult result = this.handleAddition(item);
                         switch (result) {
                             case CONTAINER_FULL -> player.sendMessage("TO ADD - All barns are full. Putting the items to inventory");

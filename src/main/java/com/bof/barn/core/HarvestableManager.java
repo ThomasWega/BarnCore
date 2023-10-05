@@ -4,6 +4,7 @@ import com.bof.barn.core.enviromental.EnchantedRain;
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.region.plot.harvestable.AdditionResult;
 import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
+import com.bof.barn.core.region.plot.harvestable.HarvestableType;
 import de.tr7zw.changeme.nbtapi.NBT;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -18,12 +19,12 @@ public class HarvestableManager {
 
     private static final Random random = new Random();
 
-    public static ItemStack tryEnchantedDrop(@NotNull ItemStack itemStack) {
-        ItemStack clone = itemStack.clone();
+    public static ItemStack getDrop(@NotNull HarvestableType type) {
+        ItemStack clone = type.getItem().clone();
 
         // TODO change to 0.001 (1 in 1000)
         if (random.nextDouble() <= 0.5) {
-            clone = new ItemBuilder(itemStack)
+            clone = new ItemBuilder(clone)
                     .addEnchantment(Enchantment.DURABILITY, 1)
                     .hideFlags()
                     .build();
@@ -34,6 +35,10 @@ public class HarvestableManager {
         }
 
         return clone;
+    }
+
+    public static float getEnchantedHarvestableMultiplier() {
+        return 8;
     }
 
 
