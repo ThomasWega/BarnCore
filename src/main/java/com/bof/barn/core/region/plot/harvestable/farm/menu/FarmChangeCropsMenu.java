@@ -54,7 +54,7 @@ public class FarmChangeCropsMenu extends ChestGui {
             Component changeToType = MiniMessage.miniMessage().deserialize("<white>Change crops to " + cropName + "</white>");
 
             if (cropsType == plot.getCurrentlyHarvesting()) {
-                this.mainPane.addItem(new GuiItem(new ItemBuilder(cropsType.getItemMaterial())
+                this.mainPane.addItem(new GuiItem(new ItemBuilder(cropsType.getItem())
                         .displayName(cropsType.getDisplayName()
                                 .decorate(TextDecoration.BOLD))
                         .lore(List.of(
@@ -66,7 +66,7 @@ public class FarmChangeCropsMenu extends ChestGui {
                         .build()
                 ));
             } else {
-                this.mainPane.addItem(new GuiItem(new ItemBuilder(cropsType.getItemMaterial())
+                this.mainPane.addItem(new GuiItem(new ItemBuilder(cropsType.getItem())
                         .displayName(cropsType.getDisplayName()
                                 .decorate(TextDecoration.BOLD))
                         .lore(List.of(

@@ -54,6 +54,13 @@ public class HarvestableUtils {
                 .sum();
     }
 
+    /**
+     * Calculates the value of the harvestable. Includes checking for upgrades, enchanted harvestables etc...
+     *
+     * @param type Type of the harvestable
+     * @param itemStack ItemStack that is a harvestable
+     * @return Value of the harvestable
+     */
     public static float getModifiedValue(@NotNull HarvestableType type, @NotNull ItemStack itemStack) {
         float value = type.getValue();
         if (NBT.readNbt(itemStack).hasTag("barn-enchanted-harvestable")) {
@@ -62,6 +69,11 @@ public class HarvestableUtils {
         return value;
     }
 
+    /**
+     * @param type Type of the harvestable
+     * @param itemStack ItemStack that is a harvestable
+     * @return Display name with included amount and Special Type included (e.g. 2x Enchanted N)
+     */
     public static @NotNull TextComponent getModifiedDisplayName(@NotNull HarvestableType type, @NotNull ItemStack itemStack) {
         TextComponent amount = Component.text(itemStack.getAmount() + "x ", NamedTextColor.GRAY);
         TextComponent nonNumberedFullName = type.getDisplayName();

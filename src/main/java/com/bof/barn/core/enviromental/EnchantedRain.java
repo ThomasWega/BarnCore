@@ -23,6 +23,10 @@ public class EnchantedRain {
        return this.random.nextDouble() <= 1; //0.075;
     }
 
+    /**
+     * Start the enchanted rain if not already running
+     * @return whether the enchanted rain was started
+     */
     public boolean start() {
         if (isRunning) return false;
 
@@ -32,6 +36,10 @@ public class EnchantedRain {
         return true;
     }
 
+    /**
+     * Stop the enchanted rain if running
+     * @return whether the enchanted rain was stopped
+     */
     public boolean stop() {
         if (isRunning) {
             WORLD.setStorm(false);

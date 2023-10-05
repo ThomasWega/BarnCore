@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public interface SellingPlot extends Plot {
+public interface ContainerPlot extends Plot {
     /**
      * @return ItemStacks that are stored in this container
      */

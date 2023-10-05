@@ -19,6 +19,12 @@ public class HarvestableManager {
 
     private static final Random random = new Random();
 
+    /**
+     * Calculates the drop. Handles chances for special drops
+     *
+     * @param type Type of harvestable
+     * @return Drop from the harvestable
+     */
     public static ItemStack getDrop(@NotNull HarvestableType type) {
         ItemStack clone = type.getItem().clone();
 
@@ -37,6 +43,9 @@ public class HarvestableManager {
         return clone;
     }
 
+    /**
+     * @return Multiplier applied to enchanted harvestables
+     */
     public static float getEnchantedHarvestableMultiplier() {
         return 8;
     }

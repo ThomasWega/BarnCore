@@ -84,6 +84,13 @@ public interface HarvestablePlot<T extends HarvestableType> extends Plot {
      */
     @NotNull List<ItemStack> addToContainer(@NotNull Collection<ItemStack> items);
 
+
+    /**
+     * Handles the addition of an ItemStack to the designated {@link com.bof.barn.core.region.plot.selling.ContainerPlot}
+     *
+     * @param item The ItemStack to be added.
+     * @return An AdditionResult enum indicating the outcome of the addition operation.
+     */
     default AdditionResult handleAddition(@NotNull ItemStack item) {
         if (this.isAutoStore()) {
             if (!this.addToContainer(item).isEmpty()) {

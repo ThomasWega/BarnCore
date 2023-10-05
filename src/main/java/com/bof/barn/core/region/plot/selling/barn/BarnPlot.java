@@ -2,7 +2,7 @@ package com.bof.barn.core.region.plot.selling.barn;
 
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.PlotType;
-import com.bof.barn.core.region.plot.selling.SellingPlot;
+import com.bof.barn.core.region.plot.selling.ContainerPlot;
 import com.bof.barn.core.region.plot.selling.barn.menu.BarnPlotMainMenu;
 import com.bof.barn.core.utils.BoxUtils;
 import com.bof.barn.core.utils.HarvestableUtils;
@@ -22,7 +22,7 @@ import java.util.*;
 import java.util.function.Consumer;
 
 @Data
-public class BarnPlot implements SellingPlot {
+public class BarnPlot implements ContainerPlot {
     private final BarnRegion owningRegion;
     private final PlotType type = PlotType.BARN;
     private final BoundingBox box;

@@ -54,7 +54,7 @@ public class FarmPlotMainMenu extends ChestGui {
     private GuiItem getChangeCropsItem() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#FF8378>Change Crops</color></b>");
         return new GuiItem(
-                new ItemBuilder(this.plot.getCurrentlyHarvesting().getItemMaterial())
+                new ItemBuilder(this.plot.getCurrentlyHarvesting().getItem())
                         .displayName(name)
                         .lore(List.of(
                                 Component.empty(),

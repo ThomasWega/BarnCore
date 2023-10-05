@@ -75,7 +75,7 @@ public class FarmMainMenu extends ChestGui {
                                     Component.text("Click to modify this plot", NamedTextColor.DARK_GRAY)
                             ));
                             this.mainPane.addItem(new GuiItem(
-                                    new ItemBuilder(plot.getCurrentlyHarvesting().getItemMaterial())
+                                    new ItemBuilder(plot.getCurrentlyHarvesting().getItem())
                                             .displayName(plot.getDisplayName())
                                             .lore(lore)
                                             .build(), event -> new FarmPlotMainMenu(plot, false).show(event.getWhoClicked())

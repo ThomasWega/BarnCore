@@ -3,7 +3,7 @@ package com.bof.barn.core.region.plot.selling.silo;
 import com.bof.barn.core.region.plot.selling.silo.menu.SiloPlotMainMenu;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.PlotType;
-import com.bof.barn.core.region.plot.selling.SellingPlot;
+import com.bof.barn.core.region.plot.selling.ContainerPlot;
 import com.bof.barn.core.utils.BoxUtils;
 import com.bof.barn.core.utils.HarvestableUtils;
 import com.github.unldenis.hologram.Hologram;
@@ -22,7 +22,7 @@ import java.util.*;
 import java.util.function.Consumer;
 
 @Data
-public class SiloPlot implements SellingPlot {
+public class SiloPlot implements ContainerPlot {
     private final BarnRegion owningRegion;
     private final PlotType type = PlotType.SILO;
     private final BoundingBox box;

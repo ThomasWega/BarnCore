@@ -198,7 +198,7 @@ public class FarmPlot implements HarvestablePlot<CropType> {
         this.hologram.getLines().stream()
                 .filter(iLine -> iLine instanceof BlockLine)
                 .map(iLine -> ((BlockLine) iLine))
-                .forEach(blockLine -> blockLine.setObj(new ItemStack(this.currentlyHarvesting.getItemMaterial())));
+                .forEach(blockLine -> blockLine.setObj(this.getCurrentlyHarvesting().getItem()));
 
         this.hologram.getLines().forEach(iLine -> iLine.update(this.owningRegion.getAllOnlinePlayers()));
     }

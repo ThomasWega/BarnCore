@@ -71,7 +71,7 @@ public class FarmAutoStoreMenu extends ChestGui {
                                     Component.text("Shift-click to change plot", NamedTextColor.DARK_GRAY)
                             ));
                             this.selectedPane.addItem(new GuiItem(
-                                    new ItemBuilder(plot.getCurrentlyHarvesting().getItemMaterial())
+                                    new ItemBuilder(plot.getCurrentlyHarvesting().getItem())
                                             .displayName(plot.getDisplayName())
                                             .lore(lore)
                                             .build(), handleSelectAction(plot)

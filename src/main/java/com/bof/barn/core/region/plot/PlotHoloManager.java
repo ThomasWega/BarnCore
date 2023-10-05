@@ -4,9 +4,9 @@ import com.bof.barn.core.Core;
 import com.bof.barn.core.item.SkullBuilder;
 import com.bof.barn.core.placeholders.holo.HoloPlaceholders;
 import com.bof.barn.core.region.plot.event.PlotCreatedEvent;
-import com.bof.barn.core.region.plot.harvestable.farm.FarmPlot;
-import com.bof.toolkit.skin.Skin;
+import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
 import com.bof.barn.core.utils.PlotUtils;
+import com.bof.toolkit.skin.Skin;
 import com.bof.toolkit.utils.ComponentUtils;
 import com.github.unldenis.hologram.Hologram;
 import com.github.unldenis.hologram.HologramBuilder;
@@ -80,7 +80,7 @@ public class PlotHoloManager implements Listener {
             case BARN -> item = new SkullBuilder()
                     .skin(new Skin("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmRhMGMyNDBjOGM3ZjMyOGYyZTYzOGYxYmY4NjJiODg5YjZlOTdiNjYwNzAwOTcxMTM5YmQ2MzQ4MWVjZDQzOSJ9fX0=", null))
                     .build();
-            case FARM -> item = new ItemStack(((FarmPlot) plot).getCurrentlyHarvesting().getItemMaterial());
+            case FARM, ANIMAL -> item = new ItemStack(((HarvestablePlot<?>) plot).getCurrentlyHarvesting().getItem());
             case SILO -> item = new ItemStack(Material.BARREL);
         }
 
