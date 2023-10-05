@@ -135,11 +135,10 @@ public class FarmPlotMainMenu extends ChestGui {
                 .build(),
                 event -> {
                     Player player = ((Player) event.getWhoClicked());
-                    if (this.plot.setAutoStore(!plot.isAutoStore())) {
+                    if (!this.plot.setAutoStore(!plot.isAutoStore())) {
                         player.sendMessage("TO ADD - No free AutoStore slots 1");
-                    } else {
-                        player.sendMessage("TO ADD - changed auto store status 1");
                     }
+                    player.sendMessage("TO ADD - changed auto store status 1");
                     player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
                 }
         );

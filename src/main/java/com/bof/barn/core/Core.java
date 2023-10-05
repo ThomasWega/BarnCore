@@ -55,8 +55,6 @@ public final class Core extends JavaPlugin implements Listener {
         this.registerPAPIPlaceholders();
     }
 
-
-    //FIXME no free silo message on harvest
     //TODO add sounds
     //TODO add comments
     //TODO need to seperate the menus a lot more, to prevent so much code duplication

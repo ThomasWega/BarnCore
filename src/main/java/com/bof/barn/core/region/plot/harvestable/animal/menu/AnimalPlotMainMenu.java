@@ -136,11 +136,10 @@ public class AnimalPlotMainMenu extends ChestGui {
                 .build(),
                 event -> {
                     Player player = ((Player) event.getWhoClicked());
-                    if (this.plot.setAutoStore(!plot.isAutoStore())) {
+                    if (!this.plot.setAutoStore(!plot.isAutoStore())) {
                         player.sendMessage("TO ADD - No free AutoStore slots 2");
-                    } else {
-                        player.sendMessage("TO ADD - changed auto store status 2");
                     }
+                    player.sendMessage("TO ADD - changed auto store status 2");
                     player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
                 }
         );
