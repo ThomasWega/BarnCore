@@ -2,11 +2,14 @@ package com.bof.barn.core.region;
 
 
 import com.bof.barn.core.region.plot.Plot;
-import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
+import com.bof.barn.core.region.plot.PlotSetting;
+import com.bof.barn.core.region.plot.PlotType;
+import com.bof.barn.core.region.plot.harvestable.animal.AnimalType;
+import com.bof.barn.core.region.plot.harvestable.farm.CropType;
+import com.bof.barn.core.region.plot.harvestable.settings.AutoStoreSetting;
+import com.bof.barn.core.region.plot.selling.barn.BarnPlot;
 import com.bof.barn.core.region.plot.selling.silo.SiloPlot;
 import com.bof.barn.core.utils.HarvestableUtils;
-import com.bof.barn.core.region.plot.PlotType;
-import com.bof.barn.core.region.plot.selling.barn.BarnPlot;
 import com.github.unldenis.hologram.HologramPool;
 import com.github.unldenis.hologram.InteractiveHologramPool;
 import lombok.Data;
@@ -118,7 +121,7 @@ public class BarnRegion {
         // can't use removeAll, because that will remove all crops of the same type
         cropsToRemove.forEach(this.cropsInventory::remove);
 
-        return HarvestableUtils.getValueOfCrops(cropsToRemove);
+        return HarvestableUtils.getValue(CropType.class, cropsToRemove);
     }
 
     /**
@@ -171,40 +174,26 @@ public class BarnRegion {
         // can't use removeAll, because that will remove all animals of the same type
         animalsToRemove.forEach(this.animalInventory::remove);
 
-        return HarvestableUtils.getValueOfAnimals(animalsToRemove);
+        return HarvestableUtils.getValue(AnimalType.class, animalsToRemove);
     }
 
-    /**
-     * @return The amount of plots that have {@link HarvestablePlot#isAutoStore()} set to true
-     * @see #getAutoStorePlots()
-     */
-    public int getAutoStorePlotsCount() {
-        return this.getAutoStorePlots().size();
+
+    public int getSettingPlotsCount(Class<? extends PlotSetting> settingClazz) {
+        return this.getSettingPlotsCount(settingClazz, true);
+    }
+    
+    public int getSettingPlotsCount(Class<? extends PlotSetting> settingClazz, boolean value) {
+        return this.getSettingPlots(settingClazz, value).size();
     }
 
-    /**
-     * @return Plots which have {@link HarvestablePlot#isAutoStore()} set to true
-     * @see #getNonAutoStorePlots()
-     */
-    public Set<HarvestablePlot<?>> getAutoStorePlots() {
-        return this.plots.values().stream()
+    public Set<Plot> getSettingPlots(Class<? extends PlotSetting> settingClazz) {
+        return this.getSettingPlots(settingClazz, true);
+    }
+    
+    public Set<Plot> getSettingPlots(Class<? extends PlotSetting> settingClazz, boolean value) {
+        return plots.values().stream()
                 .flatMap(Set::stream)
-                .filter(plot -> plot instanceof HarvestablePlot)
-                .map(plot -> ((HarvestablePlot<?>) plot))
-                .filter(HarvestablePlot::isAutoStore)
-                .collect(Collectors.toSet());
-    }
-
-    /**
-     * @return Plots which have {@link HarvestablePlot#isAutoStore()} set to false
-     * @see #getAutoStorePlots()
-     */
-    public Set<HarvestablePlot<?>> getNonAutoStorePlots() {
-        return this.plots.values().stream()
-                .flatMap(Set::stream)
-                .filter(plot -> plot instanceof HarvestablePlot)
-                .map(plot -> ((HarvestablePlot<?>) plot))
-                .filter(plot -> !plot.isAutoStore())
+                .filter(plot -> plot.isSetting(settingClazz, value))
                 .collect(Collectors.toSet());
     }
 
@@ -262,7 +251,7 @@ public class BarnRegion {
      * @return If any of auto store slots are not assigned to plots
      */
     public boolean hasFreeAutoStoreSlots() {
-        return this.getAutoStorePlotsCount() < this.autoStoreSlots;
+        return this.getSettingPlotsCount(AutoStoreSetting.class) < this.autoStoreSlots;
     }
 
     /**

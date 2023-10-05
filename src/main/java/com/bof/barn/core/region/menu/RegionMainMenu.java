@@ -6,8 +6,8 @@ import com.bof.barn.core.menu.premade.back.GoBackPane;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.Plot;
 import com.bof.barn.core.region.plot.PlotType;
-import com.bof.barn.core.region.plot.harvestable.animal.menu.AnimalMainMenu;
-import com.bof.barn.core.region.plot.harvestable.farm.menu.FarmMainMenu;
+import com.bof.barn.core.region.plot.harvestable.animal.menu.AnimalPlotsMenu;
+import com.bof.barn.core.region.plot.harvestable.farm.menu.FarmPlotsMenu;
 import com.bof.barn.core.region.plot.harvestable.menu.HarvestableSettingsMainMenu;
 import com.bof.barn.core.region.plot.selling.barn.BarnPlot;
 import com.bof.barn.core.region.plot.selling.barn.menu.BarnPlotMainMenu;
@@ -60,7 +60,7 @@ public class RegionMainMenu extends ChestGui {
                                 Component.text("Click to see all plots", NamedTextColor.DARK_GRAY)
                         ))
                         .skin(new Skin("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjY0NTliZTA5OTk4ZTUwYWJkMmNjZjRjZDM4M2U2YjM4YWI1YmM5MDVmYWNiNjZkY2UwZTE0ZTAzOGJhMTk2OCJ9fX0=", null))
-                        .build(), event -> new FarmMainMenu(this.region).show(event.getWhoClicked())
+                        .build(), event -> new FarmPlotsMenu(this.region).show(event.getWhoClicked())
         );
     }
 
@@ -73,7 +73,7 @@ public class RegionMainMenu extends ChestGui {
                                 Component.empty(),
                                 Component.text("Click to see all plots", NamedTextColor.DARK_GRAY)
                         ))
-                        .build(), event -> new AnimalMainMenu(this.region).show(event.getWhoClicked())
+                        .build(), event -> new AnimalPlotsMenu(this.region).show(event.getWhoClicked())
         );
     }
 

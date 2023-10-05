@@ -1,10 +1,10 @@
 package com.bof.barn.core.region.plot;
 
-import com.bof.barn.core.region.plot.harvestable.animal.AnimalPlot;
-import com.bof.barn.core.region.plot.selling.silo.SiloPlot;
 import com.bof.barn.core.region.BarnRegion;
+import com.bof.barn.core.region.plot.harvestable.animal.AnimalPlot;
 import com.bof.barn.core.region.plot.harvestable.farm.FarmPlot;
 import com.bof.barn.core.region.plot.selling.barn.BarnPlot;
+import com.bof.barn.core.region.plot.selling.silo.SiloPlot;
 import com.bof.toolkit.utils.ColorUtils;
 import com.github.unldenis.hologram.Hologram;
 import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
@@ -16,9 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.BoundingBox;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -32,21 +30,39 @@ public interface Plot {
      * @return new Plot instance depending on the type
      */
     static Plot newPlot(@NotNull PlotType type, @NotNull BarnRegion owningRegion, @NotNull BoundingBox box, int id) {
+        Plot plot = null;
         switch (type) {
-            case FARM -> {
-                return new FarmPlot(owningRegion, box, id);
-            }
-            case SILO -> {
-                return new SiloPlot(owningRegion, box, id);
-            }
-            case ANIMAL -> {
-                return new AnimalPlot(owningRegion, box, id);
-            }
-            case BARN -> {
-                return new BarnPlot(owningRegion, box, id);
-            }
+            case FARM -> plot = new FarmPlot(owningRegion, box, id);
+            case SILO -> plot = new SiloPlot(owningRegion, box, id);
+            case ANIMAL -> plot = new AnimalPlot(owningRegion, box, id);
+            case BARN -> plot = new BarnPlot(owningRegion, box, id);
         }
-        return null;
+        return plot;
+    }
+
+    /**
+     * Holds all the settings for the given plot and their values.
+     * The setting can be retrieved by its class
+     *
+     * @return Setting instance that contains additional info and values
+     */
+    @NotNull Map<Class<? extends PlotSetting>, PlotSetting> getSettings();
+
+    default boolean isSetting(@NotNull Class<? extends PlotSetting> settingClazz) {
+        return this.isSetting(settingClazz, true);
+    }
+
+    default boolean isSetting(@NotNull Class<? extends PlotSetting> settingClazz, boolean value) {
+        return this.getSettings().get(settingClazz).isToggled() == value;
+    }
+
+    default void setSetting(@NotNull Class<? extends PlotSetting> settingClazz) {
+        this.setSetting(settingClazz, true);
+    }
+
+    default void setSetting(@NotNull Class<? extends PlotSetting> settingClazz, boolean value) {
+        this.getSettings().get(settingClazz).setToggled(value);
+        this.updateHologram();
     }
 
     PlotType getType();

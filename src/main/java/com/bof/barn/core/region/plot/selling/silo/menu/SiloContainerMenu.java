@@ -1,100 +1,19 @@
 package com.bof.barn.core.region.plot.selling.silo.menu;
 
-import com.bof.barn.core.region.plot.selling.silo.SiloPlot;
-import com.bof.barn.core.utils.HarvestableUtils;
-import com.bof.barn.core.utils.ItemStackUtils;
-import com.bof.barn.core.item.ItemBuilder;
-import com.bof.barn.core.menu.premade.back.GoBackPane;
-import com.bof.barn.core.menu.premade.page.PaginatedNavGUI;
+import com.bof.barn.core.menu.premade.harvestable.HarvestablesContainerMenu;
 import com.bof.barn.core.region.plot.harvestable.farm.CropType;
-import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
-import com.github.stefvanschie.inventoryframework.gui.GuiItem;
-import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
+import com.bof.barn.core.region.plot.selling.silo.SiloPlot;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-import java.util.function.Consumer;
-
-public class SiloContainerMenu extends PaginatedNavGUI {
-    private final SiloPlot plot;
+public class SiloContainerMenu extends HarvestablesContainerMenu<CropType, SiloPlot> {
 
     public SiloContainerMenu(@NotNull SiloPlot plot) {
-        super(6, ComponentHolder.of(Component.text("Container page 1")), 0, 0, 9, 5);
-        this.plot = plot;
-
-        this.initialize();
-    }
-
-    private void initialize() {
-        this.addPane(new GoBackPane(4, 5, new SiloPlotMainMenu(this.plot)));
-
-        this.setOnGlobalClick(event -> event.setCancelled(true));
-
-        this.fillWithCrops();
-        this.update();
-    }
-
-    private void fillWithCrops() {
-        List<ItemStack> mergedItems = ItemStackUtils.mergeItemStacks(this.plot.getStored());
-        List<GuiItem> items = mergedItems.stream()
-                .map(itemStack -> {
-                    // should always return okay, as the only items which are put into the inventory are crops
-                    CropType cropType = CropType.getByItemMaterial(itemStack.getType()).get();
-                    return this.getCropItem(itemStack, cropType);
-                }).toList();
-
-        this.paginatedPane.populateWithGuiItems(items);
-    }
-
-    private GuiItem getCropItem(ItemStack itemStack, CropType cropType) {
-        GuiItem guiItem = new GuiItem(new ItemBuilder(itemStack)
-                .displayName(HarvestableUtils.getModifiedDisplayName(cropType, itemStack))
-                .lore(List.of(
-                        Component.text("Price per piece: ", NamedTextColor.WHITE)
-                                .append(Component.text(HarvestableUtils.getModifiedValue(cropType, itemStack), NamedTextColor.RED)),
-                        Component.empty(),
-                        Component.text("Click to sell", NamedTextColor.GREEN)
-                ))
-                .amount(itemStack.getAmount())
-                .build());
-
-        guiItem.setAction(handleSell(guiItem, cropType, itemStack));
-        return guiItem;
-    }
-
-    private Consumer<InventoryClickEvent> handleSell(GuiItem guiItem, CropType type, ItemStack itemStack) {
-        return event -> {
-            Player player = ((Player) event.getWhoClicked());
-            this.paginatedPane.getPanes().stream()
-                    .map(pane -> ((OutlinePane) pane))
-                    .forEach(pane -> {
-                        if (!pane.getItems().contains(guiItem)) return;
-
-                        itemStack.setAmount(itemStack.getAmount() - 1);
-                        if (itemStack.getAmount() == 0) {
-                            pane.removeItem(guiItem);
-                        } else {
-                            pane.getItems().set(pane.getItems().indexOf(guiItem), this.getCropItem(itemStack, type));
-                        }
-
-                        // sell only one
-                        ItemStack clone = itemStack.clone();
-                        clone.setAmount(1);
-                        float value = this.plot.sellCrops(clone);
-                        this.update();
-                        player.sendMessage("TO ADD - Sold crop for " + value);
-                    });
-        };
+        super(plot, CropType.class, new SiloPlotMainMenu(plot), 6, 0, 0, 9, 5);
     }
 
     @Override
-    public void update() {
-        this.setTitle("Container page " + (this.paginatedPane.getPage() + 1));
-        super.update();
+    public Component getSellMessage(@NotNull CropType type, float sellValue) {
+        return Component.text("TO ADD - Sold crop for " + sellValue);
     }
 }

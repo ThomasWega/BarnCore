@@ -5,6 +5,7 @@ import com.bof.barn.core.hotbar.PlayerHotbarHandler;
 import com.bof.barn.core.region.handler.PlayerRegionAssignHandler;
 import com.bof.barn.core.region.plot.PlotHoloManager;
 import com.bof.barn.core.region.plot.PlotManager;
+import com.bof.barn.core.region.plot.PlotSettingsManager;
 import com.bof.barn.core.region.spawn.SpawnManager;
 import com.bof.barn.core.region.storage.RegionStorage;
 import com.bof.barn.world_generator.WorldGenerator;
@@ -55,11 +56,12 @@ public final class Core extends JavaPlugin implements Listener {
         this.registerPAPIPlaceholders();
     }
 
-    //TODO need to separate the menus a lot more, to prevent so much code duplication
-    //TODO maybe handleRemoval method for ContainerPlot?
+    //TODO need to separate the menus a lot more, to prevent so much code duplication (missing the 2 autostore menus for each)
+    // make sure to use the premade items for these menus as well!!
 
     //TODO add sounds
     //TODO close menu on every button click
+    //TODO figure out when to use super and when extends
 
     @Override
     public void onDisable() {
@@ -78,6 +80,7 @@ public final class Core extends JavaPlugin implements Listener {
         PluginManager p = Bukkit.getPluginManager();
         p.registerEvents(new PlotManager(), this);
         p.registerEvents(new PlotHoloManager(this), this);
+        p.registerEvents(new PlotSettingsManager(), this);
         p.registerEvents(new SpawnManager(), this);
         p.registerEvents(new PlayerRegionAssignHandler(this), this);
         p.registerEvents(regionManager, this);

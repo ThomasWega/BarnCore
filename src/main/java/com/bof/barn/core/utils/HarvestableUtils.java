@@ -2,15 +2,16 @@ package com.bof.barn.core.utils;
 
 import com.bof.barn.core.HarvestableManager;
 import com.bof.barn.core.region.plot.harvestable.HarvestableType;
-import com.bof.barn.core.region.plot.harvestable.animal.AnimalType;
-import com.bof.barn.core.region.plot.harvestable.farm.CropType;
 import de.tr7zw.changeme.nbtapi.NBT;
 import net.kyori.adventure.text.*;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 public class HarvestableUtils {
 
@@ -29,27 +30,22 @@ public class HarvestableUtils {
     }
 
     /**
-     * @param crops ItemStacks which are crops
-     * @return total value of all the crops
+     * Calculates the total value of a collection of crops based on their type and item properties.
+     *
+     * @param <T>    The type of crops that can be harvested
+     * @param type   The Class representing the specific type of crops to calculate the value for
+     * @param harvestables  ItemStacks which are harvestables
+     * @return       The total value of the harvestables
+     * @throws       NoSuchElementException if no matching crop type is found in the 'type' enum constants
      */
-    public static float getValueOfCrops(@NotNull Collection<ItemStack> crops) {
-        return (float) crops.stream()
+    public static <T extends HarvestableType> float getValue(@NotNull Class<T> type, @NotNull Collection<ItemStack> harvestables) {
+        return (float) harvestables.stream()
                 .mapToDouble(itemStack -> {
-                    CropType cropType = CropType.getByItemMaterial(itemStack.getType()).orElse(CropType.NONE);
-                    return getModifiedValue(cropType, itemStack);
-                })
-                .sum();
-    }
-
-    /**
-     * @param crops ItemStacks which are animal items
-     * @return total value of all the animals
-     */
-    public static float getValueOfAnimals(@NotNull Collection<ItemStack> crops) {
-        return (float) crops.stream()
-                .mapToDouble(itemStack -> {
-                    AnimalType type = AnimalType.getByItemMaterial(itemStack.getType()).orElse(AnimalType.NONE);
-                    return getModifiedValue(type, itemStack);
+                    Optional<T> optType = Arrays.stream(type.getEnumConstants())
+                            .filter(t -> t.getItem().getType() == itemStack.getType())
+                            .findAny();
+                    T realType = optType.orElseThrow();
+                    return getModifiedValue(realType, itemStack);
                 })
                 .sum();
     }

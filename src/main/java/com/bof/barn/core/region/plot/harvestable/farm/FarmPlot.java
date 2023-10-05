@@ -2,18 +2,18 @@ package com.bof.barn.core.region.plot.harvestable.farm;
 
 import com.bof.barn.core.HarvestableManager;
 import com.bof.barn.core.region.BarnRegion;
+import com.bof.barn.core.region.plot.PlotSetting;
 import com.bof.barn.core.region.plot.PlotType;
 import com.bof.barn.core.region.plot.harvestable.AdditionResult;
 import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
 import com.bof.barn.core.region.plot.harvestable.farm.menu.FarmPlotMainMenu;
+import com.bof.barn.core.region.plot.harvestable.settings.AutoStoreSetting;
 import com.bof.barn.core.region.plot.selling.silo.SiloPlot;
 import com.bof.barn.core.utils.BoxUtils;
 import com.github.unldenis.hologram.Hologram;
 import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
 import com.github.unldenis.hologram.line.BlockLine;
-import lombok.AccessLevel;
 import lombok.Data;
-import lombok.Setter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 
 @Data
 public class FarmPlot implements HarvestablePlot<CropType> {
+    private final Map<Class<? extends PlotSetting>, PlotSetting> settings = new HashMap<>();
     private final BarnRegion owningRegion;
     private final PlotType type = PlotType.FARM;
     private final BoundingBox box;
@@ -38,8 +39,6 @@ public class FarmPlot implements HarvestablePlot<CropType> {
     private final Set<Block> boxBlocks;
     private CropType currentlyHarvesting = CropType.NONE;
     private Hologram hologram;
-    @Setter(AccessLevel.NONE)
-    private boolean autoStore = false;
 
     public FarmPlot(@NotNull BarnRegion owningRegion, @NotNull BoundingBox box, int id) {
         this.owningRegion = owningRegion;
@@ -70,7 +69,7 @@ public class FarmPlot implements HarvestablePlot<CropType> {
 
     /**
      * Handles the breakage of block.
-     * Changes the {@link #currentlyHarvesting} type, puts the items into {@link SiloPlot} on {@link #autoStore},
+     * Changes the {@link #currentlyHarvesting} type, puts the items into {@link SiloPlot} on {@link AutoStoreSetting},
      * if the silo is full, tries putting it into {@link BarnRegion#getCropsInventory()}.
      * If that is full as well, sends a message to the player
      *
@@ -84,7 +83,7 @@ public class FarmPlot implements HarvestablePlot<CropType> {
 
     /**
      * Handles the breakage of block.
-     * Changes the {@link #currentlyHarvesting} type, puts the items into {@link SiloPlot} on {@link #autoStore},
+     * Changes the {@link #currentlyHarvesting} type, puts the items into {@link SiloPlot} on {@link AutoStoreSetting},
      * if the silo is full, tries putting it into {@link BarnRegion#getCropsInventory()}.
      * If that is full as well, sends a message to the player
      *
@@ -167,7 +166,7 @@ public class FarmPlot implements HarvestablePlot<CropType> {
 
             SiloPlot silo = optSilo.get();
             // silo is full, so try getting a new free silo
-            if (!silo.addCropsToSilo(item).isEmpty()) {
+            if (!silo.addHarvestablesToContainer(item).isEmpty()) {
                 optSilo = this.getOwningRegion().getFreeSilo();
             }
         }
@@ -203,13 +202,12 @@ public class FarmPlot implements HarvestablePlot<CropType> {
         this.hologram.getLines().forEach(iLine -> iLine.update(this.owningRegion.getAllOnlinePlayers()));
     }
 
-    @Override
     public boolean setAutoStore(boolean autoStore) {
         if (!this.getOwningRegion().hasFreeAutoStoreSlots() && autoStore) {
             return false;
         }
 
-        this.autoStore = autoStore;
+        this.setSetting(AutoStoreSetting.class, autoStore);
         this.updateHologram();
         return true;
     }

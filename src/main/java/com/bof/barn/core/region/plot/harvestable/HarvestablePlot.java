@@ -3,6 +3,7 @@ package com.bof.barn.core.region.plot.harvestable;
 
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.Plot;
+import com.bof.barn.core.region.plot.harvestable.settings.AutoStoreSetting;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -12,13 +13,6 @@ import java.util.List;
 
 
 public interface HarvestablePlot<T extends HarvestableType> extends Plot {
-    boolean isAutoStore();
-
-    /**
-     * @param autoStore new status
-     * @return whether the boolean was changed
-     */
-    boolean setAutoStore(boolean autoStore);
 
     /**
      * @return Type the plot is currently farming
@@ -92,7 +86,7 @@ public interface HarvestablePlot<T extends HarvestableType> extends Plot {
      * @return An AdditionResult enum indicating the outcome of the addition operation.
      */
     default AdditionResult handleAddition(@NotNull ItemStack item) {
-        if (this.isAutoStore()) {
+        if (this.isSetting(AutoStoreSetting.class)) {
             if (!this.addToContainer(item).isEmpty()) {
                 if (!this.addToInventory(item).isEmpty()) {
                     return AdditionResult.INV_FULL;
@@ -104,6 +98,7 @@ public interface HarvestablePlot<T extends HarvestableType> extends Plot {
                 return AdditionResult.INV_FULL;
             }
         }
+
         return AdditionResult.SUCCESS;
     }
 }

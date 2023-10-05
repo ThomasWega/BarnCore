@@ -66,7 +66,7 @@ public class SiloPlotMainMenu extends ChestGui {
     private Consumer<InventoryClickEvent> handleSellAll() {
         return event -> {
             Player player = ((Player) event.getWhoClicked());
-            float value = this.plot.sellCrops(this.plot.getStored());
+            float value = this.plot.sellHarvestables(this.plot.getStored());
             if (value == 0) {
                 player.sendMessage("TO ADD - No crops are in this silo");
                 return;
@@ -127,7 +127,7 @@ public class SiloPlotMainMenu extends ChestGui {
         return event -> {
             Player player = ((Player) event.getWhoClicked());
             BarnRegion region = this.plot.getOwningRegion();
-            this.plot.addCropsToSilo(region.getCropsInventory());
+            this.plot.addHarvestablesToContainer(region.getCropsInventory());
             float value = region.removeCropsFromInventory(region.getCropsInventory());
 
             if (value != 0) {

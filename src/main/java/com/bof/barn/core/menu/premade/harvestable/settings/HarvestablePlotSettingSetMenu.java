@@ -1,13 +1,15 @@
-package com.bof.barn.core.region.plot.harvestable.farm.menu;
+package com.bof.barn.core.menu.premade.harvestable.settings;
 
 import com.bof.barn.core.item.ItemBuilder;
-import com.bof.barn.core.item.SkullBuilder;
+import com.bof.barn.core.menu.premade.LockedPlotItem;
 import com.bof.barn.core.menu.premade.back.GoBackPane;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.Plot;
+import com.bof.barn.core.region.plot.PlotSetting;
 import com.bof.barn.core.region.plot.PlotType;
-import com.bof.barn.core.region.plot.harvestable.farm.FarmPlot;
-import com.bof.toolkit.skin.Skin;
+import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
+import com.bof.barn.core.region.plot.harvestable.settings.AutoStoreSetting;
+import com.bof.barn.core.region.plot.harvestable.settings.HarvestableSetting;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
@@ -15,7 +17,6 @@ import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,28 +25,30 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.IntStream;
 
-public class FarmAutoStoreSetMenu extends ChestGui {
+public class HarvestablePlotSettingSetMenu<S extends HarvestablePlotSettingMenu<? extends HarvestableSetting>> extends ChestGui {
     private final BarnRegion region;
-    private final OutlinePane mainPane = new OutlinePane(1, 1, 7, 2);
+    private final OutlinePane mainPane = new OutlinePane(1, 1, 7, 2, Pane.Priority.NORMAL);
     private final OutlinePane lockedPane = mainPane.copy();
     @Nullable
-    private final FarmPlot previousSelectedPlot;
+    private final HarvestablePlot<?> previousSelectedPlot;
+    private final PlotType plotType;
+    private final S mainSettingMenu;
 
-    public FarmAutoStoreSetMenu(@NotNull BarnRegion region, @Nullable FarmPlot previousSelectedPlot) {
-        super(4, ComponentHolder.of(Component.text("Select plot to Auto Store")));
+    public HarvestablePlotSettingSetMenu(@NotNull BarnRegion region, @NotNull PlotType plotType, @NotNull S mainSettingMenu, @Nullable HarvestablePlot<?> previousSelectedPlot) {
+        super(4, ComponentHolder.of(Component.text("Toggle " + PlotSetting.getSettingName(mainSettingMenu.getSetting()) + " for plot")));
         this.region = region;
+        this.plotType = plotType;
+        this.mainSettingMenu = mainSettingMenu;
         this.previousSelectedPlot = previousSelectedPlot;
+        this.lockedPane.setPriority(Pane.Priority.LOW);
         this.initialize();
     }
 
     private void initialize() {
-        this.mainPane.setPriority(Pane.Priority.NORMAL);
-        this.lockedPane.setPriority(Pane.Priority.LOW);
-
         this.addLockedPlots();
         this.addSettablePlots();
 
-        this.addPane(new GoBackPane(4, 3, new FarmAutoStoreMenu(this.region)));
+        this.addPane(new GoBackPane(4, 3, mainSettingMenu));
         this.addPane(mainPane);
         this.addPane(lockedPane);
 
@@ -53,26 +56,21 @@ public class FarmAutoStoreSetMenu extends ChestGui {
     }
 
     private void addLockedPlots() {
-        IntStream.rangeClosed(1, this.region.getLockedPlots(PlotType.FARM).size()).forEach(value -> {
-            Component name = MiniMessage.miniMessage().deserialize("<color:#38243b>Locked Farm Plot</color>");
-            this.lockedPane.addItem(new GuiItem(new SkullBuilder()
-                    .displayName(name)
-                    .skin(new Skin("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjcwNWZkOTRhMGM0MzE5MjdmYjRlNjM5YjBmY2ZiNDk3MTdlNDEyMjg1YTAyYjQzOWUwMTEyZGEyMmIyZTJlYyJ9fX0=", null))
-                    .build(), event -> event.setCancelled(true)));
-        });
+        IntStream.rangeClosed(1, this.region.getLockedPlots(this.plotType).size()).forEach(value ->
+                this.lockedPane.addItem(new LockedPlotItem(this.plotType)));
     }
 
     private void addSettablePlots() {
-        this.region.getNonAutoStorePlots().stream()
-                .filter(plot -> plot instanceof FarmPlot)
+        this.region.getSettingPlots(AutoStoreSetting.class, false).stream()
+                .filter(plot -> plot.getType() == this.plotType)
                 // sort by id, so first plot is always 1, second is 2, etc.
                 .sorted(Comparator.comparingInt(Plot::getId))
-                .map(plot -> ((FarmPlot) plot))
+                .map(plot -> ((HarvestablePlot<?>) plot))
                 .forEach(plot -> {
                     List<Component> lore = new ArrayList<>(plot.getLore());
                     lore.addAll(List.of(
                             Component.empty(),
-                            Component.text("Click to select this plot plot", NamedTextColor.DARK_GRAY)
+                            Component.text("Click to select this plot", NamedTextColor.DARK_GRAY)
                     ));
                     this.mainPane.addItem(new GuiItem(
                             new ItemBuilder(plot.getCurrentlyHarvesting().getItem())
@@ -80,11 +78,12 @@ public class FarmAutoStoreSetMenu extends ChestGui {
                                     .lore(lore)
                                     .build(),
                             event -> {
-                                if (previousSelectedPlot != null) {
-                                    previousSelectedPlot.setAutoStore(false);
+                                if (this.previousSelectedPlot != null) {
+                                    this.previousSelectedPlot.setSetting(this.mainSettingMenu.getSetting(), false);
                                 }
-                                plot.setAutoStore(true);
-                                new FarmAutoStoreMenu(region).show(event.getWhoClicked());
+                                plot.setSetting(this.mainSettingMenu.getSetting(), true);
+                                new HarvestablePlotSettingMenu<>(this.region, this.plotType, this.mainSettingMenu.getSetting(), this.mainSettingMenu.getGoBackGui())
+                                        .show(event.getWhoClicked());
                             }
                     ));
                 });

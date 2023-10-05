@@ -1,0 +1,10 @@
+package com.bof.barn.core.region.plot.harvestable.settings;
+
+import com.bof.barn.core.region.plot.PlotSetting;
+import org.jetbrains.annotations.NotNull;
+
+public abstract class HarvestableSetting extends PlotSetting {
+    public HarvestableSetting(@NotNull String settingName, boolean toggled) {
+        super(settingName, toggled);
+    }
+}

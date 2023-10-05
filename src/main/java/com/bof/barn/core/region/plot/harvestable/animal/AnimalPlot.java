@@ -2,18 +2,18 @@ package com.bof.barn.core.region.plot.harvestable.animal;
 
 import com.bof.barn.core.HarvestableManager;
 import com.bof.barn.core.region.BarnRegion;
+import com.bof.barn.core.region.plot.PlotSetting;
 import com.bof.barn.core.region.plot.PlotType;
 import com.bof.barn.core.region.plot.harvestable.AdditionResult;
 import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
 import com.bof.barn.core.region.plot.harvestable.animal.menu.AnimalPlotMainMenu;
+import com.bof.barn.core.region.plot.harvestable.settings.AutoStoreSetting;
 import com.bof.barn.core.region.plot.selling.barn.BarnPlot;
 import com.bof.barn.core.utils.BoxUtils;
 import com.github.unldenis.hologram.Hologram;
 import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
 import com.github.unldenis.hologram.line.BlockLine;
-import lombok.AccessLevel;
 import lombok.Data;
-import lombok.Setter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Location;
@@ -34,6 +34,7 @@ import static com.bof.barn.core.Core.WORLD;
 
 @Data
 public class AnimalPlot implements HarvestablePlot<AnimalType> {
+    private final Map<Class<? extends PlotSetting>, PlotSetting> settings = new HashMap<>();
     private final BarnRegion owningRegion;
     private final PlotType type = PlotType.ANIMAL;
     private final BoundingBox box;
@@ -43,8 +44,6 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
     private final int animalCount = 6;
     private AnimalType currentlyHarvesting = AnimalType.NONE;
     private Hologram hologram;
-    @Setter(AccessLevel.NONE)
-    private boolean autoStore = false;
 
     public AnimalPlot(@NotNull BarnRegion owningRegion, @NotNull BoundingBox box, int id) {
         this.owningRegion = owningRegion;
@@ -96,7 +95,7 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
 
     /**
      * Handles the killing of animals.
-     * Changes the {@link #currentlyHarvesting} type, puts the items into {@link BarnPlot} on {@link #autoStore},
+     * Changes the {@link #currentlyHarvesting} type, puts the items into {@link BarnPlot} on {@link AutoStoreSetting},
      * if the barn is full, tries putting it into {@link BarnRegion#getAnimalInventory()}.
      * If that is full as well, sends a message to the player
      *
@@ -110,7 +109,7 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
 
     /**
      * Handles the killing of animals.
-     * Changes the {@link #currentlyHarvesting} type, puts the items into {@link BarnPlot} on {@link #autoStore},
+     * Changes the {@link #currentlyHarvesting} type, puts the items into {@link BarnPlot} on {@link AutoStoreSetting},
      * if the barn is full, tries putting it into {@link BarnRegion#getAnimalInventory()}.
      * If that is full as well, sends a message to the player
      *
@@ -199,7 +198,7 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
 
             BarnPlot barn = optBarn.get();
             // barn is full, so try getting a new free barn
-            if (!barn.addAnimalsToBarn(item).isEmpty()) {
+            if (!barn.addHarvestablesToContainer(item).isEmpty()) {
                 optBarn = this.getOwningRegion().getFreeBarn();
             }
         }
@@ -227,13 +226,12 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
         this.hologram.getLines().forEach(iLine -> iLine.update(this.owningRegion.getAllOnlinePlayers()));
     }
 
-    @Override
     public boolean setAutoStore(boolean autoStore) {
         if (!this.getOwningRegion().hasFreeAutoStoreSlots() && autoStore) {
             return false;
         }
 
-        this.autoStore = autoStore;
+        this.setSetting(AutoStoreSetting.class, autoStore);
         this.updateHologram();
         return true;
     }

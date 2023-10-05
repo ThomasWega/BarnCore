@@ -1,11 +1,12 @@
 package com.bof.barn.core.region.plot.selling.silo;
 
-import com.bof.barn.core.region.plot.selling.silo.menu.SiloPlotMainMenu;
 import com.bof.barn.core.region.BarnRegion;
+import com.bof.barn.core.region.plot.PlotSetting;
 import com.bof.barn.core.region.plot.PlotType;
+import com.bof.barn.core.region.plot.harvestable.farm.CropType;
 import com.bof.barn.core.region.plot.selling.ContainerPlot;
+import com.bof.barn.core.region.plot.selling.silo.menu.SiloPlotMainMenu;
 import com.bof.barn.core.utils.BoxUtils;
-import com.bof.barn.core.utils.HarvestableUtils;
 import com.github.unldenis.hologram.Hologram;
 import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
 import com.github.unldenis.hologram.line.BlockLine;
@@ -16,15 +17,16 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BoundingBox;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.function.Consumer;
 
 @Data
-public class SiloPlot implements ContainerPlot {
+public class SiloPlot implements ContainerPlot<CropType> {
+    private final Map<Class<? extends PlotSetting>, PlotSetting> settings = new HashMap<>();
     private final BarnRegion owningRegion;
     private final PlotType type = PlotType.SILO;
+    private final Class<CropType> storeType = CropType.class;
     private final BoundingBox box;
     private final int id;
     private final Set<Block> boxBlocks;
@@ -75,78 +77,6 @@ public class SiloPlot implements ContainerPlot {
                 });
 
         this.hologram.getLines().forEach(iLine -> iLine.update(this.owningRegion.getAllOnlinePlayers()));
-    }
-
-    /**
-     * Tries to add the items to the silo. Handles the {@link #autoSell}
-     *
-     * @param crops Crops items to try to add
-     * @return List of items that couldn't be added
-     */
-    public @NotNull List<ItemStack> addCropsToSilo(@NotNull ItemStack... crops) {
-        return this.addCropsToSilo(Arrays.asList(crops));
-    }
-
-    /**
-     * Tries to add the items to the silo. Handles the {@link #autoSell}
-     *
-     * @param crops Crops items to try to add
-     * @return List of items that couldn't be added
-     */
-    public @NotNull List<ItemStack> addCropsToSilo(@NotNull Collection<ItemStack> crops) {
-        List<ItemStack> unAdded = new ArrayList<>();
-        for (ItemStack itemStack : crops) {
-            if (this.isFull()) {
-                unAdded.add(itemStack);
-                continue;
-            }
-
-            if (this.isAutoSell()) {
-                this.sellCrops(itemStack);
-            } else {
-                this.stored.add(itemStack);
-            }
-        }
-
-        this.updateHologram();
-        return unAdded;
-    }
-
-    /**
-     * Remove the crops from the silo inventory and calculate the value of them.
-     * Then add that value in farm coins to the regions balance
-     *
-     * @param crops Crops items to sell
-     * @return Value of the crops sold
-     */
-    public float sellCrops(@NotNull ItemStack... crops) {
-        return this.sellCrops(Arrays.asList(crops));
-    }
-
-
-    /**
-     * Remove the crops from the silo inventory and calculate the value of them.
-     * Then add that value in farm coins to the regions balance
-     *
-     * @param crops Crops items to sell
-     * @return Value of the crops sold
-     */
-    public float sellCrops(@NotNull Collection<ItemStack> crops) {
-        float value = HarvestableUtils.getValueOfCrops(crops);
-        this.removeCropsFromSilo(crops);
-        this.getOwningRegion().addFarmCoins(value);
-        this.updateHologram();
-        return value;
-    }
-
-    /**
-     * Remove the given crops from the silo inventory
-     *
-     * @param crops Crops items to remove
-     */
-    private void removeCropsFromSilo(Collection<ItemStack> crops) {
-        List<ItemStack> cropsToRemove = new ArrayList<>(crops);
-        cropsToRemove.forEach(this.stored::remove);
     }
 
     @Override

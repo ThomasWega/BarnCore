@@ -4,7 +4,7 @@ import com.bof.barn.core.player.GamePlayer;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.Plot;
 import com.bof.barn.core.region.plot.PlotType;
-import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
+import com.bof.barn.core.region.plot.harvestable.settings.AutoStoreSetting;
 import com.bof.barn.core.region.plot.selling.silo.SiloPlot;
 import com.bof.barn.core.region.plot.selling.barn.BarnPlot;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -70,21 +70,21 @@ public class PAPIHook extends PlaceholderExpansion {
             int plotId = Integer.parseInt(params.substring(20));
             Optional<Plot> optPlot = region.getPlot(PlotType.FARM, plotId);
             if (optPlot.isPresent())
-                return String.valueOf(((HarvestablePlot<?>) optPlot.get()).isAutoStore());
+                return String.valueOf(optPlot.get().isSetting(AutoStoreSetting.class));
         }
 
         if (params.startsWith("plot_animal_autostore_")) {
             int plotId = Integer.parseInt(params.substring(22));
             Optional<Plot> optPlot = region.getPlot(PlotType.ANIMAL, plotId);
             if (optPlot.isPresent())
-                return String.valueOf(((HarvestablePlot<?>) optPlot.get()).isAutoStore());
+                return String.valueOf(optPlot.get().isSetting(AutoStoreSetting.class));
         }
 
         if (params.startsWith("plot_farm_colored_status_autostore_")) {
             int plotId = Integer.parseInt(params.substring(35));
             Optional<Plot> optPlot = region.getPlot(PlotType.FARM, plotId);
             if (optPlot.isPresent()) {
-                return ((HarvestablePlot<?>) optPlot.get()).isAutoStore() ? "§aON" : "§cOFF";
+                return optPlot.get().isSetting(AutoStoreSetting.class) ? "§aON" : "§cOFF";
             }
         }
 
@@ -92,7 +92,7 @@ public class PAPIHook extends PlaceholderExpansion {
             int plotId = Integer.parseInt(params.substring(37));
             Optional<Plot> optPlot = region.getPlot(PlotType.ANIMAL, plotId);
             if (optPlot.isPresent()) {
-                return ((HarvestablePlot<?>) optPlot.get()).isAutoStore() ? "§aON" : "§cOFF";
+                return optPlot.get().isSetting(AutoStoreSetting.class) ? "§aON" : "§cOFF";
             }
         }
 

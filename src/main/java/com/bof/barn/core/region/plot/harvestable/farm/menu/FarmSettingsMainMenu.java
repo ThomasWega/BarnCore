@@ -4,6 +4,7 @@ import com.bof.barn.core.item.SkullBuilder;
 import com.bof.barn.core.menu.premade.back.GoBackPane;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.harvestable.menu.HarvestableSettingsMainMenu;
+import com.bof.barn.core.region.plot.harvestable.settings.AutoStoreSetting;
 import com.bof.toolkit.skin.Skin;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
@@ -37,7 +38,7 @@ public class FarmSettingsMainMenu extends ChestGui {
 
     private GuiItem getAutoStoreItem() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#2b84ff>Auto Store</color></b>");
-        Component unlockedPlots = MiniMessage.miniMessage().deserialize("<white>Unlocked Slots: <green>" + this.region.getAutoStorePlotsCount() + "/" + this.region.getAutoStoreSlots() + "</green></white>");
+        Component unlockedPlots = MiniMessage.miniMessage().deserialize("<white>Unlocked Slots: <green>" + this.region.getSettingPlotsCount(AutoStoreSetting.class) + "/" + this.region.getAutoStoreSlots() + "</green></white>");
         return new GuiItem(new SkullBuilder()
                 .displayName(name)
                 .lore(List.of(

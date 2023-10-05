@@ -4,6 +4,7 @@ import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.item.SkullBuilder;
 import com.bof.barn.core.menu.premade.back.GoBackPane;
 import com.bof.barn.core.region.plot.harvestable.animal.AnimalPlot;
+import com.bof.barn.core.region.plot.harvestable.settings.AutoStoreSetting;
 import com.bof.toolkit.skin.Skin;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
@@ -62,7 +63,7 @@ public class AnimalPlotMainMenu extends ChestGui {
                                 Component.empty(),
                                 Component.text("Click to change the animals", NamedTextColor.DARK_GRAY)
                         ))
-                        .build(), event -> new AnimalChangeAnimalMenu(this.plot, this.closeOnGoBack).show(event.getWhoClicked())
+                        .build(), event -> new AnimalChangeAnimalsMenu(this.plot, this.closeOnGoBack).show(event.getWhoClicked())
         );
     }
 
@@ -120,7 +121,7 @@ public class AnimalPlotMainMenu extends ChestGui {
 
     private GuiItem getAutoStoreItem() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#2b84ff>Auto Store</color></b>");
-        String statusStr = plot.isAutoStore() ? "<green>ON</green>" : "<red>OFF</red>";
+        String statusStr = plot.isSetting(AutoStoreSetting.class) ? "<green>ON</green>" : "<red>OFF</red>";
         Component status = MiniMessage.miniMessage().deserialize("<white>Status: " + statusStr + "</white>");
         return new GuiItem(new SkullBuilder()
                 .displayName(name)
@@ -136,10 +137,11 @@ public class AnimalPlotMainMenu extends ChestGui {
                 .build(),
                 event -> {
                     Player player = ((Player) event.getWhoClicked());
-                    if (!this.plot.setAutoStore(!plot.isAutoStore())) {
+                    if (!this.plot.setAutoStore(!plot.isSetting(AutoStoreSetting.class))) {
                         player.sendMessage("TO ADD - No free AutoStore slots 2");
+                    } else {
+                        player.sendMessage("TO ADD - changed auto store status 2");
                     }
-                    player.sendMessage("TO ADD - changed auto store status 2");
                     player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
                 }
         );
