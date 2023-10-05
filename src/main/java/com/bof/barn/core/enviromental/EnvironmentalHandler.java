@@ -46,7 +46,7 @@ public class EnvironmentalHandler {
     private void handleRainStart() {
         WORLD.showTitle(Title.title(
                 enchantedRain.getTitle(),
-                Component.text("Drops are now doubled", NamedTextColor.GRAY)
+                Component.text("Drops are now multiplied (" + EnchantedRain.multiplier + "x)", NamedTextColor.GRAY)
         ));
         WORLD.playSound(Sound.sound(
                 org.bukkit.Sound.ENTITY_LIGHTNING_BOLT_THUNDER.key(),

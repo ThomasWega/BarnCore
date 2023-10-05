@@ -47,7 +47,7 @@ public class HarvestableManager {
      */
     public static float getBonusMultiplier() {
         if (EnchantedRain.isRunning) {
-            return 0.15f;
+            return EnchantedRain.multiplier;
         }
         return 0;
     }
