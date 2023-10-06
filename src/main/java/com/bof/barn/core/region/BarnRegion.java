@@ -178,24 +178,55 @@ public class BarnRegion {
     }
 
 
+    /**
+     * Retrieves the number of plots that have the {@link PlotSetting} set to true
+     *
+     * @param settingClazz The class representing the type of PlotSetting.
+     * @return The number of plots associated with the specified PlotSetting.
+     * @see #getSettingPlotsCount(Class, boolean)
+     */
     public int getSettingPlotsCount(Class<? extends PlotSetting> settingClazz) {
         return this.getSettingPlotsCount(settingClazz, true);
     }
-    
+
+    /**
+     * Retrieves the number of plots that have the {@link PlotSetting} set to specified value
+     *
+     * @param settingClazz The class representing the type of PlotSetting.
+     * @param value value to check against
+     * @return The number of plots associated with the specified PlotSetting.
+     * @see #getSettingPlotsCount(Class)
+     */
     public int getSettingPlotsCount(Class<? extends PlotSetting> settingClazz, boolean value) {
         return this.getSettingPlots(settingClazz, value).size();
     }
 
+    /**
+     * Retrieves the plots that have the {@link PlotSetting} set to true
+     *
+     * @param settingClazz The class representing the type of PlotSetting.
+     * @return plots with specified PlotSetting set to true
+     * @see #getSettingPlots(Class, boolean)
+     */
     public Set<Plot> getSettingPlots(Class<? extends PlotSetting> settingClazz) {
         return this.getSettingPlots(settingClazz, true);
     }
-    
+
+    /**
+     * Retrieves the plots that have the {@link PlotSetting} set to specified value
+     *
+     * @param settingClazz The class representing the type of PlotSetting.
+     * @param value value to check against
+     * @return plots with specified PlotSetting and value
+     * @see #getSettingPlots(Class)
+     */
     public Set<Plot> getSettingPlots(Class<? extends PlotSetting> settingClazz, boolean value) {
         return plots.values().stream()
                 .flatMap(Set::stream)
                 .filter(plot -> plot.isSetting(settingClazz, value))
                 .collect(Collectors.toSet());
     }
+
 
 
     /**

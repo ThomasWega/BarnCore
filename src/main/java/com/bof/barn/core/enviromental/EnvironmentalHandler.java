@@ -10,7 +10,9 @@ import org.jetbrains.annotations.NotNull;
 
 import static com.bof.barn.core.Core.WORLD;
 
-
+/**
+ * Handles different environment events and their occurrence
+ */
 public class EnvironmentalHandler {
     private final Core core;
     public final EnchantedRain enchantedRain = new EnchantedRain();

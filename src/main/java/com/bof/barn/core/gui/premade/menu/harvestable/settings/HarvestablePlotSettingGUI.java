@@ -30,6 +30,15 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
+
+/**
+ * A menu which shows what plots of the same type have the specific setting on and allows
+ * to select plots which the setting should be turned on or off for.
+ * <p></p>
+ * Handles occupied slots, unlocked (free) slots and locked plots
+ *
+ * @param <S>
+ */
 @Getter
 public class HarvestablePlotSettingGUI<S extends HarvestableSetting> extends ChestGui {
     private final BarnRegion region;

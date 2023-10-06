@@ -57,7 +57,7 @@ public final class Core extends JavaPlugin implements Listener {
     }
 
     //TODO add sounds
-    //TODO figure out when to use super and when extends
+    //TODO comments
 
     @Override
     public void onDisable() {

@@ -25,6 +25,14 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.IntStream;
 
+/**
+ * A menu which allows to set a specific setting for a plot which don't have this setting yet.
+ * Will handle disabling the setting if any previous plot had that and was replaced by the current one.
+ * <p></p>
+ * Basically just a list of clickable plots which don't have the setting yet, and clicking on them will turn the setting on
+ *
+ * @param <S> Main setting menu
+ */
 public class HarvestablePlotSettingSetGUI<S extends HarvestablePlotSettingGUI<? extends HarvestableSetting>> extends ChestGui {
     private final BarnRegion region;
     private final OutlinePane mainPane = new OutlinePane(1, 1, 7, 2, Pane.Priority.NORMAL);

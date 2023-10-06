@@ -23,6 +23,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+/**
+ * A paginated menu which holds the harvestables and handles the selling of them
+ *
+ * @param <T> Type of harvestable the menu holds
+ * @param <P> Which plot the menu belongs to
+ */
 public abstract class HarvestablesContainerGUI<T extends HarvestableType, P extends ContainerPlot<T>> extends PaginatedNavGUI {
     private final P plot;
     private final Class<T> type;

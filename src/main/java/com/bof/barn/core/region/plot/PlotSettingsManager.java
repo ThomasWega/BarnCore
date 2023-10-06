@@ -18,6 +18,10 @@ public class PlotSettingsManager implements Listener {
         this.handleSettingsSet(event.getPlot());
     }
 
+    /**
+     * Put all settings into the plot
+     * @param plot Plot to place settings into
+     */
     private void handleSettingsSet(Plot plot) {
         plot.getSettings().putAll(Map.of(
                 AutoStoreSetting.class, new AutoStoreSetting()

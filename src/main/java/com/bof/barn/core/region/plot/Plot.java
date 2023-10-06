@@ -48,18 +48,46 @@ public interface Plot {
      */
     @NotNull Map<Class<? extends PlotSetting>, PlotSetting> getSettings();
 
+    /**
+     * Check for the given setting
+     *
+     * @param settingClazz The specific Setting class
+     * @return whether the setting is true
+     * @see #isSetting(Class, boolean)
+     */
     default boolean isSetting(@NotNull Class<? extends PlotSetting> settingClazz) {
         return this.isSetting(settingClazz, true);
     }
 
+    /**
+     * Check for the given setting and value
+     *
+     * @param settingClazz The specific Setting class
+     * @param value Value to check against
+     * @return whether the setting is true
+     * @see #isSetting(Class)
+     */
     default boolean isSetting(@NotNull Class<? extends PlotSetting> settingClazz, boolean value) {
         return this.getSettings().get(settingClazz).isToggled() == value;
     }
 
+    /**
+     * Sets the setting to true
+     *
+     * @param settingClazz Class of the setting to set a value for
+     * @see #setSetting(Class, boolean)
+     */
     default void setSetting(@NotNull Class<? extends PlotSetting> settingClazz) {
         this.setSetting(settingClazz, true);
     }
 
+    /**
+     * Sets the setting to the given value
+     *
+     * @param settingClazz Class of the setting to set a value for
+     * @param value Value to set the setting to
+     * @see #setSetting(Class)
+     */
     default void setSetting(@NotNull Class<? extends PlotSetting> settingClazz, boolean value) {
         this.getSettings().get(settingClazz).setToggled(value);
         this.updateHologram();

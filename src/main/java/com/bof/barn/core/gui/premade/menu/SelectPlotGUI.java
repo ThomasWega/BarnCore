@@ -22,6 +22,11 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
+/**
+ * Menu which prompts to select plots of a specific type.
+ * In other words, a menu which has all the plots of the specific type and
+ * the one you click on will open the specific plot's menu
+ */
 public abstract class SelectPlotGUI extends ChestGui {
     private final BarnRegion region;
     private final OutlinePane mainPane;

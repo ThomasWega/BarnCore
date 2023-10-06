@@ -21,6 +21,13 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Menu with all harvestable types for the given plot.
+ * Handles changing of the harvestable type
+ *
+ * @param <T> Type of the harvestables
+ * @param <P> Plot where harvestables will be changed (this menu belongs to)
+ */
 public abstract class ChangeHarvestablesGUI<T extends HarvestableType, P extends HarvestablePlot<T>> extends ChestGui {
     private final Class<T> plotType;
     private final P plot;

@@ -25,6 +25,10 @@ public class PlotManager implements Listener {
         this.handlePlotsCreation(event.getRegion());
     }
 
+    /**
+     * Create a new plot and call appropriate events
+     * @param region Region that owns the plot
+     */
     private void handlePlotsCreation(BarnRegion region) {
         Map<PlotType, Set<Plot>> plots = new HashMap<>();
         Arrays.stream(PlotType.values()).forEach(plotType -> plots.put(plotType, BoxUtils.identifyPlots(plotType, region.getBox()).entrySet().stream()
