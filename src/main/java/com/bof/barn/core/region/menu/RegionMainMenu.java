@@ -2,7 +2,7 @@ package com.bof.barn.core.region.menu;
 
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.item.SkullBuilder;
-import com.bof.barn.core.menu.premade.back.GoBackPane;
+import com.bof.barn.core.gui.premade.button.back.GoBackPane;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.Plot;
 import com.bof.barn.core.region.plot.PlotType;
@@ -37,12 +37,12 @@ public class RegionMainMenu extends ChestGui {
     }
 
     private void initialize() {
-        this.mainPane.addItem(this.getFarmPlotsItem(), 0, 0);
-        this.mainPane.addItem(this.getAnimalPlotsItem(), 3, 0);
-        this.mainPane.addItem(this.getSiloPlotItem(), 6, 0);
+        this.mainPane.addItem(this.getFarmPlotsButton(), 0, 0);
+        this.mainPane.addItem(this.getAnimalPlotsButton(),3, 0);
+        this.mainPane.addItem(this.getSiloPlotButton(),6, 0);
 
-        this.mainPane.addItem(this.getBarnPlotItem(), 1, 1);
-        this.mainPane.addItem(this.getModifyPlotsItem(), 5, 1);
+        this.mainPane.addItem(this.getBarnPlotButton(),1, 1);
+        this.mainPane.addItem(this.getModifyPlotsButton(),5, 1);
 
         this.addPane(new GoBackPane(4, 3, null));
         this.addPane(this.mainPane);
@@ -50,7 +50,7 @@ public class RegionMainMenu extends ChestGui {
         this.setOnGlobalClick(event -> event.setCancelled(true));
     }
 
-    private GuiItem getFarmPlotsItem() {
+    private GuiItem getFarmPlotsButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#FF8378>Farm Plots</color></b>");
         return new GuiItem(
                 new SkullBuilder()
@@ -64,7 +64,7 @@ public class RegionMainMenu extends ChestGui {
         );
     }
 
-    private GuiItem getAnimalPlotsItem() {
+    private GuiItem getAnimalPlotsButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#FF8378>Animal Plots</color></b>");
         return new GuiItem(
                 new ItemBuilder(Material.OAK_FENCE)
@@ -77,7 +77,7 @@ public class RegionMainMenu extends ChestGui {
         );
     }
 
-    private GuiItem getBarnPlotItem() {
+    private GuiItem getBarnPlotButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#FF8378>Barn</color></b>");
         return new GuiItem(
                 new SkullBuilder()
@@ -95,7 +95,7 @@ public class RegionMainMenu extends ChestGui {
         );
     }
 
-    private GuiItem getSiloPlotItem() {
+    private GuiItem getSiloPlotButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#FF8378>Silo</color></b>");
         return new GuiItem(
                 new ItemBuilder(Material.BARREL)
@@ -112,7 +112,7 @@ public class RegionMainMenu extends ChestGui {
         );
     }
 
-    private GuiItem getModifyPlotsItem() {
+    private GuiItem getModifyPlotsButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#FF8378>Modify Plots</color></b>");
         return new GuiItem(
                 new ItemBuilder(Material.COMMAND_BLOCK)

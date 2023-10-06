@@ -1,4 +1,4 @@
-package com.bof.barn.core.menu.premade.harvestable;
+package com.bof.barn.core.gui.premade.button.plot;
 
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;

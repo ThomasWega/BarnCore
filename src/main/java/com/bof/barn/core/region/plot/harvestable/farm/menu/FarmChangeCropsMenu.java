@@ -1,6 +1,6 @@
 package com.bof.barn.core.region.plot.harvestable.farm.menu;
 
-import com.bof.barn.core.menu.premade.harvestable.ChangeHarvestablesMenu;
+import com.bof.barn.core.gui.premade.menu.harvestable.ChangeHarvestablesGUI;
 import com.bof.barn.core.region.plot.harvestable.farm.CropType;
 import com.bof.barn.core.region.plot.harvestable.farm.FarmPlot;
 import com.github.stefvanschie.inventoryframework.adventuresupport.StringHolder;
@@ -9,7 +9,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.apache.commons.lang.WordUtils;
 import org.jetbrains.annotations.NotNull;
 
-public class FarmChangeCropsMenu extends ChangeHarvestablesMenu<CropType, FarmPlot> {
+public class FarmChangeCropsMenu extends ChangeHarvestablesGUI<CropType, FarmPlot> {
 
     public FarmChangeCropsMenu(@NotNull FarmPlot plot, boolean closeMainPlotMenuOnGoBack) {
         super(CropType.class, plot, new FarmPlotMainMenu(plot, closeMainPlotMenuOnGoBack), StringHolder.of("Select Crops type"));

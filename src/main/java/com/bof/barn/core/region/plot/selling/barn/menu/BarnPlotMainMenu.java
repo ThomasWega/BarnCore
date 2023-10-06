@@ -1,6 +1,6 @@
 package com.bof.barn.core.region.plot.selling.barn.menu;
 
-import com.bof.barn.core.menu.premade.back.GoBackPane;
+import com.bof.barn.core.gui.premade.button.back.GoBackPane;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.item.SkullBuilder;
@@ -43,13 +43,13 @@ public class BarnPlotMainMenu extends ChestGui {
     }
 
     private void addSections() {
-        this.mainPane.addItem(getSellAnimalsItem(), 0, 0);
-        this.mainPane.addItem(getSeeAnimalsItem(), 2, 0);
-        this.mainPane.addItem(getPutAnimalsItem(), 4, 0);
-        this.mainPane.addItem(getAutoSellItem(), 6, 0);
+        this.mainPane.addItem(getSellAnimalsButton(),0, 0);
+        this.mainPane.addItem(getSeeAnimalsButton(),2, 0);
+        this.mainPane.addItem(getPutAnimalsButton(),4, 0);
+        this.mainPane.addItem(getAutoSellButton(),6, 0);
     }
 
-    private GuiItem getSellAnimalsItem() {
+    private GuiItem getSellAnimalsButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#4AFF98>Sell Animals</color></b>");
         return new GuiItem(
                 new SkullBuilder()
@@ -76,7 +76,7 @@ public class BarnPlotMainMenu extends ChestGui {
         };
     }
 
-    private GuiItem getSeeAnimalsItem() {
+    private GuiItem getSeeAnimalsButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#ffa83d>See Animals</color></b>");
         return new GuiItem(new ItemBuilder(Material.BARREL)
                 .displayName(name)
@@ -88,7 +88,7 @@ public class BarnPlotMainMenu extends ChestGui {
         );
     }
 
-    private GuiItem getAutoSellItem() {
+    private GuiItem getAutoSellButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#2b84ff>Auto Sell</color></b>");
         String statusStr = this.plot.isAutoSell() ? "<green>ON</green>" : "<red>OFF</red>";
         Component status = MiniMessage.miniMessage().deserialize("<white>Status: " + statusStr + "</white>");
@@ -111,7 +111,7 @@ public class BarnPlotMainMenu extends ChestGui {
         );
     }
 
-    private GuiItem getPutAnimalsItem() {
+    private GuiItem getPutAnimalsButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#FF5A36>Put Animals</color></b>");
         return new GuiItem(new ItemBuilder(Material.HOPPER)
                 .displayName(name)

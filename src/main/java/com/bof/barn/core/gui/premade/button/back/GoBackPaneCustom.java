@@ -1,4 +1,4 @@
-package com.bof.barn.core.menu.premade.back;
+package com.bof.barn.core.gui.premade.button.back;
 
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
@@ -13,7 +13,7 @@ public class GoBackPaneCustom extends StaticPane {
     public GoBackPaneCustom(int x, int y, @NotNull Consumer<InventoryClickEvent> eventConsumer) {
         super(x, y, 1, 1, Pane.Priority.HIGHEST);
 
-        GuiItem backItem = new GoBackItem();
+        GuiItem backItem = new GoBackButton();
         backItem.setAction(eventConsumer);
         this.addItem(backItem, 0, 0);
     }

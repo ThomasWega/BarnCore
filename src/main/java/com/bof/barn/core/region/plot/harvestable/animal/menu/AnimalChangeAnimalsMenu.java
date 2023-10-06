@@ -1,6 +1,6 @@
 package com.bof.barn.core.region.plot.harvestable.animal.menu;
 
-import com.bof.barn.core.menu.premade.harvestable.ChangeHarvestablesMenu;
+import com.bof.barn.core.gui.premade.menu.harvestable.ChangeHarvestablesGUI;
 import com.bof.barn.core.region.plot.harvestable.animal.AnimalPlot;
 import com.bof.barn.core.region.plot.harvestable.animal.AnimalType;
 import com.github.stefvanschie.inventoryframework.adventuresupport.StringHolder;
@@ -9,7 +9,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.apache.commons.lang.WordUtils;
 import org.jetbrains.annotations.NotNull;
 
-public class AnimalChangeAnimalsMenu extends ChangeHarvestablesMenu<AnimalType, AnimalPlot> {
+public class AnimalChangeAnimalsMenu extends ChangeHarvestablesGUI<AnimalType, AnimalPlot> {
 
     public AnimalChangeAnimalsMenu(@NotNull AnimalPlot plot, boolean closeMainPlotMenuOnGoBack) {
         super(AnimalType.class, plot, new AnimalPlotMainMenu(plot, closeMainPlotMenuOnGoBack), StringHolder.of("Select Animal type"));

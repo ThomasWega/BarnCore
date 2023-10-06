@@ -1,12 +1,12 @@
 package com.bof.barn.core.region.plot.selling.barn.menu;
 
-import com.bof.barn.core.menu.premade.harvestable.HarvestablesContainerMenu;
+import com.bof.barn.core.gui.premade.menu.harvestable.HarvestablesContainerGUI;
 import com.bof.barn.core.region.plot.harvestable.animal.AnimalType;
 import com.bof.barn.core.region.plot.selling.barn.BarnPlot;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 
-public class BarnContainerMenu extends HarvestablesContainerMenu<AnimalType, BarnPlot> {
+public class BarnContainerMenu extends HarvestablesContainerGUI<AnimalType, BarnPlot> {
 
     public BarnContainerMenu(@NotNull BarnPlot plot) {
         super(plot, AnimalType.class, new BarnPlotMainMenu(plot), 6, 0, 0, 9, 5);

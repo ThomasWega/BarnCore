@@ -1,8 +1,7 @@
-package com.bof.barn.core.menu.premade.harvestable;
+package com.bof.barn.core.gui.premade.menu.harvestable;
 
 import com.bof.barn.core.item.ItemBuilder;
-import com.bof.barn.core.menu.premade.back.GoBackPane;
-import com.bof.barn.core.menu.premade.page.PaginatedNavGUI;
+import com.bof.barn.core.gui.premade.button.back.GoBackPane;
 import com.bof.barn.core.region.plot.harvestable.HarvestableType;
 import com.bof.barn.core.region.plot.selling.ContainerPlot;
 import com.bof.barn.core.utils.HarvestableUtils;
@@ -24,12 +23,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public abstract class HarvestablesContainerMenu<T extends HarvestableType, P extends ContainerPlot<T>> extends PaginatedNavGUI {
+public abstract class HarvestablesContainerGUI<T extends HarvestableType, P extends ContainerPlot<T>> extends PaginatedNavGUI {
     private final P plot;
     private final Class<T> type;
     private final Gui goBackGui;
 
-    public HarvestablesContainerMenu(@NotNull P plot, @NotNull Class<T> type, @Nullable Gui goBackGui, int rows, int x, int y, int length, int height) {
+    public HarvestablesContainerGUI(@NotNull P plot, @NotNull Class<T> type, @Nullable Gui goBackGui, int rows, int x, int y, int length, int height) {
         super(rows, StringHolder.of("Container page N"), x, y, length, height);
         this.plot = plot;
         this.type = type;
@@ -55,13 +54,13 @@ public abstract class HarvestablesContainerMenu<T extends HarvestableType, P ext
                             .findAny();
                     // should always return okay, as the only items which are put into the inventory are harvestables
                     T type = optType.orElseThrow();
-                    return this.getHarvestableItem(itemStack, type);
+                    return this.getHarvestableButton(itemStack, type);
                 }).toList();
 
         this.paginatedPane.populateWithGuiItems(items);
     }
 
-    private GuiItem getHarvestableItem(ItemStack itemStack, T type) {
+    private GuiItem getHarvestableButton(ItemStack itemStack, T type) {
         GuiItem guiItem = new GuiItem(new ItemBuilder(itemStack)
                 .displayName(HarvestableUtils.getModifiedDisplayName(type, itemStack))
                 .lore(List.of(
@@ -89,7 +88,7 @@ public abstract class HarvestablesContainerMenu<T extends HarvestableType, P ext
                         if (itemStack.getAmount() == 0) {
                             pane.removeItem(guiItem);
                         } else {
-                            pane.getItems().set(pane.getItems().indexOf(guiItem), this.getHarvestableItem(itemStack, type));
+                            pane.getItems().set(pane.getItems().indexOf(guiItem), this.getHarvestableButton(itemStack, type));
                         }
 
                         // sell only one

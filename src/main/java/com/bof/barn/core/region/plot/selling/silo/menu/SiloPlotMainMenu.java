@@ -2,7 +2,7 @@ package com.bof.barn.core.region.plot.selling.silo.menu;
 
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.item.SkullBuilder;
-import com.bof.barn.core.menu.premade.back.GoBackPane;
+import com.bof.barn.core.gui.premade.button.back.GoBackPane;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.menu.RegionMainMenu;
 import com.bof.barn.core.region.plot.selling.silo.SiloPlot;
@@ -43,13 +43,13 @@ public class SiloPlotMainMenu extends ChestGui {
     }
 
     private void addSections() {
-        this.mainPane.addItem(getSellCropsItem(), 0, 0);
-        this.mainPane.addItem(getOpenSiloItem(), 2, 0);
-        this.mainPane.addItem(getPutCropsItem(), 4, 0);
-        this.mainPane.addItem(getAutoSellItem(), 6, 0);
+        this.mainPane.addItem(getSellCropsButton(),0, 0);
+        this.mainPane.addItem(getOpenSiloButton(),2, 0);
+        this.mainPane.addItem(getPutCropsButton(),4, 0);
+        this.mainPane.addItem(getAutoSellButton(),6, 0);
     }
 
-    private GuiItem getSellCropsItem() {
+    private GuiItem getSellCropsButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#4AFF98>Sell Crops</color></b>");
         return new GuiItem(
                 new SkullBuilder()
@@ -76,7 +76,7 @@ public class SiloPlotMainMenu extends ChestGui {
         };
     }
 
-    private GuiItem getOpenSiloItem() {
+    private GuiItem getOpenSiloButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#ffa83d>Open Silo</color></b>");
         return new GuiItem(new ItemBuilder(Material.BARREL)
                 .displayName(name)
@@ -88,7 +88,7 @@ public class SiloPlotMainMenu extends ChestGui {
         );
     }
 
-    private GuiItem getAutoSellItem() {
+    private GuiItem getAutoSellButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#2b84ff>Auto Sell</color></b>");
         String statusStr = this.plot.isAutoSell() ? "<green>ON</green>" : "<red>OFF</red>";
         Component status = MiniMessage.miniMessage().deserialize("<white>Status: " + statusStr + "</white>");
@@ -111,7 +111,7 @@ public class SiloPlotMainMenu extends ChestGui {
         );
     }
 
-    private GuiItem getPutCropsItem() {
+    private GuiItem getPutCropsButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#FF5A36>Put Crops</color></b>");
         return new GuiItem(new ItemBuilder(Material.HOPPER)
                 .displayName(name)

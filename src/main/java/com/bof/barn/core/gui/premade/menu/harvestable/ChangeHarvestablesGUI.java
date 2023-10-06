@@ -1,7 +1,7 @@
-package com.bof.barn.core.menu.premade.harvestable;
+package com.bof.barn.core.gui.premade.menu.harvestable;
 
 import com.bof.barn.core.item.ItemBuilder;
-import com.bof.barn.core.menu.premade.back.GoBackPane;
+import com.bof.barn.core.gui.premade.button.back.GoBackPane;
 import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
 import com.bof.barn.core.region.plot.harvestable.HarvestableType;
 import com.github.stefvanschie.inventoryframework.adventuresupport.TextHolder;
@@ -21,13 +21,13 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class ChangeHarvestablesMenu<T extends HarvestableType, P extends HarvestablePlot<T>> extends ChestGui {
+public abstract class ChangeHarvestablesGUI<T extends HarvestableType, P extends HarvestablePlot<T>> extends ChestGui {
     private final Class<T> plotType;
     private final P plot;
     private final OutlinePane mainPane = new OutlinePane(1, 1, 7, 1);
     private final Gui goBackGui;
     
-    public ChangeHarvestablesMenu(@NotNull Class<T> plotType, @NotNull P plot, @Nullable Gui goBackGui, @NotNull TextHolder title) {
+    public ChangeHarvestablesGUI(@NotNull Class<T> plotType, @NotNull P plot, @Nullable Gui goBackGui, @NotNull TextHolder title) {
         super(3, title);
         this.plotType = plotType;
         this.plot = plot;
@@ -36,8 +36,8 @@ public abstract class ChangeHarvestablesMenu<T extends HarvestableType, P extend
     }
 
     private void initialize() {
-        this.addHarvestablesItems();
-        this.addSpaceItem();
+        this.addHarvestablesButtons();
+        this.addSpaceButton();
 
         this.addPane(new GoBackPane(4, 2, this.goBackGui));
         this.addPane(this.mainPane);
@@ -45,12 +45,12 @@ public abstract class ChangeHarvestablesMenu<T extends HarvestableType, P extend
         this.setOnGlobalClick(event -> event.setCancelled(true));
     }
 
-    private void addHarvestablesItems() {
-        Arrays.stream(plotType.getEnumConstants()).forEach(type -> {
+    private void addHarvestablesButtons() {
+        Arrays.stream(this.plotType.getEnumConstants()).forEach(type -> {
             Component currentlyPlanted = this.getCurrentlyHarvestingText(type);
             Component changeToType = this.getChangeToTypeText(type);
 
-            if (type == plot.getCurrentlyHarvesting()) {
+            if (type == this.plot.getCurrentlyHarvesting()) {
                 this.mainPane.addItem(new GuiItem(new ItemBuilder(type.getItem())
                         .displayName(type.getDisplayName()
                                 .decorate(TextDecoration.BOLD))
@@ -75,14 +75,14 @@ public abstract class ChangeHarvestablesMenu<T extends HarvestableType, P extend
                             Player player = ((Player) event.getWhoClicked());
                             player.sendMessage(this.getChangedToTypeMessage(type));
                             this.plot.changeType(type);
-                            goBackGui.show(event.getWhoClicked());
+                            this.goBackGui.show(event.getWhoClicked());
                         }
                 ));
             }
         });
     }
 
-    private void addSpaceItem() {
+    private void addSpaceButton() {
         GuiItem guiItem = new GuiItem(new ItemStack(Material.BEDROCK));
         guiItem.setVisible(false);
         this.mainPane.insertItem(guiItem, 1);

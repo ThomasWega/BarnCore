@@ -2,7 +2,7 @@ package com.bof.barn.core.region.plot.harvestable.farm.menu;
 
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.item.SkullBuilder;
-import com.bof.barn.core.menu.premade.back.GoBackPane;
+import com.bof.barn.core.gui.premade.button.back.GoBackPane;
 import com.bof.barn.core.region.plot.harvestable.farm.FarmPlot;
 import com.bof.barn.core.region.plot.harvestable.settings.AutoStoreSetting;
 import com.bof.toolkit.skin.Skin;
@@ -45,14 +45,14 @@ public class FarmPlotMainMenu extends ChestGui {
     }
 
     private void addSections() {
-        this.mainPane.addItem(getChangeCropsItem(), 0, 0);
-        this.mainPane.addItem(getUpgradesItem(), 3, 0);
-        this.mainPane.addItem(getBoostersItem(), 6, 0);
-        this.mainPane.addItem(getHarvestItem(), 1, 1);
-        this.mainPane.addItem(getAutoStoreItem(), 5, 1);
+        this.mainPane.addItem(getChangeCropsButton(),0, 0);
+        this.mainPane.addItem(getUpgradesButton(),3, 0);
+        this.mainPane.addItem(getBoostersButton(),6, 0);
+        this.mainPane.addItem(getHarvestButton(),1, 1);
+        this.mainPane.addItem(getAutoStoreButton(),5, 1);
     }
 
-    private GuiItem getChangeCropsItem() {
+    private GuiItem getChangeCropsButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#FF8378>Change Crops</color></b>");
         return new GuiItem(
                 new ItemBuilder(this.plot.getCurrentlyHarvesting().getItem())
@@ -65,7 +65,7 @@ public class FarmPlotMainMenu extends ChestGui {
         );
     }
 
-    private GuiItem getUpgradesItem() {
+    private GuiItem getUpgradesButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#4FFFD3>Upgrades</color></b>");
         return new GuiItem(
                 new SkullBuilder()
@@ -79,7 +79,7 @@ public class FarmPlotMainMenu extends ChestGui {
         );
     }
 
-    private GuiItem getBoostersItem() {
+    private GuiItem getBoostersButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#eeff30>Boosters</color></b>");
         return new GuiItem(
                 new SkullBuilder()
@@ -93,7 +93,7 @@ public class FarmPlotMainMenu extends ChestGui {
         );
     }
 
-    private GuiItem getHarvestItem() {
+    private GuiItem getHarvestButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#BE7DFF>Harvest Crops</color></b>");
         return new GuiItem(
                 new SkullBuilder()
@@ -118,7 +118,7 @@ public class FarmPlotMainMenu extends ChestGui {
         );
     }
 
-    private GuiItem getAutoStoreItem() {
+    private GuiItem getAutoStoreButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#2b84ff>Auto Store</color></b>");
         String statusStr = plot.isSetting(AutoStoreSetting.class) ? "<green>ON</green>" : "<red>OFF</red>";
         Component status = MiniMessage.miniMessage().deserialize("<white>Status: " + statusStr + "</white>");

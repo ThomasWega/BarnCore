@@ -2,7 +2,7 @@ package com.bof.barn.core.region.plot.harvestable.animal.menu;
 
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.item.SkullBuilder;
-import com.bof.barn.core.menu.premade.back.GoBackPane;
+import com.bof.barn.core.gui.premade.button.back.GoBackPane;
 import com.bof.barn.core.region.plot.harvestable.animal.AnimalPlot;
 import com.bof.barn.core.region.plot.harvestable.settings.AutoStoreSetting;
 import com.bof.toolkit.skin.Skin;
@@ -46,14 +46,14 @@ public class AnimalPlotMainMenu extends ChestGui {
     }
 
     private void addSections() {
-        this.mainPane.addItem(getChangeAnimalsItem(), 0, 0);
-        this.mainPane.addItem(getUpgradesItem(), 3, 0);
-        this.mainPane.addItem(getBoostersItem(), 6, 0);
-        this.mainPane.addItem(getHarvestItem(), 1, 1);
-        this.mainPane.addItem(getAutoStoreItem(), 5, 1);
+        this.mainPane.addItem(getChangeAnimalsButton(), 0, 0);
+        this.mainPane.addItem(getUpgradesButton(),3, 0);
+        this.mainPane.addItem(getBoostersButton(),6, 0);
+        this.mainPane.addItem(getHarvestButton(),1, 1);
+        this.mainPane.addItem(getAutoStoreButton(),5, 1);
     }
 
-    private GuiItem getChangeAnimalsItem() {
+    private GuiItem getChangeAnimalsButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#3bff5b>Change Animals</color></b>");
         return new GuiItem(
                 new ItemBuilder(this.plot.getCurrentlyHarvesting().getItem())
@@ -66,7 +66,7 @@ public class AnimalPlotMainMenu extends ChestGui {
         );
     }
 
-    private GuiItem getUpgradesItem() {
+    private GuiItem getUpgradesButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#4FFFD3>Upgrades</color></b>");
         return new GuiItem(
                 new SkullBuilder()
@@ -80,7 +80,7 @@ public class AnimalPlotMainMenu extends ChestGui {
         );
     }
 
-    private GuiItem getBoostersItem() {
+    private GuiItem getBoostersButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#eeff30>Boosters</color></b>");
         return new GuiItem(
                 new SkullBuilder()
@@ -94,7 +94,7 @@ public class AnimalPlotMainMenu extends ChestGui {
         );
     }
 
-    private GuiItem getHarvestItem() {
+    private GuiItem getHarvestButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#ffb640>Harvest Animals</color></b>");
         return new GuiItem(
                 new ItemBuilder(Material.IRON_AXE)
@@ -118,7 +118,7 @@ public class AnimalPlotMainMenu extends ChestGui {
         );
     }
 
-    private GuiItem getAutoStoreItem() {
+    private GuiItem getAutoStoreButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#2b84ff>Auto Store</color></b>");
         String statusStr = plot.isSetting(AutoStoreSetting.class) ? "<green>ON</green>" : "<red>OFF</red>";
         Component status = MiniMessage.miniMessage().deserialize("<white>Status: " + statusStr + "</white>");

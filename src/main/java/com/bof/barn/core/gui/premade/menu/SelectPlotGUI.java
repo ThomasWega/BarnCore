@@ -1,7 +1,8 @@
-package com.bof.barn.core.menu.premade;
+package com.bof.barn.core.gui.premade.menu;
 
-import com.bof.barn.core.menu.premade.back.GoBackPane;
-import com.bof.barn.core.menu.premade.harvestable.HarvestablePlotItem;
+import com.bof.barn.core.gui.premade.button.back.GoBackPane;
+import com.bof.barn.core.gui.premade.button.plot.HarvestablePlotItem;
+import com.bof.barn.core.gui.premade.button.plot.LockedPlotButton;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.Plot;
 import com.bof.barn.core.region.plot.PlotType;
@@ -21,14 +22,14 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
-public abstract class SelectPlotMenu extends ChestGui {
+public abstract class SelectPlotGUI extends ChestGui {
     private final BarnRegion region;
     private final OutlinePane mainPane;
     private final OutlinePane lockedPane;
     private final Gui goBackGui;
     private final PlotType plotType;
 
-    public SelectPlotMenu(@NotNull BarnRegion region, @NotNull PlotType plotType, @Nullable Gui goBackGui, int rows, int x, int y, int length, int height, @NotNull TextHolder title) {
+    public SelectPlotGUI(@NotNull BarnRegion region, @NotNull PlotType plotType, @Nullable Gui goBackGui, int rows, int x, int y, int length, int height, @NotNull TextHolder title) {
         super(rows, title);
         this.region = region;
         this.mainPane = new OutlinePane(x, y, length, height, Pane.Priority.NORMAL);
@@ -51,7 +52,7 @@ public abstract class SelectPlotMenu extends ChestGui {
     }
 
     private void addLockedPlots() {
-        IntStream.rangeClosed(1, this.region.getLockedPlots(plotType).size()).forEach(value -> this.lockedPane.addItem(new LockedPlotItem(plotType)));
+        IntStream.rangeClosed(1, this.region.getLockedPlots(plotType).size()).forEach(value -> this.lockedPane.addItem(new LockedPlotButton(plotType)));
     }
 
     private void addActivePlots() {

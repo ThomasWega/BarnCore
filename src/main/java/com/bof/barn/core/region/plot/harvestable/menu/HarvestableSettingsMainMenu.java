@@ -2,7 +2,7 @@ package com.bof.barn.core.region.plot.harvestable.menu;
 
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.item.SkullBuilder;
-import com.bof.barn.core.menu.premade.back.GoBackPane;
+import com.bof.barn.core.gui.premade.button.back.GoBackPane;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.menu.RegionMainMenu;
 import com.bof.barn.core.region.plot.harvestable.animal.menu.AnimalSettingsMainMenu;
@@ -31,8 +31,8 @@ public class HarvestableSettingsMainMenu extends ChestGui {
     }
 
     private void initialize() {
-        this.mainPane.addItem(this.getFarmPlotsItem(), 1, 0);
-        this.mainPane.addItem(this.getAnimalPlotsItem(), 5, 0);
+        this.mainPane.addItem(this.getFarmPlotsButton(),1, 0);
+        this.mainPane.addItem(this.getAnimalPlotsButton(),5, 0);
 
         this.addPane(new GoBackPane(4, 2, new RegionMainMenu(this.region)));
         this.addPane(this.mainPane);
@@ -40,7 +40,7 @@ public class HarvestableSettingsMainMenu extends ChestGui {
         this.setOnGlobalClick(event -> event.setCancelled(true));
     }
 
-    private GuiItem getFarmPlotsItem() {
+    private GuiItem getFarmPlotsButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#FF8378>Farm Plots</color></b>");
         return new GuiItem(
                 new SkullBuilder()
@@ -54,7 +54,7 @@ public class HarvestableSettingsMainMenu extends ChestGui {
         );
     }
 
-    private GuiItem getAnimalPlotsItem() {
+    private GuiItem getAnimalPlotsButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#FF8378>Animal Plots</color></b>");
         return new GuiItem(
                 new ItemBuilder(Material.OAK_FENCE)

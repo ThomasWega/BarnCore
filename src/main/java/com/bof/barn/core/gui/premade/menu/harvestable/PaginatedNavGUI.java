@@ -1,5 +1,7 @@
-package com.bof.barn.core.menu.premade.page;
+package com.bof.barn.core.gui.premade.menu.harvestable;
 
+import com.bof.barn.core.gui.premade.button.page.NextPageButton;
+import com.bof.barn.core.gui.premade.button.page.PreviousPageButton;
 import com.github.stefvanschie.inventoryframework.adventuresupport.TextHolder;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
@@ -12,15 +14,15 @@ import org.jetbrains.annotations.NotNull;
 public abstract class PaginatedNavGUI extends ChestGui {
     public final StaticPane navPane;
     public final PaginatedPane paginatedPane;
-    public final NextPageItem nextPageItem;
-    public final PreviousPageItem previousPageItem;
+    public final NextPageButton nextPageItem;
+    public final PreviousPageButton previousPageItem;
 
     public PaginatedNavGUI(int rows, @NotNull TextHolder title, int x, int y, int length, int height) {
         super(rows, title);
         this.navPane = new StaticPane(0, (this.getRows() - 1), 9, 1);
         this.paginatedPane = new PaginatedPane(x, y, length, height);
-        this.previousPageItem = new PreviousPageItem();
-        this.nextPageItem = new NextPageItem();
+        this.previousPageItem = new PreviousPageButton();
+        this.nextPageItem = new NextPageButton();
 
         this.previousPageItem.setAction(event -> {
             this.paginatedPane.setPage(paginatedPane.getPage() - 1);

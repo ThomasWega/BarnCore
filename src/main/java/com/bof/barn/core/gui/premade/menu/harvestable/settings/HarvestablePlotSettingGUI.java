@@ -1,9 +1,9 @@
-package com.bof.barn.core.menu.premade.harvestable.settings;
+package com.bof.barn.core.gui.premade.menu.harvestable.settings;
 
+import com.bof.barn.core.gui.premade.button.slot.LockedSlotButton;
+import com.bof.barn.core.gui.premade.button.slot.UnlockedSlotButton;
 import com.bof.barn.core.item.ItemBuilder;
-import com.bof.barn.core.menu.premade.LockedSlotItem;
-import com.bof.barn.core.menu.premade.UnlockedSlotItem;
-import com.bof.barn.core.menu.premade.back.GoBackPane;
+import com.bof.barn.core.gui.premade.button.back.GoBackPane;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.Plot;
 import com.bof.barn.core.region.plot.PlotSetting;
@@ -31,7 +31,7 @@ import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
 @Getter
-public class HarvestablePlotSettingMenu<S extends HarvestableSetting> extends ChestGui {
+public class HarvestablePlotSettingGUI<S extends HarvestableSetting> extends ChestGui {
     private final BarnRegion region;
     private final Class<S> setting;
     private final OutlinePane selectedPane = new OutlinePane(1, 1, 7, 2, Pane.Priority.HIGHEST);
@@ -41,7 +41,7 @@ public class HarvestablePlotSettingMenu<S extends HarvestableSetting> extends Ch
     private final PlotType plotType;
     private final Gui goBackGui;
 
-    public HarvestablePlotSettingMenu(@NotNull BarnRegion region, @NotNull PlotType plotType, @NotNull Class<S> setting, @Nullable Gui goBackGui) {
+    public HarvestablePlotSettingGUI(@NotNull BarnRegion region, @NotNull PlotType plotType, @NotNull Class<S> setting, @Nullable Gui goBackGui) {
         super(4, ComponentHolder.of(Component.text(PlotSetting.getSettingName(setting) + " Menu")));
         this.region = region;
         this.setting = setting;
@@ -91,12 +91,12 @@ public class HarvestablePlotSettingMenu<S extends HarvestableSetting> extends Ch
 
     private void addUnlockedSlots() {
         IntStream.rangeClosed(1, unlockedSlots).forEach(value ->
-                this.unlockedSlotsPane.addItem(new UnlockedSlotItem(this.handleSelectAction(null))));
+                this.unlockedSlotsPane.addItem(new UnlockedSlotButton(this.handleSelectAction(null))));
     }
 
     private void addLockedSlots() {
         IntStream.rangeClosed(1, this.region.getLockedPlots(this.plotType).size()).forEach(value ->
-                this.lockedSlotsPane.addItem(new LockedSlotItem()));
+                this.lockedSlotsPane.addItem(new LockedSlotButton()));
     }
 
     private Consumer<InventoryClickEvent> handleSelectAction(@Nullable HarvestablePlot<?> plot) {
@@ -107,11 +107,11 @@ public class HarvestablePlotSettingMenu<S extends HarvestableSetting> extends Ch
                 }
                 // this doesn't work for some reason
                 // this.update();
-                new HarvestablePlotSettingMenu<>(this.region, this.plotType, this.setting, this.goBackGui).show(event.getWhoClicked());
+                new HarvestablePlotSettingGUI<>(this.region, this.plotType, this.setting, this.goBackGui).show(event.getWhoClicked());
                 return;
             }
             // if not click shift, open the select menu
-            new HarvestablePlotSettingSetMenu<>(this.region, this.plotType, this, plot).show(event.getWhoClicked());
+            new HarvestablePlotSettingSetGUI<>(this.region, this.plotType, this, plot).show(event.getWhoClicked());
         };
     }
 }

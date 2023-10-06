@@ -1,8 +1,8 @@
-package com.bof.barn.core.menu.premade.harvestable.settings;
+package com.bof.barn.core.gui.premade.menu.harvestable.settings;
 
+import com.bof.barn.core.gui.premade.button.plot.LockedPlotButton;
 import com.bof.barn.core.item.ItemBuilder;
-import com.bof.barn.core.menu.premade.LockedPlotItem;
-import com.bof.barn.core.menu.premade.back.GoBackPane;
+import com.bof.barn.core.gui.premade.button.back.GoBackPane;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.Plot;
 import com.bof.barn.core.region.plot.PlotSetting;
@@ -25,7 +25,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.IntStream;
 
-public class HarvestablePlotSettingSetMenu<S extends HarvestablePlotSettingMenu<? extends HarvestableSetting>> extends ChestGui {
+public class HarvestablePlotSettingSetGUI<S extends HarvestablePlotSettingGUI<? extends HarvestableSetting>> extends ChestGui {
     private final BarnRegion region;
     private final OutlinePane mainPane = new OutlinePane(1, 1, 7, 2, Pane.Priority.NORMAL);
     private final OutlinePane lockedPane = mainPane.copy();
@@ -34,7 +34,7 @@ public class HarvestablePlotSettingSetMenu<S extends HarvestablePlotSettingMenu<
     private final PlotType plotType;
     private final S mainSettingMenu;
 
-    public HarvestablePlotSettingSetMenu(@NotNull BarnRegion region, @NotNull PlotType plotType, @NotNull S mainSettingMenu, @Nullable HarvestablePlot<?> previousSelectedPlot) {
+    public HarvestablePlotSettingSetGUI(@NotNull BarnRegion region, @NotNull PlotType plotType, @NotNull S mainSettingMenu, @Nullable HarvestablePlot<?> previousSelectedPlot) {
         super(4, ComponentHolder.of(Component.text("Toggle " + PlotSetting.getSettingName(mainSettingMenu.getSetting()) + " for plot")));
         this.region = region;
         this.plotType = plotType;
@@ -57,7 +57,7 @@ public class HarvestablePlotSettingSetMenu<S extends HarvestablePlotSettingMenu<
 
     private void addLockedPlots() {
         IntStream.rangeClosed(1, this.region.getLockedPlots(this.plotType).size()).forEach(value ->
-                this.lockedPane.addItem(new LockedPlotItem(this.plotType)));
+                this.lockedPane.addItem(new LockedPlotButton(this.plotType)));
     }
 
     private void addSettablePlots() {
@@ -82,7 +82,7 @@ public class HarvestablePlotSettingSetMenu<S extends HarvestablePlotSettingMenu<
                                     this.previousSelectedPlot.setSetting(this.mainSettingMenu.getSetting(), false);
                                 }
                                 plot.setSetting(this.mainSettingMenu.getSetting(), true);
-                                new HarvestablePlotSettingMenu<>(this.region, this.plotType, this.mainSettingMenu.getSetting(), this.mainSettingMenu.getGoBackGui())
+                                new HarvestablePlotSettingGUI<>(this.region, this.plotType, this.mainSettingMenu.getSetting(), this.mainSettingMenu.getGoBackGui())
                                         .show(event.getWhoClicked());
                             }
                     ));

@@ -1,4 +1,4 @@
-package com.bof.barn.core.menu.premade;
+package com.bof.barn.core.gui.premade.button.slot;
 
 import com.bof.barn.core.item.SkullBuilder;
 import com.bof.toolkit.skin.Skin;
@@ -12,9 +12,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class UnlockedSlotItem extends GuiItem {
+public class UnlockedSlotButton extends GuiItem {
 
-    public UnlockedSlotItem(@Nullable Consumer<InventoryClickEvent> action) {
+    public UnlockedSlotButton(@Nullable Consumer<InventoryClickEvent> action) {
         super(new SkullBuilder()
                 .displayName(MiniMessage.miniMessage().deserialize("<color:#42FF49>Unlocked Slot</color>"))
                 .lore(List.of(

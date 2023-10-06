@@ -1,7 +1,7 @@
 package com.bof.barn.core.region.plot.harvestable.farm.menu;
 
 import com.bof.barn.core.item.SkullBuilder;
-import com.bof.barn.core.menu.premade.back.GoBackPane;
+import com.bof.barn.core.gui.premade.button.back.GoBackPane;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.harvestable.menu.HarvestableSettingsMainMenu;
 import com.bof.barn.core.region.plot.harvestable.settings.AutoStoreSetting;
@@ -28,7 +28,7 @@ public class FarmSettingsMainMenu extends ChestGui {
     }
 
     private void initialize() {
-        this.mainPane.addItem(this.getAutoStoreItem(), 1, 0);
+        this.mainPane.addItem(this.getAutoStoreButton(),1, 0);
 
         this.addPane(new GoBackPane(4, 2, new HarvestableSettingsMainMenu(this.region)));
         this.addPane(this.mainPane);
@@ -36,7 +36,7 @@ public class FarmSettingsMainMenu extends ChestGui {
         this.setOnGlobalClick(event -> event.setCancelled(true));
     }
 
-    private GuiItem getAutoStoreItem() {
+    private GuiItem getAutoStoreButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#2b84ff>Auto Store</color></b>");
         Component unlockedPlots = MiniMessage.miniMessage().deserialize("<white>Unlocked Slots: <green>" + this.region.getSettingPlotsCount(AutoStoreSetting.class) + "/" + this.region.getAutoStoreSlots() + "</green></white>");
         return new GuiItem(new SkullBuilder()
