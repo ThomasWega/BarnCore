@@ -56,9 +56,6 @@ public final class Core extends JavaPlugin implements Listener {
         this.registerPAPIPlaceholders();
     }
 
-    //TODO need to separate the menus a lot more, to prevent so much code duplication (missing the 2 autostore menus for each)
-    // make sure to use the premade items for these menus as well!!
-
     //TODO add sounds
     //TODO close menu on every button click
     //TODO figure out when to use super and when extends
