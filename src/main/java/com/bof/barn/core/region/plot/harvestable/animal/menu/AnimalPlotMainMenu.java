@@ -1,8 +1,9 @@
 package com.bof.barn.core.region.plot.harvestable.animal.menu;
 
+import com.bof.barn.core.gui.premade.button.back.GoBackPane;
+import com.bof.barn.core.gui.premade.button.setting.AutoStoreSettingButton;
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.item.SkullBuilder;
-import com.bof.barn.core.gui.premade.button.back.GoBackPane;
 import com.bof.barn.core.region.plot.harvestable.animal.AnimalPlot;
 import com.bof.barn.core.region.plot.harvestable.settings.AutoStoreSetting;
 import com.bof.toolkit.skin.Skin;
@@ -46,11 +47,11 @@ public class AnimalPlotMainMenu extends ChestGui {
     }
 
     private void addSections() {
-        this.mainPane.addItem(getChangeAnimalsButton(), 0, 0);
-        this.mainPane.addItem(getUpgradesButton(),3, 0);
-        this.mainPane.addItem(getBoostersButton(),6, 0);
-        this.mainPane.addItem(getHarvestButton(),1, 1);
-        this.mainPane.addItem(getAutoStoreButton(),5, 1);
+        this.mainPane.addItem(this.getChangeAnimalsButton(), 0, 0);
+        this.mainPane.addItem(this.getUpgradesButton(), 3, 0);
+        this.mainPane.addItem(this.getBoostersButton(), 6, 0);
+        this.mainPane.addItem(this.getHarvestButton(), 1, 1);
+        this.mainPane.addItem(this.getAutoStoreButton(), 5, 1);
     }
 
     private GuiItem getChangeAnimalsButton() {
@@ -119,30 +120,23 @@ public class AnimalPlotMainMenu extends ChestGui {
     }
 
     private GuiItem getAutoStoreButton() {
-        Component name = MiniMessage.miniMessage().deserialize("<b><color:#2b84ff>Auto Store</color></b>");
         String statusStr = plot.isSetting(AutoStoreSetting.class) ? "<green>ON</green>" : "<red>OFF</red>";
         Component status = MiniMessage.miniMessage().deserialize("<white>Status: " + statusStr + "</white>");
-        return new GuiItem(new SkullBuilder()
-                .displayName(name)
-                .lore(List.of(
-                        Component.text("Automatically puts animals TO ADD", NamedTextColor.GRAY),
-                        Component.empty(),
-                        status,
-                        Component.empty(),
-                        Component.text("Click to change status", NamedTextColor.DARK_GRAY)
-                ))
-                .skin(new Skin("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTVhMGIwN2UzNmVhZmRlY2YwNTljOGNiMTM0YTdiZjBhMTY3ZjkwMDk2NmYxMDk5MjUyZDkwMzI3NjQ2MWNjZSJ9fX0=", null))
-                .hideFlags()
-                .build(),
-                event -> {
-                    Player player = ((Player) event.getWhoClicked());
-                    if (!this.plot.setAutoStore(!plot.isSetting(AutoStoreSetting.class))) {
-                        player.sendMessage("TO ADD - No free AutoStore slots 2");
-                    } else {
-                        player.sendMessage("TO ADD - changed auto store status 2");
-                    }
-                    new AnimalPlotMainMenu(this.plot, this.closeOnGoBack).show(player);
-                }
+        List<Component> lore = List.of(
+                Component.text("Automatically puts animals TO ADD", NamedTextColor.GRAY),
+                Component.empty(),
+                status,
+                Component.empty(),
+                Component.text("Click to change status", NamedTextColor.DARK_GRAY)
         );
+        return new AutoStoreSettingButton(lore, event -> {
+            Player player = ((Player) event.getWhoClicked());
+            if (!this.plot.setAutoStore(!plot.isSetting(AutoStoreSetting.class))) {
+                player.sendMessage("TO ADD - No free AutoStore slots 2");
+            } else {
+                player.sendMessage("TO ADD - changed auto store status 2");
+            }
+            new AnimalPlotMainMenu(this.plot, this.closeOnGoBack).show(player);
+        });
     }
 }

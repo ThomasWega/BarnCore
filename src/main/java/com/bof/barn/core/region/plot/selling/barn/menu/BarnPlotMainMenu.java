@@ -43,10 +43,10 @@ public class BarnPlotMainMenu extends ChestGui {
     }
 
     private void addSections() {
-        this.mainPane.addItem(getSellAnimalsButton(),0, 0);
-        this.mainPane.addItem(getSeeAnimalsButton(),2, 0);
-        this.mainPane.addItem(getPutAnimalsButton(),4, 0);
-        this.mainPane.addItem(getAutoSellButton(),6, 0);
+        this.mainPane.addItem(this.getSellAnimalsButton(),0, 0);
+        this.mainPane.addItem(this.getSeeAnimalsButton(),2, 0);
+        this.mainPane.addItem(this.getPutAnimalsButton(),4, 0);
+        this.mainPane.addItem(this.getAutoSellButton(),6, 0);
     }
 
     private GuiItem getSellAnimalsButton() {

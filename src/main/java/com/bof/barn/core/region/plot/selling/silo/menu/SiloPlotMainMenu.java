@@ -43,10 +43,10 @@ public class SiloPlotMainMenu extends ChestGui {
     }
 
     private void addSections() {
-        this.mainPane.addItem(getSellCropsButton(),0, 0);
-        this.mainPane.addItem(getOpenSiloButton(),2, 0);
-        this.mainPane.addItem(getPutCropsButton(),4, 0);
-        this.mainPane.addItem(getAutoSellButton(),6, 0);
+        this.mainPane.addItem(this.getSellCropsButton(),0, 0);
+        this.mainPane.addItem(this.getOpenSiloButton(),2, 0);
+        this.mainPane.addItem(this.getPutCropsButton(),4, 0);
+        this.mainPane.addItem(this.getAutoSellButton(),6, 0);
     }
 
     private GuiItem getSellCropsButton() {

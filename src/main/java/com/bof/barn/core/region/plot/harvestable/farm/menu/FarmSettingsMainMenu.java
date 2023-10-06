@@ -1,11 +1,10 @@
 package com.bof.barn.core.region.plot.harvestable.farm.menu;
 
-import com.bof.barn.core.item.SkullBuilder;
+import com.bof.barn.core.gui.premade.button.setting.AutoStoreSettingButton;
 import com.bof.barn.core.gui.premade.button.back.GoBackPane;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.harvestable.menu.HarvestableSettingsMainMenu;
 import com.bof.barn.core.region.plot.harvestable.settings.AutoStoreSetting;
-import com.bof.toolkit.skin.Skin;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
@@ -37,21 +36,14 @@ public class FarmSettingsMainMenu extends ChestGui {
     }
 
     private GuiItem getAutoStoreButton() {
-        Component name = MiniMessage.miniMessage().deserialize("<b><color:#2b84ff>Auto Store</color></b>");
         Component unlockedPlots = MiniMessage.miniMessage().deserialize("<white>Unlocked Slots: <green>" + this.region.getSettingPlotsCount(AutoStoreSetting.class) + "/" + this.region.getAutoStoreSlots() + "</green></white>");
-        return new GuiItem(new SkullBuilder()
-                .displayName(name)
-                .lore(List.of(
-                        Component.text("Automatically puts crops into the silo", NamedTextColor.GRAY),
-                        Component.empty(),
-                        unlockedPlots,
-                        Component.empty(),
-                        Component.text("Click to select plots", NamedTextColor.DARK_GRAY)
-                ))
-                .skin(new Skin("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTVhMGIwN2UzNmVhZmRlY2YwNTljOGNiMTM0YTdiZjBhMTY3ZjkwMDk2NmYxMDk5MjUyZDkwMzI3NjQ2MWNjZSJ9fX0=", null))
-                .hideFlags()
-                .build(),
-                event -> new FarmAutoStoreMenu(this.region).show(event.getWhoClicked())
+        List<Component> lore = List.of(
+                Component.text("Automatically puts crops into the silo", NamedTextColor.GRAY),
+                Component.empty(),
+                unlockedPlots,
+                Component.empty(),
+                Component.text("Click to select plots", NamedTextColor.DARK_GRAY)
         );
+        return new AutoStoreSettingButton(lore, event -> new FarmAutoStoreMenu(this.region).show(event.getWhoClicked()));
     }
 }
