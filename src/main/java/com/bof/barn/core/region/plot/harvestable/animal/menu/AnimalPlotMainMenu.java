@@ -38,8 +38,7 @@ public class AnimalPlotMainMenu extends ChestGui {
         if (this.closeOnGoBack) {
             this.addPane(new GoBackPane(4, 3, null));
         } else {
-            //  this.addPane(new GoBackPane(4, 3, new CropsMainMenu(this.plot.getOwningRegion())));
-            this.addPane(new GoBackPane(4, 3, null));
+            this.addPane(new GoBackPane(4, 3, new AnimalPlotsMenu(this.plot.getOwningRegion())));
         }
         this.addPane(mainPane);
 
@@ -114,7 +113,7 @@ public class AnimalPlotMainMenu extends ChestGui {
                     } else {
                         player.sendMessage("TO ADD - No animal is present");
                     }
-                    new AnimalPlotMainMenu(this.plot, this.closeOnGoBack).show(player);
+                    player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
                 }
         );
     }
@@ -142,7 +141,7 @@ public class AnimalPlotMainMenu extends ChestGui {
                     } else {
                         player.sendMessage("TO ADD - changed auto store status 2");
                     }
-                    player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
+                    new AnimalPlotMainMenu(this.plot, this.closeOnGoBack).show(player);
                 }
         );
     }

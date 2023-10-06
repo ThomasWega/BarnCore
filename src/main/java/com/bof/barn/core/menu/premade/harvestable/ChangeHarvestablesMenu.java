@@ -14,7 +14,6 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -75,8 +74,8 @@ public abstract class ChangeHarvestablesMenu<T extends HarvestableType, P extend
                         event -> {
                             Player player = ((Player) event.getWhoClicked());
                             player.sendMessage(this.getChangedToTypeMessage(type));
-                            player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
                             this.plot.changeType(type);
+                            goBackGui.show(event.getWhoClicked());
                         }
                 ));
             }

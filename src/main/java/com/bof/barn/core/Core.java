@@ -57,7 +57,6 @@ public final class Core extends JavaPlugin implements Listener {
     }
 
     //TODO add sounds
-    //TODO close menu on every button click
     //TODO figure out when to use super and when extends
 
     @Override

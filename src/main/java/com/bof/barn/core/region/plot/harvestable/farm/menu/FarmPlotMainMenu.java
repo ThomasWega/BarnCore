@@ -113,7 +113,7 @@ public class FarmPlotMainMenu extends ChestGui {
                     } else {
                         player.sendMessage("TO ADD - No crop is planted");
                     }
-                    new FarmPlotMainMenu(this.plot, this.closeOnGoBack).show(player);
+                    player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
                 }
         );
     }
@@ -141,7 +141,7 @@ public class FarmPlotMainMenu extends ChestGui {
                     } else {
                         player.sendMessage("TO ADD - changed auto store status 1");
                     }
-                    player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
+                    new FarmPlotMainMenu(this.plot, this.closeOnGoBack).show(player);
                 }
         );
     }
