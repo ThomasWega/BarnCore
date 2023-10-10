@@ -1,8 +1,8 @@
 package com.bof.barn.core.gui.premade.button.slot;
 
+import com.bof.barn.core.gui.premade.sound.SoundedGUIButton;
 import com.bof.barn.core.item.SkullBuilder;
 import com.bof.toolkit.skin.Skin;
-import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class UnlockedSlotButton extends GuiItem {
+public class UnlockedSlotButton extends SoundedGUIButton {
 
     public UnlockedSlotButton(@Nullable Consumer<InventoryClickEvent> action) {
         super(new SkullBuilder()

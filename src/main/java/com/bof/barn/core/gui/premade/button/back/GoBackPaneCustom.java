@@ -13,8 +13,7 @@ public class GoBackPaneCustom extends StaticPane {
     public GoBackPaneCustom(int x, int y, @NotNull Consumer<InventoryClickEvent> eventConsumer) {
         super(x, y, 1, 1, Pane.Priority.HIGHEST);
 
-        GuiItem backItem = new GoBackButton();
-        backItem.setAction(eventConsumer);
+        GuiItem backItem = new GoBackButton(eventConsumer);
         this.addItem(backItem, 0, 0);
     }
 }

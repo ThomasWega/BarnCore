@@ -1,5 +1,6 @@
 package com.bof.barn.core.region.plot.harvestable.menu;
 
+import com.bof.barn.core.gui.premade.sound.SoundedGUIButton;
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.item.SkullBuilder;
 import com.bof.barn.core.gui.premade.button.back.GoBackPane;
@@ -42,7 +43,7 @@ public class HarvestableSettingsMainMenu extends ChestGui {
 
     private GuiItem getFarmPlotsButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#FF8378>Farm Plots</color></b>");
-        return new GuiItem(
+        return new SoundedGUIButton(
                 new SkullBuilder()
                         .displayName(name)
                         .lore(List.of(
@@ -56,7 +57,7 @@ public class HarvestableSettingsMainMenu extends ChestGui {
 
     private GuiItem getAnimalPlotsButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#FF8378>Animal Plots</color></b>");
-        return new GuiItem(
+        return new SoundedGUIButton(
                 new ItemBuilder(Material.OAK_FENCE)
                         .displayName(name)
                         .lore(List.of(

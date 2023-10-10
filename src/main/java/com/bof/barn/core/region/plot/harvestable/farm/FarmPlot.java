@@ -29,6 +29,8 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import static com.bof.barn.core.Core.WORLD;
+
 @Data
 public class FarmPlot implements HarvestablePlot<CropType> {
     private final Map<Class<? extends PlotSetting>, PlotSetting> settings = new HashMap<>();
@@ -51,7 +53,16 @@ public class FarmPlot implements HarvestablePlot<CropType> {
     public void changeType(@NotNull CropType type) {
         this.boxBlocks.forEach(block -> {
             if (block.getRelative(BlockFace.DOWN).getType() == Material.FARMLAND) {
+                if (type == CropType.NONE) {
+                    WORLD.playSound(block.getLocation(), block.getBlockSoundGroup().getBreakSound(), 1f, 1f);
+                }
                 block.setType(type.getMaterial());
+
+                // it's done this stupidly and not in one if else, because I need to change the type between them
+                if (type != CropType.NONE) {
+                    WORLD.playSound(block.getLocation(), block.getBlockSoundGroup().getPlaceSound(), 1f, 1f);
+                }
+
                 if (block.getBlockData() instanceof Ageable ageable) {
                     ageable.setAge(ageable.getMaximumAge());
                     block.setBlockData(ageable);
@@ -64,7 +75,10 @@ public class FarmPlot implements HarvestablePlot<CropType> {
 
     @Override
     public int harvest(@NotNull Player player) {
-        return this.handleCropBreak(player, this.boxBlocks);
+        if (this.currentlyHarvesting != CropType.NONE) {
+            this.boxBlocks.forEach(block -> WORLD.playSound(FarmPlotSound.CROP.getSound(), block.getLocation().getX(), block.getLocation().getY(), block.getLocation().getZ()));
+        }
+        return this.handleCropBreak(player, true, this.boxBlocks);
     }
 
     /**
@@ -75,10 +89,11 @@ public class FarmPlot implements HarvestablePlot<CropType> {
      *
      * @param player Player that broke the crop
      * @param blocks Blocks that were broken
+     * @param byHand   Whether the crop was broken by hand
      * @return amount of crops that were successfully broken
      */
-    public int handleCropBreak(@NotNull Player player, @NotNull Block... blocks) {
-        return this.handleCropBreak(player, Arrays.asList(blocks));
+    public int handleCropBreak(@NotNull Player player, boolean byHand, @NotNull Block... blocks) {
+        return this.handleCropBreak(player, byHand, Arrays.asList(blocks));
     }
 
     /**
@@ -89,9 +104,10 @@ public class FarmPlot implements HarvestablePlot<CropType> {
      *
      * @param player Player that broke the crop
      * @param blocks Blocks that were broken
+     * @param byHand   Whether the crop was broken by hand
      * @return amount of crops that were successfully broken
      */
-    public int handleCropBreak(@NotNull Player player, @NotNull Collection<Block> blocks) {
+    public int handleCropBreak(@NotNull Player player, boolean byHand, @NotNull Collection<Block> blocks) {
         final int[] count = {0};
 
         // there is nothing to harvest
@@ -103,7 +119,10 @@ public class FarmPlot implements HarvestablePlot<CropType> {
             CropType.getByMaterial(block.getType())
                     .filter(cropType -> cropType != CropType.NONE)
                     .ifPresent(cropType -> {
-                        ItemStack item = HarvestableManager.getDrop(cropType);
+                        ItemStack item = new ItemStack(cropType.getItem());
+                        if (byHand) {
+                            item = HarvestableManager.getDrop(cropType);
+                        }
                         AdditionResult result = this.handleAddition(item);
                         switch (result) {
                             case CONTAINER_FULL -> player.sendMessage("TO ADD - All silos are full. Putting the items to inventory");

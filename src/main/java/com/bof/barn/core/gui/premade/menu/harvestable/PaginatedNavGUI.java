@@ -21,16 +21,13 @@ public abstract class PaginatedNavGUI extends ChestGui {
         super(rows, title);
         this.navPane = new StaticPane(0, (this.getRows() - 1), 9, 1);
         this.paginatedPane = new PaginatedPane(x, y, length, height);
-        this.previousPageItem = new PreviousPageButton();
-        this.nextPageItem = new NextPageButton();
 
-        this.previousPageItem.setAction(event -> {
+        this.previousPageItem = new PreviousPageButton(event -> {
             this.paginatedPane.setPage(paginatedPane.getPage() - 1);
             this.handleFirstLastPages();
             this.update();
         });
-
-        this.nextPageItem.setAction(event -> {
+        this.nextPageItem = new NextPageButton(event -> {
             this.paginatedPane.setPage(paginatedPane.getPage() + 1);
             this.handleFirstLastPages();
             this.update();

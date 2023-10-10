@@ -18,6 +18,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -76,7 +77,10 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
 
     public void addAnimal(AnimalType type) {
         Location location = BoxUtils.getRandomLocation(this.getBox());
-        this.animals.add(WORLD.spawnEntity(location, type.getEntityType(), CreatureSpawnEvent.SpawnReason.CUSTOM).getUniqueId());
+        Entity entity = WORLD.spawnEntity(location, type.getEntityType(), CreatureSpawnEvent.SpawnReason.CUSTOM);
+        entity.setSilent(true);
+        WORLD.playSound(AnimalPlotSound.SUMMON.getSound(), entity.getX(), entity.getY(), entity.getZ());
+        this.animals.add(entity.getUniqueId());
     }
 
     private Set<LivingEntity> getEntities() {
@@ -90,7 +94,7 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
     @Override
     public int harvest(@NotNull Player player) {
         Set<LivingEntity> entities = this.getEntities();
-        return this.handleAnimalKill(player, entities.toArray(LivingEntity[]::new));
+        return this.handleAnimalKill(player, false, entities.toArray(LivingEntity[]::new));
     }
 
     /**
@@ -101,10 +105,11 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
      *
      * @param player   Player that killed the animals
      * @param entities Animals that were killed
+     * @param byHand   Whether the animal was killed by hand
      * @return amount of animals that were successfully killed
      */
-    public int handleAnimalKill(@NotNull Player player, @NotNull LivingEntity... entities) {
-        return this.handleAnimalKill(player, Arrays.asList(entities));
+    public int handleAnimalKill(@NotNull Player player, boolean byHand, @NotNull LivingEntity... entities) {
+        return this.handleAnimalKill(player, byHand, Arrays.asList(entities));
     }
 
     /**
@@ -115,9 +120,10 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
      *
      * @param player   Player that killed the animals
      * @param entities Animals that were killed
+     * @param byHand   Whether the animal was killed by hand
      * @return amount of animals that were successfully killed
      */
-    public int handleAnimalKill(@NotNull Player player, @NotNull Collection<LivingEntity> entities) {
+    public int handleAnimalKill(@NotNull Player player, boolean byHand, @NotNull Collection<LivingEntity> entities) {
         final int[] count = {0};
 
         // there is nothing to harvest
@@ -130,10 +136,14 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
             AnimalType.getByEntityType(entity.getType())
                     .filter(type -> type != AnimalType.NONE)
                     .ifPresent(animalType -> {
-                        ItemStack item = HarvestableManager.getDrop(animalType);
+                        ItemStack item = new ItemStack(animalType.getItem());
+                        if (byHand) {
+                            item = HarvestableManager.getDrop(animalType);
+                        }
                         AdditionResult result = this.handleAddition(item);
                         switch (result) {
-                            case CONTAINER_FULL -> player.sendMessage("TO ADD - All barns are full. Putting the items to inventory");
+                            case CONTAINER_FULL ->
+                                    player.sendMessage("TO ADD - All barns are full. Putting the items to inventory");
                             case INV_FULL -> player.sendMessage("TO ADD - Animal inventory is full 1");
                             case SUCCESS -> {
                                 entity.setKiller(player);
@@ -141,6 +151,7 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
                                 count[0]++;
                                 // needs to be after killing the mob
                                 this.animals.remove(entity.getUniqueId());
+                                WORLD.playSound(entity.getLocation(), entity.getDeathSound(), 1f, 1f);
                             }
                         }
                     });

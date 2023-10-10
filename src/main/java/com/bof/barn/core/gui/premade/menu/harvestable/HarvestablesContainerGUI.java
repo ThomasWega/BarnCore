@@ -1,5 +1,6 @@
 package com.bof.barn.core.gui.premade.menu.harvestable;
 
+import com.bof.barn.core.gui.premade.sound.SoundedGUIButton;
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.gui.premade.button.back.GoBackPane;
 import com.bof.barn.core.region.plot.harvestable.HarvestableType;
@@ -67,7 +68,7 @@ public abstract class HarvestablesContainerGUI<T extends HarvestableType, P exte
     }
 
     private GuiItem getHarvestableButton(ItemStack itemStack, T type) {
-        GuiItem guiItem = new GuiItem(new ItemBuilder(itemStack)
+        GuiItem guiItem = new SoundedGUIButton(new ItemBuilder(itemStack)
                 .displayName(HarvestableUtils.getModifiedDisplayName(type, itemStack))
                 .lore(List.of(
                         Component.text("Price per piece: ", NamedTextColor.WHITE)

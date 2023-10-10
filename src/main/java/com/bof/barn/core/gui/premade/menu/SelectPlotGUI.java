@@ -1,7 +1,7 @@
 package com.bof.barn.core.gui.premade.menu;
 
 import com.bof.barn.core.gui.premade.button.back.GoBackPane;
-import com.bof.barn.core.gui.premade.button.plot.HarvestablePlotItem;
+import com.bof.barn.core.gui.premade.button.plot.HarvestablePlotButton;
 import com.bof.barn.core.gui.premade.button.plot.LockedPlotButton;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.Plot;
@@ -70,7 +70,7 @@ public abstract class SelectPlotGUI extends ChestGui {
                             Component.empty(),
                             Component.text("Click to modify this plot", NamedTextColor.DARK_GRAY)
                     ));
-                    this.mainPane.addItem(new HarvestablePlotItem(plot, loreAdd,
+                    this.mainPane.addItem(new HarvestablePlotButton(plot, loreAdd,
                             event -> this.getActivePlotMenu(plot).show(event.getWhoClicked()))
                     );
                 });

@@ -56,8 +56,6 @@ public final class Core extends JavaPlugin implements Listener {
         this.registerPAPIPlaceholders();
     }
 
-    //TODO add sounds
-    //TODO add sounds to gui buttons (prepared sounded gui button) -- make default sound and allow different sounds
     //TODO comments
 
     @Override

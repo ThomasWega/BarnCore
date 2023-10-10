@@ -50,7 +50,7 @@ public class PlayerKillAnimalHandler implements Listener {
                 .forEach(plot -> {
                     if (!plot.getAnimals().contains(entity.getUniqueId())) return;
 
-                    if (plot.handleAnimalKill(player, entity) == 0) {
+                    if (plot.handleAnimalKill(player, true, entity) == 0) {
                         player.sendMessage("TO ADD - Animal inventory is full 3");
                         event.setCancelled(true);
                     }

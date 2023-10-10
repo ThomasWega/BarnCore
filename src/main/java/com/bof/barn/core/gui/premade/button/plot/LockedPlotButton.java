@@ -1,14 +1,14 @@
 package com.bof.barn.core.gui.premade.button.plot;
 
+import com.bof.barn.core.gui.premade.sound.SoundedGUIButton;
 import com.bof.barn.core.item.SkullBuilder;
 import com.bof.barn.core.region.plot.PlotType;
 import com.bof.toolkit.skin.Skin;
-import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.apache.commons.lang.WordUtils;
 import org.jetbrains.annotations.NotNull;
 
-public class LockedPlotButton extends GuiItem {
+public class LockedPlotButton extends SoundedGUIButton {
     public LockedPlotButton(@NotNull PlotType plotType) {
         super(new SkullBuilder()
                 .displayName(MiniMessage.miniMessage().deserialize("<color:#38243b>Locked " + WordUtils.capitalizeFully(plotType.name()) + " Plot</color>"))

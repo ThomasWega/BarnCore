@@ -12,8 +12,7 @@ public class GoBackPane extends StaticPane {
     public GoBackPane(int x, int y, @Nullable Gui previousGui) {
         super(x, y, 1, 1, Priority.HIGHEST);
 
-        GuiItem backItem = new GoBackButton();
-        backItem.setAction(event -> {
+        GuiItem backItem = new GoBackButton(event -> {
             Player player = ((Player) event.getWhoClicked());
             event.setCancelled(true);
             if (previousGui == null) {

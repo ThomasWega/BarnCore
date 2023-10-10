@@ -1,5 +1,6 @@
 package com.bof.barn.core.gui.premade.menu.harvestable.settings;
 
+import com.bof.barn.core.gui.premade.sound.SoundedGUIButton;
 import com.bof.barn.core.gui.premade.button.plot.LockedPlotButton;
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.gui.premade.button.back.GoBackPane;
@@ -11,7 +12,6 @@ import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
 import com.bof.barn.core.region.plot.harvestable.settings.AutoStoreSetting;
 import com.bof.barn.core.region.plot.harvestable.settings.HarvestableSetting;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
-import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
@@ -80,7 +80,7 @@ public class HarvestablePlotSettingSetGUI<S extends HarvestablePlotSettingGUI<? 
                             Component.empty(),
                             Component.text("Click to select this plot", NamedTextColor.DARK_GRAY)
                     ));
-                    this.mainPane.addItem(new GuiItem(
+                    this.mainPane.addItem(new SoundedGUIButton(
                             new ItemBuilder(plot.getCurrentlyHarvesting().getItem())
                                     .displayName(plot.getDisplayName())
                                     .lore(lore)

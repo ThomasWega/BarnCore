@@ -1,5 +1,6 @@
 package com.bof.barn.core.gui.premade.menu.harvestable;
 
+import com.bof.barn.core.gui.premade.sound.SoundedGUIButton;
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.gui.premade.button.back.GoBackPane;
 import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
@@ -58,7 +59,7 @@ public abstract class ChangeHarvestablesGUI<T extends HarvestableType, P extends
             Component changeToType = this.getChangeToTypeText(type);
 
             if (type == this.plot.getCurrentlyHarvesting()) {
-                this.mainPane.addItem(new GuiItem(new ItemBuilder(type.getItem())
+                this.mainPane.addItem(new SoundedGUIButton(new ItemBuilder(type.getItem())
                         .displayName(type.getDisplayName()
                                 .decorate(TextDecoration.BOLD))
                         .lore(List.of(
@@ -70,7 +71,7 @@ public abstract class ChangeHarvestablesGUI<T extends HarvestableType, P extends
                         .build()
                 ));
             } else {
-                this.mainPane.addItem(new GuiItem(new ItemBuilder(type.getItem())
+                this.mainPane.addItem(new SoundedGUIButton(new ItemBuilder(type.getItem())
                         .displayName(type.getDisplayName()
                                 .decorate(TextDecoration.BOLD))
                         .lore(List.of(
@@ -90,7 +91,7 @@ public abstract class ChangeHarvestablesGUI<T extends HarvestableType, P extends
     }
 
     private void addSpaceButton() {
-        GuiItem guiItem = new GuiItem(new ItemStack(Material.BEDROCK));
+        GuiItem guiItem = new SoundedGUIButton(new ItemStack(Material.BEDROCK));
         guiItem.setVisible(false);
         this.mainPane.insertItem(guiItem, 1);
     }

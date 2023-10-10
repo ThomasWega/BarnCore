@@ -1,5 +1,6 @@
 package com.bof.barn.core.region.plot.harvestable.farm.menu;
 
+import com.bof.barn.core.gui.premade.sound.SoundedGUIButton;
 import com.bof.barn.core.gui.premade.button.setting.AutoStoreSettingButton;
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.item.SkullBuilder;
@@ -55,7 +56,7 @@ public class FarmPlotMainMenu extends ChestGui {
 
     private GuiItem getChangeCropsButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#FF8378>Change Crops</color></b>");
-        return new GuiItem(
+        return new SoundedGUIButton(
                 new ItemBuilder(this.plot.getCurrentlyHarvesting().getItem())
                         .displayName(name)
                         .lore(List.of(
@@ -68,7 +69,7 @@ public class FarmPlotMainMenu extends ChestGui {
 
     private GuiItem getUpgradesButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#4FFFD3>Upgrades</color></b>");
-        return new GuiItem(
+        return new SoundedGUIButton(
                 new SkullBuilder()
                         .displayName(name)
                         .lore(List.of(
@@ -82,7 +83,7 @@ public class FarmPlotMainMenu extends ChestGui {
 
     private GuiItem getBoostersButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#eeff30>Boosters</color></b>");
-        return new GuiItem(
+        return new SoundedGUIButton(
                 new SkullBuilder()
                         .displayName(name)
                         .lore(List.of(
@@ -96,7 +97,7 @@ public class FarmPlotMainMenu extends ChestGui {
 
     private GuiItem getHarvestButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#BE7DFF>Harvest Crops</color></b>");
-        return new GuiItem(
+        return new SoundedGUIButton(
                 new SkullBuilder()
                         .displayName(name)
                         .lore(List.of(

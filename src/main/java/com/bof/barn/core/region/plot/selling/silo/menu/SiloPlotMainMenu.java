@@ -1,5 +1,6 @@
 package com.bof.barn.core.region.plot.selling.silo.menu;
 
+import com.bof.barn.core.gui.premade.sound.SoundedGUIButton;
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.item.SkullBuilder;
 import com.bof.barn.core.gui.premade.button.back.GoBackPane;
@@ -51,7 +52,7 @@ public class SiloPlotMainMenu extends ChestGui {
 
     private GuiItem getSellCropsButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#4AFF98>Sell Crops</color></b>");
-        return new GuiItem(
+        return new SoundedGUIButton(
                 new SkullBuilder()
                         .displayName(name)
                         .lore(List.of(
@@ -78,7 +79,7 @@ public class SiloPlotMainMenu extends ChestGui {
 
     private GuiItem getOpenSiloButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#ffa83d>Open Silo</color></b>");
-        return new GuiItem(new ItemBuilder(Material.BARREL)
+        return new SoundedGUIButton(new ItemBuilder(Material.BARREL)
                 .displayName(name)
                 .lore(List.of(
                         Component.empty(),
@@ -92,7 +93,7 @@ public class SiloPlotMainMenu extends ChestGui {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#2b84ff>Auto Sell</color></b>");
         String statusStr = this.plot.isAutoSell() ? "<green>ON</green>" : "<red>OFF</red>";
         Component status = MiniMessage.miniMessage().deserialize("<white>Status: " + statusStr + "</white>");
-        return new GuiItem(new SkullBuilder()
+        return new SoundedGUIButton(new SkullBuilder()
                 .displayName(name)
                 .lore(List.of(
                         status,
@@ -113,7 +114,7 @@ public class SiloPlotMainMenu extends ChestGui {
 
     private GuiItem getPutCropsButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#FF5A36>Put Crops</color></b>");
-        return new GuiItem(new ItemBuilder(Material.HOPPER)
+        return new SoundedGUIButton(new ItemBuilder(Material.HOPPER)
                 .displayName(name)
                 .lore(List.of(
                         Component.empty(),

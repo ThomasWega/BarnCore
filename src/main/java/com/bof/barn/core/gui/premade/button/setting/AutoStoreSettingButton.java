@@ -1,8 +1,8 @@
 package com.bof.barn.core.gui.premade.button.setting;
 
+import com.bof.barn.core.gui.premade.sound.SoundedGUIButton;
 import com.bof.barn.core.item.SkullBuilder;
 import com.bof.toolkit.skin.Skin;
-import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class AutoStoreSettingButton extends GuiItem {
+public class AutoStoreSettingButton extends SoundedGUIButton {
     public AutoStoreSettingButton(@NotNull List<Component> lore, @Nullable Consumer<InventoryClickEvent> action) {
         super (new SkullBuilder()
                 .displayName(MiniMessage.miniMessage().deserialize("<b><color:#2b84ff>Auto Store</color></b>"))
