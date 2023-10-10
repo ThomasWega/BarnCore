@@ -56,8 +56,6 @@ public final class Core extends JavaPlugin implements Listener {
         this.registerPAPIPlaceholders();
     }
 
-    //TODO comments
-
     @Override
     public void onDisable() {
     }

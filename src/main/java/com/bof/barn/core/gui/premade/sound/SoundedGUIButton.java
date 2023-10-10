@@ -11,6 +11,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 
+/**
+ * Button that plays a sound when clicked
+ */
 public class SoundedGUIButton extends GuiItem {
 
     public SoundedGUIButton(@NotNull ItemStack item, @Nullable Consumer<InventoryClickEvent> action, @NotNull Plugin plugin) {
