@@ -3,7 +3,9 @@ package com.bof.barn.core.region.plot.harvestable;
 
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.Plot;
+import com.bof.barn.core.region.plot.harvestable.settings.AutoReplantAllSetting;
 import com.bof.barn.core.region.plot.harvestable.settings.AutoStoreSetting;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -100,5 +102,13 @@ public interface HarvestablePlot<T extends HarvestableType> extends Plot {
         }
 
         return AdditionResult.SUCCESS;
+    }
+
+    default void handleAutoReplant() {
+        // handle auto replant all
+        if (this.hasSetting(AutoReplantAllSetting.class)) {
+            T harvesting = this.getCurrentlyHarvesting();
+            Bukkit.getScheduler().runTaskLater(this.getPlugin(), () -> this.changeType(harvesting), 20L);
+        }
     }
 }

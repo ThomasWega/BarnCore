@@ -1,5 +1,6 @@
 package com.bof.barn.core.region.plot.harvestable.animal;
 
+import com.bof.barn.core.Core;
 import com.bof.barn.core.HarvestableManager;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.PlotSetting;
@@ -35,6 +36,7 @@ import static com.bof.barn.core.Core.WORLD;
 
 @Data
 public class AnimalPlot implements HarvestablePlot<AnimalType> {
+    private final Core plugin;
     private final Map<Class<? extends PlotSetting>, PlotSetting> settings = new HashMap<>();
     private final BarnRegion owningRegion;
     private final PlotType type = PlotType.ANIMAL;
@@ -46,7 +48,8 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
     private AnimalType currentlyHarvesting = AnimalType.NONE;
     private Hologram hologram;
 
-    public AnimalPlot(@NotNull BarnRegion owningRegion, @NotNull BoundingBox box, int id) {
+    public AnimalPlot(Core plugin, BarnRegion owningRegion, BoundingBox box, int id) {
+        this.plugin = plugin;
         this.owningRegion = owningRegion;
         this.box = box;
         this.boxBlocks = BoxUtils.getBlocksInBox(box, true);
@@ -94,6 +97,7 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
     @Override
     public int harvest(@NotNull Player player) {
         Set<LivingEntity> entities = this.getEntities();
+        this.handleAutoReplant();
         return this.handleAnimalKill(player, false, entities.toArray(LivingEntity[]::new));
     }
 

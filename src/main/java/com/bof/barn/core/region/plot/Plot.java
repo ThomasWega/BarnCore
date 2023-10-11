@@ -1,5 +1,6 @@
 package com.bof.barn.core.region.plot;
 
+import com.bof.barn.core.Core;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.harvestable.animal.AnimalPlot;
 import com.bof.barn.core.region.plot.harvestable.farm.FarmPlot;
@@ -29,16 +30,21 @@ public interface Plot {
      * @param id           ID of the plot
      * @return new Plot instance depending on the type
      */
-    static Plot newPlot(@NotNull PlotType type, @NotNull BarnRegion owningRegion, @NotNull BoundingBox box, int id) {
+    static Plot newPlot(@NotNull Core plugin, @NotNull PlotType type, @NotNull BarnRegion owningRegion, @NotNull BoundingBox box, int id) {
         Plot plot = null;
         switch (type) {
-            case FARM -> plot = new FarmPlot(owningRegion, box, id);
-            case SILO -> plot = new SiloPlot(owningRegion, box, id);
-            case ANIMAL -> plot = new AnimalPlot(owningRegion, box, id);
-            case BARN -> plot = new BarnPlot(owningRegion, box, id);
+            case FARM -> plot = new FarmPlot(plugin, owningRegion, box, id);
+            case SILO -> plot = new SiloPlot(plugin, owningRegion, box, id);
+            case ANIMAL -> plot = new AnimalPlot(plugin, owningRegion, box, id);
+            case BARN -> plot = new BarnPlot(plugin, owningRegion, box, id);
         }
         return plot;
     }
+
+    /**
+     * @return Instance of the plugin
+     */
+    @NotNull Core getPlugin();
 
     /**
      * Holds all the settings for the given plot and their values.

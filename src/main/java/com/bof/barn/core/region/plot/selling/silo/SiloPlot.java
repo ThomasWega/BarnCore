@@ -1,5 +1,6 @@
 package com.bof.barn.core.region.plot.selling.silo;
 
+import com.bof.barn.core.Core;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.PlotSetting;
 import com.bof.barn.core.region.plot.PlotType;
@@ -23,6 +24,7 @@ import java.util.function.Consumer;
 
 @Data
 public class SiloPlot implements ContainerPlot<CropType> {
+    private final Core plugin;
     private final Map<Class<? extends PlotSetting>, PlotSetting> settings = new HashMap<>();
     private final BarnRegion owningRegion;
     private final PlotType type = PlotType.SILO;
@@ -34,7 +36,8 @@ public class SiloPlot implements ContainerPlot<CropType> {
     private final List<ItemStack> stored = new ArrayList<>();
     private Hologram hologram;
 
-    public SiloPlot(BarnRegion owningRegion, BoundingBox box, int id) {
+    public SiloPlot(Core plugin, BarnRegion owningRegion, BoundingBox box, int id) {
+        this.plugin = plugin;
         this.owningRegion = owningRegion;
         this.box = box;
         this.id = id;

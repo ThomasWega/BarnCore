@@ -1,5 +1,6 @@
 package com.bof.barn.core.region.plot.selling.barn;
 
+import com.bof.barn.core.Core;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.PlotSetting;
 import com.bof.barn.core.region.plot.PlotType;
@@ -23,6 +24,7 @@ import java.util.function.Consumer;
 
 @Data
 public class BarnPlot implements ContainerPlot<AnimalType> {
+    private final Core plugin;
     private final Map<Class<? extends PlotSetting>, PlotSetting> settings = new HashMap<>();
     private final BarnRegion owningRegion;
     private final PlotType type = PlotType.BARN;
@@ -34,7 +36,8 @@ public class BarnPlot implements ContainerPlot<AnimalType> {
     private final List<ItemStack> stored = new ArrayList<>();
     private Hologram hologram;
 
-    public BarnPlot(BarnRegion owningRegion, BoundingBox box, int id) {
+    public BarnPlot(Core plugin, BarnRegion owningRegion, BoundingBox box, int id) {
+        this.plugin = plugin;
         this.owningRegion = owningRegion;
         this.box = box;
         this.id = id;

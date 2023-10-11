@@ -1,5 +1,6 @@
 package com.bof.barn.core.region.plot.harvestable.farm;
 
+import com.bof.barn.core.Core;
 import com.bof.barn.core.HarvestableManager;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.PlotSetting;
@@ -33,6 +34,7 @@ import static com.bof.barn.core.Core.WORLD;
 
 @Data
 public class FarmPlot implements HarvestablePlot<CropType> {
+    private final Core plugin;
     private final Map<Class<? extends PlotSetting>, PlotSetting> settings = new HashMap<>();
     private final BarnRegion owningRegion;
     private final PlotType type = PlotType.FARM;
@@ -42,7 +44,8 @@ public class FarmPlot implements HarvestablePlot<CropType> {
     private CropType currentlyHarvesting = CropType.NONE;
     private Hologram hologram;
 
-    public FarmPlot(@NotNull BarnRegion owningRegion, @NotNull BoundingBox box, int id) {
+    public FarmPlot(Core plugin, BarnRegion owningRegion, BoundingBox box, int id) {
+        this.plugin = plugin;
         this.owningRegion = owningRegion;
         this.box = box;
         this.boxBlocks = BoxUtils.getBlocksInBox(box, true);
@@ -78,7 +81,9 @@ public class FarmPlot implements HarvestablePlot<CropType> {
         if (this.currentlyHarvesting != CropType.NONE) {
             this.boxBlocks.forEach(block -> WORLD.playSound(FarmPlotSound.CROP.getSound(), block.getLocation().getX(), block.getLocation().getY(), block.getLocation().getZ()));
         }
-        return this.handleCropBreak(player, true, this.boxBlocks);
+
+        this.handleAutoReplant();
+        return this.handleCropBreak(player, false, this.boxBlocks);
     }
 
     /**

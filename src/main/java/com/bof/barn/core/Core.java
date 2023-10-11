@@ -35,6 +35,8 @@ public final class Core extends JavaPlugin implements Listener {
     private RegionManager regionManager;
     public static World WORLD;
 
+    //TODO create and setup auto harvest
+
     @EventHandler(priority = EventPriority.LOWEST)
     private void onGridLoad(GridLoadedEvent event) {
         WORLD = WorldGenerator.WORLD;
@@ -71,7 +73,7 @@ public final class Core extends JavaPlugin implements Listener {
 
     private void registerEventsAfterGridLoad() {
         PluginManager p = Bukkit.getPluginManager();
-        p.registerEvents(new PlotManager(), this);
+        p.registerEvents(new PlotManager(this), this);
         p.registerEvents(new PlotHoloManager(this), this);
         p.registerEvents(new PlotSettingsManager(), this);
         p.registerEvents(new SpawnManager(), this);
