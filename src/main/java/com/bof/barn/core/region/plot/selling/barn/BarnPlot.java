@@ -33,7 +33,6 @@ public class BarnPlot implements ContainerPlot<AnimalType> {
     private final int capacity = 1000;
     private final List<ItemStack> stored = new ArrayList<>();
     private Hologram hologram;
-    private boolean autoSell = false;
 
     public BarnPlot(BarnRegion owningRegion, BoundingBox box, int id) {
         this.owningRegion = owningRegion;
@@ -76,12 +75,6 @@ public class BarnPlot implements ContainerPlot<AnimalType> {
                 });
 
         this.hologram.getLines().forEach(iLine -> iLine.update(this.owningRegion.getAllOnlinePlayers()));
-    }
-
-
-    public void setAutoSell(boolean autoSell) {
-        this.autoSell = autoSell;
-        this.updateHologram();
     }
 
 

@@ -5,6 +5,7 @@ import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.Plot;
 import com.bof.barn.core.region.plot.PlotType;
 import com.bof.barn.core.region.plot.harvestable.settings.AutoStoreSetting;
+import com.bof.barn.core.region.plot.selling.settings.AutoSellSetting;
 import com.bof.barn.core.region.plot.selling.silo.SiloPlot;
 import com.bof.barn.core.region.plot.selling.barn.BarnPlot;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -142,28 +143,28 @@ public class PAPIHook extends PlaceholderExpansion {
             int plotId = Integer.parseInt(params.substring(19));
             Optional<Plot> optPlot = region.getPlot(PlotType.SILO, plotId);
             if (optPlot.isPresent())
-                return String.valueOf(((SiloPlot) optPlot.get()).isAutoSell());
+                return String.valueOf((optPlot.get()).isSetting(AutoSellSetting.class));
         }
 
         if (params.startsWith("plot_silo_colored_status_autosell_")) {
             int plotId = Integer.parseInt(params.substring(34));
             Optional<Plot> optPlot = region.getPlot(PlotType.SILO, plotId);
             if (optPlot.isPresent())
-                return ((SiloPlot) optPlot.get()).isAutoSell() ? "§aON" : "§cOFF";
+                return optPlot.get().isSetting(AutoSellSetting.class) ? "§aON" : "§cOFF";
         }
 
         if (params.startsWith("plot_barn_autosell_")) {
             int plotId = Integer.parseInt(params.substring(19));
             Optional<Plot> optPlot = region.getPlot(PlotType.BARN, plotId);
             if (optPlot.isPresent())
-                return String.valueOf(((BarnPlot) optPlot.get()).isAutoSell());
+                return String.valueOf(optPlot.get().isSetting(AutoSellSetting.class));
         }
 
         if (params.startsWith("plot_barn_colored_status_autosell_")) {
             int plotId = Integer.parseInt(params.substring(34));
             Optional<Plot> optPlot = region.getPlot(PlotType.BARN, plotId);
             if (optPlot.isPresent())
-                return ((BarnPlot) optPlot.get()).isAutoSell() ? "§aON" : "§cOFF";
+                return optPlot.get().isSetting(AutoSellSetting.class) ? "§aON" : "§cOFF";
         }
 
         return null;

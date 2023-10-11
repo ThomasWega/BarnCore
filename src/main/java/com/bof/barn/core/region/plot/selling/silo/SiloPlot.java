@@ -33,7 +33,6 @@ public class SiloPlot implements ContainerPlot<CropType> {
     private final int capacity = 1000;
     private final List<ItemStack> stored = new ArrayList<>();
     private Hologram hologram;
-    private boolean autoSell = false;
 
     public SiloPlot(BarnRegion owningRegion, BoundingBox box, int id) {
         this.owningRegion = owningRegion;

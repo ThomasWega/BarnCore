@@ -7,6 +7,7 @@ import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.item.SkullBuilder;
 import com.bof.barn.core.region.menu.RegionMainMenu;
 import com.bof.barn.core.region.plot.selling.barn.BarnPlot;
+import com.bof.barn.core.region.plot.selling.settings.AutoSellSetting;
 import com.bof.toolkit.skin.Skin;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
@@ -91,7 +92,7 @@ public class BarnPlotMainMenu extends ChestGui {
 
     private GuiItem getAutoSellButton() {
         Component name = MiniMessage.miniMessage().deserialize("<b><color:#2b84ff>Auto Sell</color></b>");
-        String statusStr = this.plot.isAutoSell() ? "<green>ON</green>" : "<red>OFF</red>";
+        String statusStr = this.plot.isSetting(AutoSellSetting.class) ? "<green>ON</green>" : "<red>OFF</red>";
         Component status = MiniMessage.miniMessage().deserialize("<white>Status: " + statusStr + "</white>");
         return new SoundedGUIButton(new SkullBuilder()
                 .displayName(name)
@@ -105,7 +106,7 @@ public class BarnPlotMainMenu extends ChestGui {
                 .build(),
                 event -> {
                     Player player = ((Player) event.getWhoClicked());
-                    this.plot.setAutoSell(!plot.isAutoSell());
+                    this.plot.setSetting(AutoSellSetting.class, this.plot.getSettingToggle(AutoSellSetting.class));
                     player.sendMessage("TO ADD - changed auto sell");
                     player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
                 }

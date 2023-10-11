@@ -48,6 +48,25 @@ public interface Plot {
      */
     @NotNull Map<Class<? extends PlotSetting>, PlotSetting> getSettings();
 
+
+    /**
+     * Check if the given plot has the setting mapped
+     *
+     * @param settingClazz The specific Setting class
+     * @return whether the plot even has this setting
+     */
+    default boolean hasSetting(@NotNull Class<? extends PlotSetting> settingClazz) {
+        return this.getSettings().containsKey(settingClazz);
+    }
+
+    default PlotSetting getSetting(@NotNull Class<? extends PlotSetting> settingClazz) {
+        return this.getSettings().get(settingClazz);
+    }
+
+    default boolean getSettingToggle(@NotNull Class<? extends PlotSetting> settingClazz) {
+        return this.getSetting(settingClazz).isToggled();
+    }
+
     /**
      * Check for the given setting
      *

@@ -177,7 +177,6 @@ public class BarnRegion {
         return HarvestableUtils.getValue(AnimalType.class, animalsToRemove);
     }
 
-
     /**
      * Retrieves the number of plots that have the {@link PlotSetting} set to true
      *
@@ -223,6 +222,7 @@ public class BarnRegion {
     public Set<Plot> getSettingPlots(Class<? extends PlotSetting> settingClazz, boolean value) {
         return plots.values().stream()
                 .flatMap(Set::stream)
+                .filter(plot -> plot.hasSetting(settingClazz))
                 .filter(plot -> plot.isSetting(settingClazz, value))
                 .collect(Collectors.toSet());
     }
