@@ -36,6 +36,8 @@ public final class Core extends JavaPlugin implements Listener {
     public static World WORLD;
 
     //TODO create and setup auto harvest
+    //TODO create menu for upgrades
+    //TODO create buttons for replant
 
     @EventHandler(priority = EventPriority.LOWEST)
     private void onGridLoad(GridLoadedEvent event) {
