@@ -37,7 +37,7 @@ public final class Core extends JavaPlugin implements Listener {
 
     //TODO create and setup auto harvest
     //TODO create menu for upgrades
-    //TODO create buttons for replant
+    //TODO create buttons for replant + auto harvest
 
     @EventHandler(priority = EventPriority.LOWEST)
     private void onGridLoad(GridLoadedEvent event) {

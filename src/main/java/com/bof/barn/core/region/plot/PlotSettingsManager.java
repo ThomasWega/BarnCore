@@ -1,6 +1,7 @@
 package com.bof.barn.core.region.plot;
 
 import com.bof.barn.core.region.plot.event.PlotCreatedEvent;
+import com.bof.barn.core.region.plot.harvestable.settings.AutoHarvestSetting;
 import com.bof.barn.core.region.plot.harvestable.settings.ReplantAllSetting;
 import com.bof.barn.core.region.plot.harvestable.settings.AutoStoreSetting;
 import com.bof.barn.core.region.plot.selling.settings.AutoSellSetting;
@@ -29,7 +30,8 @@ public class PlotSettingsManager implements Listener {
             case FARM, ANIMAL:
                 plot.getSettings().putAll(Map.of(
                         AutoStoreSetting.class, new AutoStoreSetting(),
-                        ReplantAllSetting.class, new ReplantAllSetting()
+                        ReplantAllSetting.class, new ReplantAllSetting(),
+                        AutoHarvestSetting.class, new AutoHarvestSetting()
                 ));
             case BARN, SILO:
                 plot.getSettings().putAll(Map.of(
