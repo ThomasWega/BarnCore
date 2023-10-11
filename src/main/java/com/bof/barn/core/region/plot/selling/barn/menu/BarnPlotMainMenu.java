@@ -106,7 +106,7 @@ public class BarnPlotMainMenu extends ChestGui {
                 .build(),
                 event -> {
                     Player player = ((Player) event.getWhoClicked());
-                    this.plot.setSetting(AutoSellSetting.class, this.plot.getSettingToggle(AutoSellSetting.class));
+                    this.plot.setSetting(AutoSellSetting.class, !this.plot.getSettingToggle(AutoSellSetting.class));
                     player.sendMessage("TO ADD - changed auto sell");
                     player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
                 }
