@@ -1,7 +1,7 @@
 package com.bof.barn.core.region.plot.harvestable.settings;
 
 /**
- * Whether harvested harvestables should go straight to the container
+ * Whether harvestables should be replanted after being harvested with a button
  */
 public class ReplantAllSetting extends HarvestablePlotSetting {
     public ReplantAllSetting() {
