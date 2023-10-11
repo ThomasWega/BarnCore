@@ -10,7 +10,7 @@ import com.bof.barn.core.region.plot.Plot;
 import com.bof.barn.core.region.plot.PlotSetting;
 import com.bof.barn.core.region.plot.PlotType;
 import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
-import com.bof.barn.core.region.plot.harvestable.settings.HarvestableSetting;
+import com.bof.barn.core.region.plot.harvestable.settings.HarvestablePlotSetting;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.gui.type.util.Gui;
@@ -40,7 +40,7 @@ import java.util.stream.IntStream;
  * @param <S>
  */
 @Getter
-public class HarvestablePlotSettingGUI<S extends HarvestableSetting> extends ChestGui {
+public class HarvestablePlotSettingGUI<S extends HarvestablePlotSetting> extends ChestGui {
     private final BarnRegion region;
     private final Class<S> setting;
     private final OutlinePane selectedPane = new OutlinePane(1, 1, 7, 2, Pane.Priority.HIGHEST);

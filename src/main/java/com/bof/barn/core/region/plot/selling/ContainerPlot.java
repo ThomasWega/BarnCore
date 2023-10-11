@@ -3,6 +3,7 @@ package com.bof.barn.core.region.plot.selling;
 
 import com.bof.barn.core.region.plot.Plot;
 import com.bof.barn.core.region.plot.harvestable.HarvestableType;
+import com.bof.barn.core.region.plot.selling.settings.AutoSellSetting;
 import com.bof.barn.core.utils.HarvestableUtils;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -52,12 +53,8 @@ public interface ContainerPlot<T extends HarvestableType> extends Plot {
      */
     float getFilledPercentageRounded(int roundNum);
 
-    boolean isAutoSell();
-
-    void setAutoSell(boolean autoSell);
-
     /**
-     * Tries to add the items to the silo. Handles the {@link #isAutoSell()}
+     * Tries to add the items to the silo. Handles the {@link com.bof.barn.core.region.plot.selling.settings.AutoSellSetting}
      *
      * @param harvestables Harvestable items to try to add
      * @return List of items that couldn't be added
@@ -67,7 +64,7 @@ public interface ContainerPlot<T extends HarvestableType> extends Plot {
     }
 
     /**
-     * Tries to add the items to the silo. Handles the {@link #isAutoSell()}
+     * Tries to add the items to the silo. Handles the {@link com.bof.barn.core.region.plot.selling.settings.AutoSellSetting}
      *
      * @param harvestables Harvestable items to try to add
      * @return List of items that couldn't be added
@@ -80,7 +77,7 @@ public interface ContainerPlot<T extends HarvestableType> extends Plot {
                 continue;
             }
 
-            if (this.isAutoSell()) {
+            if (this.isSetting(AutoSellSetting.class)) {
                 this.sellHarvestables(itemStack);
             } else {
                 this.getStored().add(itemStack);

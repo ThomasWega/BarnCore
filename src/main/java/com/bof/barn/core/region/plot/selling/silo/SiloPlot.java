@@ -79,12 +79,6 @@ public class SiloPlot implements ContainerPlot<CropType> {
         this.hologram.getLines().forEach(iLine -> iLine.update(this.owningRegion.getAllOnlinePlayers()));
     }
 
-    @Override
-    public void setAutoSell(boolean autoSell) {
-        this.autoSell = autoSell;
-        this.updateHologram();
-    }
-
 
     @Override
     public Consumer<PlayerHologramInteractEvent> getHologramAction() {

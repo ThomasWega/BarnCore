@@ -1,9 +1,9 @@
 package com.bof.barn.core.region.plot.harvestable.settings;
 
 /**
- * Whether harvested crops should go straight to the container
+ * Whether harvested harvestables should go straight to the container
  */
-public class AutoStoreSetting extends HarvestableSetting {
+public class AutoStoreSetting extends HarvestablePlotSetting {
     public AutoStoreSetting() {
         super("Auto Store", false);
     }

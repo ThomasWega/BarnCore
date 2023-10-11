@@ -23,8 +23,15 @@ public class PlotSettingsManager implements Listener {
      * @param plot Plot to place settings into
      */
     private void handleSettingsSet(Plot plot) {
-        plot.getSettings().putAll(Map.of(
-                AutoStoreSetting.class, new AutoStoreSetting()
-        ));
+        switch (plot.getType()) {
+            case FARM, ANIMAL:
+                plot.getSettings().putAll(Map.of(
+                        AutoStoreSetting.class, new AutoStoreSetting()
+                ));
+            case BARN, SILO:
+                plot.getSettings().putAll(Map.of(
+
+                ));
+        }
     }
 }
