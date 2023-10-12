@@ -146,7 +146,7 @@ public class FarmPlot implements HarvestablePlot<CropType> {
         }
 
         // everything was harvested
-        if (this.getRemainingHarvestables() == 0) {
+        if (this.getRemainingHarvestablesCount() == 0) {
             this.setCurrentlyHarvesting(CropType.NONE);
         }
 
@@ -199,21 +199,19 @@ public class FarmPlot implements HarvestablePlot<CropType> {
     }
 
     @Override
-    public int getRemainingHarvestables() {
-        return (int) this.boxBlocks.stream()
-                .filter(block -> block.getType() != Material.AIR)
-                .filter(block -> CropType.getByMaterial(block.getType()).isPresent())
-                .count();
+    public int getRemainingHarvestablesCount() {
+        return this.getRemainingHarvestables().size();
     }
 
-    @Override
-    public boolean isHarvestablePresent() {
-        Set<Material> boxBlocksMat = this.boxBlocks.stream()
-                .map(Block::getType)
-                .collect(Collectors.toSet());
-
-        return CropType.getMaterials().stream()
-                .anyMatch(boxBlocksMat::contains);
+    public @NotNull Map<Block, CropType> getRemainingHarvestables() {
+        return this.boxBlocks.stream()
+                .filter(block -> block.getType() != Material.AIR)
+                .map(block -> Map.entry(block, CropType.getByMaterial(block.getType())))
+                .filter(entry -> entry.getValue().isPresent())
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> entry.getValue().get()
+                ));
     }
 
     @Override

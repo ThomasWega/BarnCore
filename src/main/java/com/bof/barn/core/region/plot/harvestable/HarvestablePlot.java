@@ -3,8 +3,8 @@ package com.bof.barn.core.region.plot.harvestable;
 
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.Plot;
-import com.bof.barn.core.region.plot.harvestable.settings.ReplantAllSetting;
 import com.bof.barn.core.region.plot.harvestable.settings.AutoStoreSetting;
+import com.bof.barn.core.region.plot.harvestable.settings.ReplantAllSetting;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -39,12 +39,14 @@ public interface HarvestablePlot<T extends HarvestableType> extends Plot {
     /**
      * @return The amount of harvestable objects present on the plot
      */
-    int getRemainingHarvestables();
+    int getRemainingHarvestablesCount();
 
     /**
      * @return if any harvestable objest is present on the plot
      */
-    boolean isHarvestablePresent();
+    default boolean isHarvestablePresent() {
+        return this.getRemainingHarvestablesCount() > 0;
+    }
 
     /**
      * Tries putting the items to the {@link BarnRegion#getCropsInventory()}

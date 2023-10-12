@@ -167,7 +167,7 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
         }
 
         // everything was harvested
-        if (this.getRemainingHarvestables() == 0) {
+        if (this.getRemainingHarvestablesCount() == 0) {
             this.setCurrentlyHarvesting(AnimalType.NONE);
         }
 
@@ -222,13 +222,12 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
     }
 
     @Override
-    public int getRemainingHarvestables() {
+    public int getRemainingHarvestablesCount() {
         return this.getEntities().size();
     }
 
-    @Override
-    public boolean isHarvestablePresent() {
-        return this.getRemainingHarvestables() > 0;
+    public @NotNull Set<LivingEntity> getRemainingHarvestables() {
+        return this.getEntities();
     }
 
     @Override
