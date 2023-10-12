@@ -12,15 +12,15 @@ import org.jetbrains.annotations.NotNull;
  * Handles adding the hotbar items to the player
  */
 public class PlayerHotbarHandler implements Listener {
-    private final Core core;
+    private final Core plugin;
 
-    public PlayerHotbarHandler(@NotNull Core core) {
-        this.core = core;
+    public PlayerHotbarHandler(@NotNull Core plugin) {
+        this.plugin = plugin;
     }
 
     @EventHandler
     private void onRegionAssign(RegionAssignedEvent event) {
         Player player = event.getPlayer();
-        new MainHotbarItem(core).setToPlayer(player, 8);
+        new MainHotbarItem(plugin).setToPlayer(player, 8);
     }
 }

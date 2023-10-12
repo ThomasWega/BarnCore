@@ -3,6 +3,7 @@ package com.bof.barn.core.region;
 import com.bof.barn.core.Core;
 import com.bof.barn.core.region.event.RegionAssignedEvent;
 import com.bof.barn.core.region.event.RegionCreatedEvent;
+import com.bof.barn.core.region.event.RegionDeassignedEvent;
 import com.bof.barn.core.region.storage.RegionStorage;
 import com.github.unldenis.hologram.HologramPool;
 import com.github.unldenis.hologram.InteractiveHologramPool;
@@ -62,6 +63,7 @@ public class RegionManager implements Listener {
                 .peek(barnRegion -> {
                     barnRegion.setOwner(null);
                     barnRegion.setAssigned(false);
+                    Bukkit.getPluginManager().callEvent(new RegionDeassignedEvent(barnRegion, player));
                 })
                 .findAny()
                 .isPresent();

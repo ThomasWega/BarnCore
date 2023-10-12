@@ -6,6 +6,7 @@ import com.bof.barn.core.region.handler.PlayerRegionAssignHandler;
 import com.bof.barn.core.region.plot.PlotHoloManager;
 import com.bof.barn.core.region.plot.PlotManager;
 import com.bof.barn.core.region.plot.PlotSettingsManager;
+import com.bof.barn.core.region.plot.PlotTasksManager;
 import com.bof.barn.core.region.spawn.SpawnManager;
 import com.bof.barn.core.region.storage.RegionStorage;
 import com.bof.barn.world_generator.WorldGenerator;
@@ -35,9 +36,9 @@ public final class Core extends JavaPlugin implements Listener {
     private RegionManager regionManager;
     public static World WORLD;
 
-    //TODO create and setup auto harvest
     //TODO create menu for upgrades
     //TODO create buttons for replant + auto harvest
+    //TODO cancel the tasks at some time
 
     @EventHandler(priority = EventPriority.LOWEST)
     private void onGridLoad(GridLoadedEvent event) {
@@ -78,6 +79,7 @@ public final class Core extends JavaPlugin implements Listener {
         p.registerEvents(new PlotManager(this), this);
         p.registerEvents(new PlotHoloManager(this), this);
         p.registerEvents(new PlotSettingsManager(), this);
+        p.registerEvents(new PlotTasksManager(this), this);
         p.registerEvents(new SpawnManager(), this);
         p.registerEvents(new PlayerRegionAssignHandler(this), this);
         p.registerEvents(regionManager, this);

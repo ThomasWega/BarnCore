@@ -12,7 +12,7 @@ import org.bukkit.event.Listener;
 import java.util.Map;
 
 /**
- * Handles creation of the {@link Plot} instance
+ * Handles loading the setting of the {@link Plot} instance
  */
 @RequiredArgsConstructor
 public class PlotSettingsManager implements Listener {

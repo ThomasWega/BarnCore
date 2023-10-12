@@ -108,7 +108,7 @@ public interface HarvestablePlot<T extends HarvestableType> extends Plot {
 
     default void handleAutoReplant() {
         // handle auto replant all
-        if (this.hasSetting(ReplantAllSetting.class)) {
+        if (this.isSetting(ReplantAllSetting.class)) {
             T harvesting = this.getCurrentlyHarvesting();
             Bukkit.getScheduler().runTaskLater(this.getPlugin(), () -> this.changeType(harvesting), 20L);
         }

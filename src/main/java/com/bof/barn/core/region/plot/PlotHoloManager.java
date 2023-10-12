@@ -23,6 +23,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * Handles the setting of hologram for the plot
+ */
 @RequiredArgsConstructor
 public class PlotHoloManager implements Listener {
     private final Core plugin;

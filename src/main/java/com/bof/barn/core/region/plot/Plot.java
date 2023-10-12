@@ -65,8 +65,9 @@ public interface Plot {
         return this.getSettings().containsKey(settingClazz);
     }
 
-    default PlotSetting getSetting(@NotNull Class<? extends PlotSetting> settingClazz) {
-        return this.getSettings().get(settingClazz);
+    default <T extends PlotSetting> T getSetting(@NotNull Class<T> settingClazz) {
+        //noinspection unchecked
+        return (T) this.getSettings().get(settingClazz);
     }
 
     default boolean getSettingToggle(@NotNull Class<? extends PlotSetting> settingClazz) {

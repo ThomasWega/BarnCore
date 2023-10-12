@@ -14,11 +14,11 @@ import static com.bof.barn.core.Core.WORLD;
  * Handles different environment events and their occurrence
  */
 public class EnvironmentalHandler {
-    private final Core core;
+    private final Core plugin;
     public final EnchantedRain enchantedRain = new EnchantedRain();
 
-    public EnvironmentalHandler(@NotNull Core core) {
-        this.core = core;
+    public EnvironmentalHandler(@NotNull Core plugin) {
+        this.plugin = plugin;
         this.handle();
     }
 
@@ -29,7 +29,7 @@ public class EnvironmentalHandler {
      * If it's not, it will try to stop the rain. If the rain is successfully stopped (it was raining before), it will handle the rain stop
      */
     private void handle() {
-        Bukkit.getScheduler().runTaskTimer(this.core, () -> {
+        Bukkit.getScheduler().runTaskTimer(this.plugin, () -> {
             if (this.enchantedRain.shouldStartEnchantedRain()) {
                 if (this.enchantedRain.start()) {
                     this.handleRainStart();

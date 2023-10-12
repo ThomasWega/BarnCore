@@ -56,6 +56,11 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
         this.id = id;
     }
 
+    public void setCurrentlyHarvesting(@NotNull AnimalType animalType) {
+        this.currentlyHarvesting = animalType;
+        this.updateHologram();
+    }
+
     @Override
     public void changeType(@NotNull AnimalType type) {
         // remove previous mobs

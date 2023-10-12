@@ -52,6 +52,11 @@ public class FarmPlot implements HarvestablePlot<CropType> {
         this.id = id;
     }
 
+    public void setCurrentlyHarvesting(@NotNull CropType cropType) {
+        this.currentlyHarvesting = cropType;
+        this.updateHologram();
+    }
+
     @Override
     public void changeType(@NotNull CropType type) {
         this.boxBlocks.forEach(block -> {
@@ -78,10 +83,6 @@ public class FarmPlot implements HarvestablePlot<CropType> {
 
     @Override
     public int harvest(@NotNull Player player) {
-        if (this.currentlyHarvesting != CropType.NONE) {
-            this.boxBlocks.forEach(block -> WORLD.playSound(FarmPlotSound.CROP.getSound(), block.getLocation().getX(), block.getLocation().getY(), block.getLocation().getZ()));
-        }
-
         this.handleAutoReplant();
         return this.handleCropBreak(player, false, this.boxBlocks);
     }
@@ -127,6 +128,8 @@ public class FarmPlot implements HarvestablePlot<CropType> {
                         ItemStack item = new ItemStack(cropType.getItem());
                         if (byHand) {
                             item = HarvestableManager.getDrop(cropType);
+                        } else {
+                            WORLD.playSound(FarmPlotSound.CROP.getSound(), block.getLocation().getX(), block.getLocation().getY(), block.getLocation().getZ());
                         }
                         AdditionResult result = this.handleAddition(item);
                         switch (result) {
