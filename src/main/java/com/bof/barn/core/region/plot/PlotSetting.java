@@ -33,15 +33,6 @@ public abstract class PlotSetting {
     }
 
     /**
-     * Switch the toggle to opposite boolean
-     * @return new boolean
-     */
-    public boolean switchToggle() {
-        this.toggled = !toggled;
-        return toggled;
-    }
-
-    /**
      * A map that stores the setting name for each subclass of PlotSetting.
      * This map is used to retrieve the setting name for a specific subclass.
      */

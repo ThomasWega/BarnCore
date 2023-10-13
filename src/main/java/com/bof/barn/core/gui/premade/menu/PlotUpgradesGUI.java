@@ -58,7 +58,7 @@ public class PlotUpgradesGUI<T extends Plot> extends ChestGui {
                             .build();
                     this.mainPane.addItem(new GuiItem(displayItem, event -> {
                         Player player = ((Player) event.getWhoClicked());
-                        player.sendMessage(Component.text("TO ADD - Switched " + plotSetting.getSettingName() + " for this plot to " + plotSetting.switchToggle()));
+                        player.sendMessage(Component.text("TO ADD - Switched " + plotSetting.getSettingName() + " for this plot to " + plot.switchSettingToggle(plotSetting.getClass())));
                         player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
                         this.plot.updateHologram();
                     }));

@@ -2,6 +2,7 @@ package com.bof.barn.core.region.plot;
 
 import com.bof.barn.core.Core;
 import com.bof.barn.core.region.BarnRegion;
+import com.bof.barn.core.region.plot.event.PlotSettingEvent;
 import com.bof.barn.core.region.plot.harvestable.animal.AnimalPlot;
 import com.bof.barn.core.region.plot.harvestable.farm.FarmPlot;
 import com.bof.barn.core.region.plot.selling.barn.BarnPlot;
@@ -12,6 +13,7 @@ import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BoundingBox;
@@ -75,8 +77,8 @@ public interface Plot {
     }
 
     default boolean switchSettingToggle(@NotNull Class<? extends PlotSetting> settingClazz) {
-        boolean newValue = this.getSetting(settingClazz).switchToggle();
-        this.updateHologram();
+        boolean newValue = !this.getSettingToggle(settingClazz);
+        this.setSetting(settingClazz, newValue);
         return newValue;
     }
 
@@ -114,15 +116,17 @@ public interface Plot {
     }
 
     /**
-     * Sets the setting to the given value
+     * Sets the setting to the given value, updates the hologram and calls the {@link PlotSettingEvent}
      *
      * @param settingClazz Class of the setting to set a value for
      * @param value Value to set the setting to
      * @see #setSetting(Class)
      */
     default void setSetting(@NotNull Class<? extends PlotSetting> settingClazz, boolean value) {
-        this.getSettings().get(settingClazz).setToggled(value);
+        PlotSetting setting = this.getSettings().get(settingClazz);
+        setting.setToggled(value);
         this.updateHologram();
+        Bukkit.getPluginManager().callEvent(new PlotSettingEvent(this, setting));
     }
 
     PlotType getType();

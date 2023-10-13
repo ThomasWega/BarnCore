@@ -5,7 +5,6 @@ import com.bof.barn.core.region.plot.PlotTask;
 import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
 import com.bof.barn.core.region.plot.harvestable.farm.CropType;
 import com.bof.barn.core.region.plot.harvestable.farm.FarmPlot;
-import com.bof.barn.core.region.plot.harvestable.setting.AutoHarvestSetting;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
@@ -19,9 +18,6 @@ public class AutoHarvestTask<T extends HarvestablePlot<?>> implements PlotTask {
 
     @Override
     public void run() {
-        if (plot.isSetting(AutoHarvestSetting.class, false)) return;
-        if (!plot.isHarvestablePresent()) return;
-
         FarmPlot plot = (FarmPlot) this.plot;
         this.getRandomBlockAndCropType(plot.getRemainingHarvestables()).ifPresent(entry -> {
             // technically the player doesn't matter for now, as no message will be sent, do take a caution with this though! (13.10.2023)
