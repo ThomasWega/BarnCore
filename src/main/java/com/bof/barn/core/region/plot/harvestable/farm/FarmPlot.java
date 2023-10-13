@@ -227,16 +227,6 @@ public class FarmPlot implements HarvestablePlot<CropType> {
         this.hologram.getLines().forEach(iLine -> iLine.update(this.owningRegion.getAllOnlinePlayers()));
     }
 
-    public boolean setAutoStore(boolean autoStore) {
-        if (!this.getOwningRegion().hasFreeAutoStoreSlots() && autoStore) {
-            return false;
-        }
-
-        this.setSetting(AutoStoreSetting.class, autoStore);
-        this.updateHologram();
-        return true;
-    }
-
     @Override
     public Consumer<PlayerHologramInteractEvent> getHologramAction() {
         return event -> {

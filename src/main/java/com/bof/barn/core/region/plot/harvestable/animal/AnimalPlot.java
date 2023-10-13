@@ -101,24 +101,8 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
 
     @Override
     public int harvest(@NotNull Player player) {
-        Set<LivingEntity> entities = this.getEntities();
         this.handleAutoReplant();
-        return this.handleAnimalKill(player, false, entities.toArray(LivingEntity[]::new));
-    }
-
-    /**
-     * Handles the killing of animals.
-     * Changes the {@link #currentlyHarvesting} type, puts the items into {@link BarnPlot} on {@link AutoStoreSetting},
-     * if the barn is full, tries putting it into {@link BarnRegion#getAnimalInventory()}.
-     * If that is full as well, sends a message to the player
-     *
-     * @param player   Player that killed the animals
-     * @param entities Animals that were killed
-     * @param byHand   Whether the animal was killed by hand
-     * @return amount of animals that were successfully killed
-     */
-    public int handleAnimalKill(@NotNull Player player, boolean byHand, @NotNull LivingEntity... entities) {
-        return this.handleAnimalKill(player, byHand, Arrays.asList(entities));
+        return this.handleAnimalKill(player, false, this.getEntities());
     }
 
     /**
@@ -231,10 +215,6 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
         return this.getEntities().size();
     }
 
-    public @NotNull Set<LivingEntity> getRemainingHarvestables() {
-        return this.getEntities();
-    }
-
     @Override
     public void updateHologram() {
         this.hologram.getLines().stream()
@@ -243,16 +223,6 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
                 .forEach(blockLine -> blockLine.setObj(new ItemStack(this.currentlyHarvesting.getItem())));
 
         this.hologram.getLines().forEach(iLine -> iLine.update(this.owningRegion.getAllOnlinePlayers()));
-    }
-
-    public boolean setAutoStore(boolean autoStore) {
-        if (!this.getOwningRegion().hasFreeAutoStoreSlots() && autoStore) {
-            return false;
-        }
-
-        this.setSetting(AutoStoreSetting.class, autoStore);
-        this.updateHologram();
-        return true;
     }
 
     @Override

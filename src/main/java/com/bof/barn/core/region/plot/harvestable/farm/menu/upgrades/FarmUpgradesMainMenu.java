@@ -36,7 +36,7 @@ public class FarmUpgradesMainMenu extends ChestGui {
     }
 
     private GuiItem getAutoStoreButton() {
-        Component unlockedPlots = MiniMessage.miniMessage().deserialize("<white>Unlocked Slots: <green>" + this.region.getSettingPlotsCount(AutoStoreSetting.class) + "/" + this.region.getAutoStoreSlots() + "</green></white>");
+        Component unlockedPlots = MiniMessage.miniMessage().deserialize("<white>Unlocked Slots: <green>" + this.region.getSettingPlotsCount(AutoStoreSetting.class) + "/TO ADD</green></white>");
         List<Component> lore = List.of(
                 Component.text("Automatically puts crops into the silo", NamedTextColor.GRAY),
                 Component.empty(),

@@ -46,7 +46,7 @@ public class HarvestablePlotSettingGUI<S extends HarvestablePlotSetting> extends
     private final OutlinePane selectedPane = new OutlinePane(1, 1, 7, 2, Pane.Priority.HIGHEST);
     private final OutlinePane unlockedSlotsPane = selectedPane.copy();
     private final OutlinePane lockedSlotsPane = unlockedSlotsPane.copy();
-    private final int unlockedSlots;
+    private final int unlockedSlots = 2;
     private final PlotType plotType;
     private final Gui goBackGui;
 
@@ -56,7 +56,6 @@ public class HarvestablePlotSettingGUI<S extends HarvestablePlotSetting> extends
         this.setting = setting;
         this.plotType = plotType;
         this.goBackGui = goBackGui;
-        this.unlockedSlots = region.getAutoStoreSlots();
         this.unlockedSlotsPane.setPriority(Pane.Priority.HIGH);
         this.lockedSlotsPane.setPriority(Pane.Priority.NORMAL);
         this.initialize();

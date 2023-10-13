@@ -36,8 +36,9 @@ public final class Core extends JavaPlugin implements Listener {
     private RegionManager regionManager;
     public static World WORLD;
 
-    //TODO cancel the tasks at some time
     //TODO change handle break to one harvestable only
+
+    //TODO cancel the tasks at some time
     //TODO add info about upgrades ON/OFF to lore of Upgrades button
 
     @EventHandler(priority = EventPriority.LOWEST)

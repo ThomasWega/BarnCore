@@ -2,11 +2,9 @@ package com.bof.barn.core.region.plot.harvestable.animal.menu;
 
 import com.bof.barn.core.gui.premade.sound.SoundedGUIButton;
 import com.bof.barn.core.gui.premade.button.back.GoBackPane;
-import com.bof.barn.core.gui.premade.button.setting.AutoStoreSettingButton;
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.item.SkullBuilder;
 import com.bof.barn.core.region.plot.harvestable.animal.AnimalPlot;
-import com.bof.barn.core.region.plot.harvestable.setting.AutoStoreSetting;
 import com.bof.toolkit.skin.Skin;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
@@ -117,26 +115,5 @@ public class AnimalPlotMainMenu extends ChestGui {
                     player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
                 }
         );
-    }
-
-    private GuiItem getAutoStoreButton() {
-        String statusStr = plot.isSetting(AutoStoreSetting.class) ? "<green>ON</green>" : "<red>OFF</red>";
-        Component status = MiniMessage.miniMessage().deserialize("<white>Status: " + statusStr + "</white>");
-        List<Component> lore = List.of(
-                Component.text("Automatically puts animals TO ADD", NamedTextColor.GRAY),
-                Component.empty(),
-                status,
-                Component.empty(),
-                Component.text("Click to change status", NamedTextColor.DARK_GRAY)
-        );
-        return new AutoStoreSettingButton(lore, event -> {
-            Player player = ((Player) event.getWhoClicked());
-            if (!this.plot.setAutoStore(!plot.isSetting(AutoStoreSetting.class))) {
-                player.sendMessage("TO ADD - No free AutoStore slots 2");
-            } else {
-                player.sendMessage("TO ADD - changed auto store status 2");
-            }
-            new AnimalPlotMainMenu(this.plot, this.closeOnGoBack).show(player);
-        });
     }
 }

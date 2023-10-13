@@ -6,7 +6,6 @@ import com.bof.barn.core.region.plot.PlotSetting;
 import com.bof.barn.core.region.plot.PlotType;
 import com.bof.barn.core.region.plot.harvestable.animal.AnimalType;
 import com.bof.barn.core.region.plot.harvestable.farm.CropType;
-import com.bof.barn.core.region.plot.harvestable.setting.AutoStoreSetting;
 import com.bof.barn.core.region.plot.selling.barn.BarnPlot;
 import com.bof.barn.core.region.plot.selling.silo.SiloPlot;
 import com.bof.barn.core.utils.HarvestableUtils;
@@ -33,7 +32,6 @@ public class BarnRegion {
     private final int cropsInventoryCapacity = 100;
     private final List<ItemStack> animalInventory = new ArrayList<>();
     private final int animalInventoryCapacity = 100;
-    private final int autoStoreSlots = 2;
     private boolean isAssigned = false;
     private Player owner;
     private Location spawnLocation;
@@ -276,13 +274,6 @@ public class BarnRegion {
     public Set<Plot> getLockedPlots(@NotNull PlotType type) {
         // TODO get actual locked plots when locked plots mechanism exists
         return this.plots.get(type);
-    }
-
-    /**
-     * @return If any of auto store slots are not assigned to plots
-     */
-    public boolean hasFreeAutoStoreSlots() {
-        return this.getSettingPlotsCount(AutoStoreSetting.class) < this.autoStoreSlots;
     }
 
     /**

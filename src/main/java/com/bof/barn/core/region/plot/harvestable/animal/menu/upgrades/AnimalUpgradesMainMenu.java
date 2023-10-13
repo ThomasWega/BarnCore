@@ -36,7 +36,7 @@ public class AnimalUpgradesMainMenu extends ChestGui {
     }
 
     private GuiItem getAutoStoreButton() {
-        Component unlockedPlots = MiniMessage.miniMessage().deserialize("<white>Unlocked Slots: <green>" + this.region.getSettingPlotsCount(AutoStoreSetting.class) + "/" + this.region.getAutoStoreSlots() + "</green></white>");
+        Component unlockedPlots = MiniMessage.miniMessage().deserialize("<white>Unlocked Slots: <green>" + this.region.getSettingPlotsCount(AutoStoreSetting.class) + "/TO ADD</green></white>");
         List<Component> lore = List.of(
                 Component.text("Automatically puts animals into the barn", NamedTextColor.GRAY),
                 Component.empty(),

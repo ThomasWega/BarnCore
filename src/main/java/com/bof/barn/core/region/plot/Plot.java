@@ -74,6 +74,12 @@ public interface Plot {
         return this.getSetting(settingClazz).isToggled();
     }
 
+    default boolean switchSettingToggle(@NotNull Class<? extends PlotSetting> settingClazz) {
+        boolean newValue = this.getSetting(settingClazz).switchToggle();
+        this.updateHologram();
+        return newValue;
+    }
+
     /**
      * Check for the given setting
      *
