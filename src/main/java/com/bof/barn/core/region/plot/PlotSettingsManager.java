@@ -33,10 +33,12 @@ public class PlotSettingsManager implements Listener {
                         ReplantAllSetting.class, new ReplantAllSetting(),
                         AutoHarvestSetting.class, new AutoHarvestSetting()
                 ));
+                break;
             case BARN, SILO:
                 plot.getSettings().putAll(Map.of(
                         AutoSellSetting.class, new AutoSellSetting()
                 ));
+                break;
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.bof.barn.core.region.plot;
 
 import lombok.Data;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -14,17 +15,20 @@ import java.util.Map;
 @Data
 public abstract class PlotSetting {
     private final String settingName;
+    private final ItemStack item;
     boolean toggled;
 
     /**
      * Constructs a new setting with the given setting name and toggle status.
      *
      * @param settingName The name of the plot setting.
+     * @param item Item used for this upgrade
      * @param toggled     The initial toggle status of the setting.
      */
-    public PlotSetting(@NotNull String settingName, boolean toggled) {
+    public PlotSetting(@NotNull String settingName, @NotNull ItemStack item, boolean toggled) {
         this.settingName = settingName;
         this.toggled = toggled;
+        this.item = item;
         values.put(this.getClass(), settingName);
     }
 

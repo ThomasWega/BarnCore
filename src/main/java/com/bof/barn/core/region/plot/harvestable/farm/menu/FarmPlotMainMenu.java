@@ -6,6 +6,7 @@ import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.item.SkullBuilder;
 import com.bof.barn.core.gui.premade.button.back.GoBackPane;
 import com.bof.barn.core.region.plot.harvestable.farm.FarmPlot;
+import com.bof.barn.core.region.plot.harvestable.farm.menu.upgrades.FarmUpgradesMenu;
 import com.bof.barn.core.region.plot.harvestable.settings.AutoStoreSetting;
 import com.bof.toolkit.skin.Skin;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
@@ -77,7 +78,7 @@ public class FarmPlotMainMenu extends ChestGui {
                                 Component.text("Click to open upgrades", NamedTextColor.DARK_GRAY)
                         ))
                         .skin(new Skin("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmI0OWEyY2I5MDczNzk5MzIwMWZlNzJhMWYxYWI3NWM1YzkzYzI4ZjA0N2Y2ODVmZmFkNWFiMjBjN2IwY2FmMCJ9fX0=", null))
-                        .build(), event -> event.setCancelled(true)
+                        .build(), event -> new FarmUpgradesMenu(this.plot, closeOnGoBack).show(event.getWhoClicked())
         );
     }
 
