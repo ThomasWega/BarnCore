@@ -101,66 +101,67 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
 
     @Override
     public int harvest(@NotNull Player player) {
+        if (this.getRemainingHarvestablesCount() == 0) return 0;
         this.handleAutoReplant();
-        return this.handleAnimalKill(player, false, this.getEntities());
+        int i = 0;
+        animalLoop: for (LivingEntity entity : this.getEntities()) {
+            switch (this.handleAnimalKill(player, false, entity)) {
+                case SUCCESS -> i++;
+                case INV_FULL -> {
+                    player.sendMessage("TO ADD - Animal inventory is full 1");
+                    break animalLoop;
+                }
+                case CONTAINER_FULL -> {
+                    player.sendMessage("TO ADD - All barns are full. Putting the items to inventory");
+                    break animalLoop;
+                }
+            }
+        }
+
+        int bonusCount = HarvestableManager.handleBonusDrops(this, this.boxBlocks);
+        if (bonusCount > 0) {
+            player.sendMessage("TO ADD - bonus drops " + bonusCount);
+        }
+
+        return i;
     }
 
     /**
      * Handles the killing of animals.
      * Changes the {@link #currentlyHarvesting} type, puts the items into {@link BarnPlot} on {@link AutoStoreSetting},
      * if the barn is full, tries putting it into {@link BarnRegion#getAnimalInventory()}.
-     * If that is full as well, sends a message to the player
      *
-     * @param player   Player that killed the animals
-     * @param entities Animals that were killed
-     * @param byHand   Whether the animal was killed by hand
-     * @return amount of animals that were successfully killed
+     * @param player Player that killed the animals
+     * @param entity Animal that was killed
+     * @param byHand Whether the animal was killed by hand
+     * @return result when trying to save the animal drop
      */
-    public int handleAnimalKill(@NotNull Player player, boolean byHand, @NotNull Collection<LivingEntity> entities) {
-        final int[] count = {0};
-
-        // there is nothing to harvest
-        if (currentlyHarvesting == AnimalType.NONE || !isHarvestablePresent()) {
-            return count[0];
-        }
-
-        List<LivingEntity> entitiesCopy = new ArrayList<>(entities);
-        for (LivingEntity entity : entitiesCopy) {
-            AnimalType.getByEntityType(entity.getType())
-                    .filter(type -> type != AnimalType.NONE)
-                    .ifPresent(animalType -> {
-                        ItemStack item = new ItemStack(animalType.getItem());
-                        if (byHand) {
-                            item = HarvestableManager.getDrop(animalType);
-                        }
-                        AdditionResult result = this.handleAddition(item);
-                        switch (result) {
-                            case CONTAINER_FULL ->
-                                    player.sendMessage("TO ADD - All barns are full. Putting the items to inventory");
-                            case INV_FULL -> player.sendMessage("TO ADD - Animal inventory is full 1");
-                            case SUCCESS -> {
-                                entity.setKiller(player);
-                                entity.setHealth(0);
-                                count[0]++;
-                                // needs to be after killing the mob
-                                this.animals.remove(entity.getUniqueId());
-                                WORLD.playSound(entity.getLocation(), entity.getDeathSound(), 1f, 1f);
-                            }
-                        }
-                    });
-        }
-
-        int bonusCount = HarvestableManager.handleBonusDrops(this, entitiesCopy);
-        if (bonusCount > 0) {
-            player.sendMessage("TO ADD - bonus drops " + bonusCount);
-        }
+    public @NotNull AdditionResult handleAnimalKill(@NotNull Player player, boolean byHand, @NotNull LivingEntity entity) {
+        final AdditionResult[] result = new AdditionResult[1];
+        AnimalType.getByEntityType(entity.getType())
+                .filter(type -> type != AnimalType.NONE)
+                .ifPresent(animalType -> {
+                    ItemStack item = new ItemStack(animalType.getItem());
+                    if (byHand) {
+                        item = HarvestableManager.getDrop(animalType);
+                    }
+                    result[0] = this.handleAddition(item);
+                    if (result[0] == AdditionResult.SUCCESS) {
+                        entity.setKiller(player);
+                        entity.setHealth(0);
+                        // needs to be after killing the mob
+                        this.animals.remove(entity.getUniqueId());
+                        // the animal is silent, so play the sounds
+                        WORLD.playSound(entity.getLocation(), entity.getDeathSound(), 1f, 1f);
+                    }
+                });
 
         // everything was harvested
         if (this.getRemainingHarvestablesCount() == 0) {
             this.setCurrentlyHarvesting(AnimalType.NONE);
         }
 
-        return count[0];
+        return result[0];
     }
 
 

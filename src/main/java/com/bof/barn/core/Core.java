@@ -38,6 +38,8 @@ public final class Core extends JavaPlugin implements Listener {
 
     //TODO change handle break to one harvestable only
 
+    // TODO bring back bonus drops
+
     //TODO cancel the tasks at some time
     //TODO add info about upgrades ON/OFF to lore of Upgrades button
 

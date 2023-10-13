@@ -109,8 +109,6 @@ public class AnimalPlotMainMenu extends ChestGui {
                     int harvestedCount = this.plot.harvest(player);
                     if (harvestedCount > 0) {
                         player.sendMessage("TO ADD - Harvested " + harvestedCount + " animals");
-                    } else {
-                        player.sendMessage("TO ADD - No animal is present");
                     }
                     player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
                 }

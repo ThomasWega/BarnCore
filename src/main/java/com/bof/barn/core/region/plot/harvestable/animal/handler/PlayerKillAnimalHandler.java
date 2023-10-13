@@ -2,6 +2,7 @@ package com.bof.barn.core.region.plot.harvestable.animal.handler;
 
 import com.bof.barn.core.player.GamePlayer;
 import com.bof.barn.core.region.plot.PlotType;
+import com.bof.barn.core.region.plot.harvestable.AdditionResult;
 import com.bof.barn.core.region.plot.harvestable.animal.AnimalPlot;
 import com.bof.barn.core.region.plot.harvestable.animal.AnimalType;
 import org.bukkit.entity.LivingEntity;
@@ -50,7 +51,7 @@ public class PlayerKillAnimalHandler implements Listener {
                 .forEach(plot -> {
                     if (!plot.getAnimals().contains(entity.getUniqueId())) return;
 
-                    if (plot.handleAnimalKill(player, true, entity) == 0) {
+                    if (plot.handleAnimalKill(player, true, entity) == AdditionResult.SUCCESS) {
                         player.sendMessage("TO ADD - Animal inventory is full 3");
                         event.setCancelled(true);
                     }

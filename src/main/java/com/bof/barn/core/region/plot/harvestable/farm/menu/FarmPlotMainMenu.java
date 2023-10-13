@@ -109,8 +109,6 @@ public class FarmPlotMainMenu extends ChestGui {
                     int harvestedCount = this.plot.harvest(player);
                     if (harvestedCount > 0) {
                         player.sendMessage("TO ADD - Harvested " + harvestedCount + " crops");
-                    } else {
-                        player.sendMessage("TO ADD - No crop is planted");
                     }
                     player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
                 }

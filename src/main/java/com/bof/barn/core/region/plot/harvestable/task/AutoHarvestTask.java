@@ -24,8 +24,7 @@ public class AutoHarvestTask<T extends HarvestablePlot<?>> implements PlotTask {
 
         FarmPlot plot = (FarmPlot) this.plot;
         this.getRandomBlockAndCropType(plot.getRemainingHarvestables()).ifPresent(entry -> {
-            // technically the player doesn't matter, as no message will be sent, do take a caution with this though!
-            //TODO change
+            // technically the player doesn't matter for now, as no message will be sent, do take a caution with this though! (13.10.2023)
             plot.handleCropBreak(plot.getOwningRegion().getOwner(), false, entry.getKey());
         });
     }

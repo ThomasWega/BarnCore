@@ -2,6 +2,7 @@ package com.bof.barn.core.region.plot.harvestable.farm.handler;
 
 import com.bof.barn.core.player.GamePlayer;
 import com.bof.barn.core.region.plot.PlotType;
+import com.bof.barn.core.region.plot.harvestable.AdditionResult;
 import com.bof.barn.core.region.plot.harvestable.farm.FarmPlot;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -25,7 +26,7 @@ public class PlayerFarmPlotHandler implements Listener {
                     if (!plot.getBoxBlocks().contains(block)) return;
                     event.setDropItems(false);
 
-                    if (plot.handleCropBreak(player, true, block) == 0) {
+                    if (plot.handleCropBreak(player, true, block) != AdditionResult.SUCCESS) {
                         player.sendMessage("TO ADD - Crops inventory is full 3");
                         return;
                     }

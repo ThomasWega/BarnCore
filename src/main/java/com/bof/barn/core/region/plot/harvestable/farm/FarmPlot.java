@@ -25,6 +25,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BoundingBox;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -83,77 +84,68 @@ public class FarmPlot implements HarvestablePlot<CropType> {
 
     @Override
     public int harvest(@NotNull Player player) {
+        if (this.getRemainingHarvestablesCount() == 0) return 0;
         this.handleAutoReplant();
-        return this.handleCropBreak(player, false, this.boxBlocks);
-    }
-
-    /**
-     * Handles the breakage of block.
-     * Changes the {@link #currentlyHarvesting} type, puts the items into {@link SiloPlot} on {@link AutoStoreSetting},
-     * if the silo is full, tries putting it into {@link BarnRegion#getCropsInventory()}.
-     * If that is full as well, sends a message to the player
-     *
-     * @param player Player that broke the crop
-     * @param blocks Blocks that were broken
-     * @param byHand   Whether the crop was broken by hand
-     * @return amount of crops that were successfully broken
-     */
-    public int handleCropBreak(@NotNull Player player, boolean byHand, @NotNull Block... blocks) {
-        return this.handleCropBreak(player, byHand, Arrays.asList(blocks));
-    }
-
-    /**
-     * Handles the breakage of block.
-     * Changes the {@link #currentlyHarvesting} type, puts the items into {@link SiloPlot} on {@link AutoStoreSetting},
-     * if the silo is full, tries putting it into {@link BarnRegion#getCropsInventory()}.
-     * If that is full as well, sends a message to the player
-     *
-     * @param player Player that broke the crop
-     * @param blocks Blocks that were broken
-     * @param byHand   Whether the crop was broken by hand
-     * @return amount of crops that were successfully broken
-     */
-    public int handleCropBreak(@NotNull Player player, boolean byHand, @NotNull Collection<Block> blocks) {
-        final int[] count = {0};
-
-        // there is nothing to harvest
-        if (this.currentlyHarvesting == CropType.NONE || !isHarvestablePresent()) {
-            return count[0];
+        int i = 0;
+        blockLoop: for (Block block : this.boxBlocks) {
+            AdditionResult result = this.handleCropBreak(player, false, block);
+            if (result == null) continue;
+            switch (result) {
+                case SUCCESS -> i++;
+                case INV_FULL -> {
+                    player.sendMessage("TO ADD - Crops inventory is full 1");
+                    break blockLoop;
+                }
+                case CONTAINER_FULL -> {
+                    player.sendMessage("TO ADD - All silos are full. Putting the items to inventory");
+                    break blockLoop;
+                }
+            }
         }
 
-        for (Block block : blocks) {
-            CropType.getByMaterial(block.getType())
-                    .filter(cropType -> cropType != CropType.NONE)
-                    .ifPresent(cropType -> {
-                        ItemStack item = new ItemStack(cropType.getItem());
-                        if (byHand) {
-                            item = HarvestableManager.getDrop(cropType);
-                        } else {
-                            WORLD.playSound(FarmPlotSound.CROP.getSound(), block.getLocation().getX(), block.getLocation().getY(), block.getLocation().getZ());
-                        }
-                        AdditionResult result = this.handleAddition(item);
-                        switch (result) {
-                            case CONTAINER_FULL -> player.sendMessage("TO ADD - All silos are full. Putting the items to inventory");
-                            case INV_FULL -> player.sendMessage("TO ADD - Crops inventory is full 1");
-                            case SUCCESS -> {
-                                block.setType(Material.AIR);
-                                count[0]++;
-                            }
-                        }
-                    });
-        }
-
-        int bonusCount = HarvestableManager.handleBonusDrops(this, blocks);
+        int bonusCount = HarvestableManager.handleBonusDrops(this, this.boxBlocks);
         if (bonusCount > 0) {
             player.sendMessage("TO ADD - bonus drops " + bonusCount);
         }
+
+        return i;
+    }
+
+
+    /**
+     * Handles the breakage of block.
+     * Changes the {@link #currentlyHarvesting} type, puts the items into {@link SiloPlot} on {@link AutoStoreSetting},
+     * if the silo is full, tries putting it into {@link BarnRegion#getCropsInventory()}.
+     *
+     * @param player Player that broke the crop
+     * @param block  Block that was broken
+     * @param byHand Whether the crop was broken by hand
+     * @return amount of crops that were successfully broken
+     */
+    public @Nullable AdditionResult handleCropBreak(@NotNull Player player, boolean byHand, @NotNull Block block) {
+        final AdditionResult[] result = new AdditionResult[1];
+        CropType.getByMaterial(block.getType())
+                .filter(cropType -> cropType != CropType.NONE)
+                .ifPresent(cropType -> {
+                    ItemStack item = new ItemStack(cropType.getItem());
+                    if (byHand) {
+                        item = HarvestableManager.getDrop(cropType);
+                    } else {
+                        WORLD.playSound(FarmPlotSound.CROP.getSound(), block.getLocation().getX(), block.getLocation().getY(), block.getLocation().getZ());
+                    }
+                    result[0] = this.handleAddition(item);
+                    if (result[0] == AdditionResult.SUCCESS) {
+                        block.setType(Material.AIR);
+                    }
+                });
+
 
         // everything was harvested
         if (this.getRemainingHarvestablesCount() == 0) {
             this.setCurrentlyHarvesting(CropType.NONE);
         }
 
-        return count[0];
+        return result[0];
     }
 
     @Override
