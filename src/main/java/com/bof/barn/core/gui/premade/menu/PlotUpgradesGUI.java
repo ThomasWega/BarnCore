@@ -3,6 +3,7 @@ package com.bof.barn.core.gui.premade.menu;
 import com.bof.barn.core.gui.premade.button.back.GoBackPane;
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.region.plot.Plot;
+import com.bof.barn.core.region.plot.PlotSetting;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
@@ -16,6 +17,8 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Comparator;
 
 /**
  * Menu which shows upgrades for the given plot
@@ -43,7 +46,8 @@ public class PlotUpgradesGUI<T extends Plot> extends ChestGui {
     }
 
     private void fillWithUpgradeButtons() {
-        this.plot.getSettings().values()
+        this.plot.getSettings().values().stream()
+                .sorted(Comparator.comparing(PlotSetting::getSettingName))
                 .forEach(plotSetting -> {
                     ItemStack displayItem = new ItemBuilder(plotSetting.getItem())
                             .appendLoreLine(Component.empty())
