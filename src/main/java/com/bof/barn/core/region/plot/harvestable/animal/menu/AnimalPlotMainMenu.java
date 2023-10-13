@@ -6,7 +6,7 @@ import com.bof.barn.core.gui.premade.button.setting.AutoStoreSettingButton;
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.item.SkullBuilder;
 import com.bof.barn.core.region.plot.harvestable.animal.AnimalPlot;
-import com.bof.barn.core.region.plot.harvestable.settings.AutoStoreSetting;
+import com.bof.barn.core.region.plot.harvestable.setting.AutoStoreSetting;
 import com.bof.toolkit.skin.Skin;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
@@ -28,7 +28,7 @@ public class AnimalPlotMainMenu extends ChestGui {
     private final boolean closeOnGoBack;
 
     public AnimalPlotMainMenu(@NotNull AnimalPlot plot, boolean closeOnGoBack) {
-        super(4, ComponentHolder.of(Component.text("Animal Plot " + plot.getId())));
+        super(3, ComponentHolder.of(Component.text("Animal Plot " + plot.getId())));
         this.plot = plot;
         this.closeOnGoBack = closeOnGoBack;
         this.initialize();
@@ -38,9 +38,9 @@ public class AnimalPlotMainMenu extends ChestGui {
         this.addSections();
 
         if (this.closeOnGoBack) {
-            this.addPane(new GoBackPane(4, 3, null));
+            this.addPane(new GoBackPane(4, 2, null));
         } else {
-            this.addPane(new GoBackPane(4, 3, new AnimalPlotsMenu(this.plot.getOwningRegion())));
+            this.addPane(new GoBackPane(4, 2, new AnimalPlotsMenu(this.plot.getOwningRegion())));
         }
         this.addPane(mainPane);
 
@@ -49,10 +49,9 @@ public class AnimalPlotMainMenu extends ChestGui {
 
     private void addSections() {
         this.mainPane.addItem(this.getChangeAnimalsButton(), 0, 0);
-        this.mainPane.addItem(this.getUpgradesButton(), 3, 0);
-        this.mainPane.addItem(this.getBoostersButton(), 6, 0);
-        this.mainPane.addItem(this.getHarvestButton(), 1, 1);
-        this.mainPane.addItem(this.getAutoStoreButton(), 5, 1);
+        this.mainPane.addItem(this.getUpgradesButton(), 2, 0);
+        this.mainPane.addItem(this.getBoostersButton(), 4, 0);
+        this.mainPane.addItem(this.getHarvestButton(), 6, 0);
     }
 
     private GuiItem getChangeAnimalsButton() {

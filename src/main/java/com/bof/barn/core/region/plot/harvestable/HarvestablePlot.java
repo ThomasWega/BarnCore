@@ -3,8 +3,8 @@ package com.bof.barn.core.region.plot.harvestable;
 
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.Plot;
-import com.bof.barn.core.region.plot.harvestable.settings.AutoStoreSetting;
-import com.bof.barn.core.region.plot.harvestable.settings.ReplantAllSetting;
+import com.bof.barn.core.region.plot.harvestable.setting.AutoStoreSetting;
+import com.bof.barn.core.region.plot.harvestable.setting.ReplantAllSetting;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

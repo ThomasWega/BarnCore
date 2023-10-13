@@ -190,8 +190,7 @@ public interface Plot {
                             .toList();
 
                     return parsedPlaceholders.stream()
-                            .map(ColorUtils::convertLegacyToMiniMessage)
-                            .map(MiniMessage.miniMessage()::deserialize)
+                            .map(ColorUtils::colorLegacyAndMiniMessage)
                             .collect(Collectors.toList()); // Collect the components for each string
                 })
                 .flatMap(List::stream) // Flatten the List<List<Component>> to List<Component>

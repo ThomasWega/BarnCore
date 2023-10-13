@@ -4,7 +4,7 @@ import com.bof.barn.core.player.GamePlayer;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.Plot;
 import com.bof.barn.core.region.plot.PlotType;
-import com.bof.barn.core.region.plot.harvestable.settings.AutoStoreSetting;
+import com.bof.barn.core.region.plot.harvestable.setting.AutoStoreSetting;
 import com.bof.barn.core.region.plot.selling.settings.AutoSellSetting;
 import com.bof.barn.core.region.plot.selling.silo.SiloPlot;
 import com.bof.barn.core.region.plot.selling.barn.BarnPlot;
@@ -67,30 +67,30 @@ public class PAPIHook extends PlaceholderExpansion {
                 return String.valueOf(region.getFarmCoins());
         }
 
-        if (params.startsWith("plot_farm_autostore_")) {
-            int plotId = Integer.parseInt(params.substring(20));
+        if (params.startsWith("plot_farm_setting_autostore_")) {
+            int plotId = Integer.parseInt(params.substring(28));
             Optional<Plot> optPlot = region.getPlot(PlotType.FARM, plotId);
             if (optPlot.isPresent())
                 return String.valueOf(optPlot.get().isSetting(AutoStoreSetting.class));
         }
 
-        if (params.startsWith("plot_animal_autostore_")) {
-            int plotId = Integer.parseInt(params.substring(22));
+        if (params.startsWith("plot_animal_setting_autostore_")) {
+            int plotId = Integer.parseInt(params.substring(30));
             Optional<Plot> optPlot = region.getPlot(PlotType.ANIMAL, plotId);
             if (optPlot.isPresent())
                 return String.valueOf(optPlot.get().isSetting(AutoStoreSetting.class));
         }
 
-        if (params.startsWith("plot_farm_colored_status_autostore_")) {
-            int plotId = Integer.parseInt(params.substring(35));
+        if (params.startsWith("plot_farm_setting_colored_status_autostore_")) {
+            int plotId = Integer.parseInt(params.substring(43));
             Optional<Plot> optPlot = region.getPlot(PlotType.FARM, plotId);
             if (optPlot.isPresent()) {
                 return optPlot.get().isSetting(AutoStoreSetting.class) ? "§aON" : "§cOFF";
             }
         }
 
-        if (params.startsWith("plot_animal_colored_status_autostore_")) {
-            int plotId = Integer.parseInt(params.substring(37));
+        if (params.startsWith("plot_animal_setting_colored_status_autostore_")) {
+            int plotId = Integer.parseInt(params.substring(45));
             Optional<Plot> optPlot = region.getPlot(PlotType.ANIMAL, plotId);
             if (optPlot.isPresent()) {
                 return optPlot.get().isSetting(AutoStoreSetting.class) ? "§aON" : "§cOFF";
@@ -139,29 +139,29 @@ public class PAPIHook extends PlaceholderExpansion {
                 return String.valueOf(((BarnPlot) optPlot.get()).getFilledPercentageRounded(2));
         }
 
-        if (params.startsWith("plot_silo_autosell_")) {
-            int plotId = Integer.parseInt(params.substring(19));
+        if (params.startsWith("plot_silo_setting_autosell_")) {
+            int plotId = Integer.parseInt(params.substring(27));
             Optional<Plot> optPlot = region.getPlot(PlotType.SILO, plotId);
             if (optPlot.isPresent())
                 return String.valueOf((optPlot.get()).isSetting(AutoSellSetting.class));
         }
 
-        if (params.startsWith("plot_silo_colored_status_autosell_")) {
-            int plotId = Integer.parseInt(params.substring(34));
+        if (params.startsWith("plot_silo_setting_colored_status_autosell_")) {
+            int plotId = Integer.parseInt(params.substring(42));
             Optional<Plot> optPlot = region.getPlot(PlotType.SILO, plotId);
             if (optPlot.isPresent())
                 return optPlot.get().isSetting(AutoSellSetting.class) ? "§aON" : "§cOFF";
         }
 
-        if (params.startsWith("plot_barn_autosell_")) {
-            int plotId = Integer.parseInt(params.substring(19));
+        if (params.startsWith("plot_barn_setting_autosell_")) {
+            int plotId = Integer.parseInt(params.substring(27));
             Optional<Plot> optPlot = region.getPlot(PlotType.BARN, plotId);
             if (optPlot.isPresent())
                 return String.valueOf(optPlot.get().isSetting(AutoSellSetting.class));
         }
 
-        if (params.startsWith("plot_barn_colored_status_autosell_")) {
-            int plotId = Integer.parseInt(params.substring(34));
+        if (params.startsWith("plot_barn_setting_colored_status_autosell_")) {
+            int plotId = Integer.parseInt(params.substring(42));
             Optional<Plot> optPlot = region.getPlot(PlotType.BARN, plotId);
             if (optPlot.isPresent())
                 return optPlot.get().isSetting(AutoSellSetting.class) ? "§aON" : "§cOFF";

@@ -1,13 +1,10 @@
 package com.bof.barn.core.region.plot.harvestable.farm.menu;
 
 import com.bof.barn.core.gui.premade.sound.SoundedGUIButton;
-import com.bof.barn.core.gui.premade.button.setting.AutoStoreSettingButton;
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.item.SkullBuilder;
 import com.bof.barn.core.gui.premade.button.back.GoBackPane;
 import com.bof.barn.core.region.plot.harvestable.farm.FarmPlot;
-import com.bof.barn.core.region.plot.harvestable.farm.menu.upgrades.FarmUpgradesMenu;
-import com.bof.barn.core.region.plot.harvestable.settings.AutoStoreSetting;
 import com.bof.toolkit.skin.Skin;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
@@ -28,7 +25,7 @@ public class FarmPlotMainMenu extends ChestGui {
     private final boolean closeOnGoBack;
 
     public FarmPlotMainMenu(@NotNull FarmPlot plot, boolean closeOnGoBack) {
-        super(4, ComponentHolder.of(Component.text("Farm Plot " + plot.getId())));
+        super(3, ComponentHolder.of(Component.text("Farm Plot " + plot.getId())));
         this.plot = plot;
         this.closeOnGoBack = closeOnGoBack;
         this.initialize();
@@ -38,9 +35,9 @@ public class FarmPlotMainMenu extends ChestGui {
         this.addSections();
 
         if (this.closeOnGoBack) {
-            this.addPane(new GoBackPane(4, 3, null));
+            this.addPane(new GoBackPane(4, 2, null));
         } else {
-            this.addPane(new GoBackPane(4, 3, new FarmPlotsMenu(this.plot.getOwningRegion())));
+            this.addPane(new GoBackPane(4, 2, new FarmPlotsMenu(this.plot.getOwningRegion())));
         }
         this.addPane(mainPane);
 
@@ -48,11 +45,10 @@ public class FarmPlotMainMenu extends ChestGui {
     }
 
     private void addSections() {
-        this.mainPane.addItem(this.getChangeCropsButton(),0, 0);
-        this.mainPane.addItem(this.getUpgradesButton(),3, 0);
-        this.mainPane.addItem(this.getBoostersButton(),6, 0);
-        this.mainPane.addItem(this.getHarvestButton(),1, 1);
-        this.mainPane.addItem(this.getAutoStoreButton(),5, 1);
+        this.mainPane.addItem(this.getChangeCropsButton(), 0, 0);
+        this.mainPane.addItem(this.getUpgradesButton(), 2, 0);
+        this.mainPane.addItem(this.getBoostersButton(), 4, 0);
+        this.mainPane.addItem(this.getHarvestButton(), 6, 0);
     }
 
     private GuiItem getChangeCropsButton() {
@@ -119,27 +115,5 @@ public class FarmPlotMainMenu extends ChestGui {
                     player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
                 }
         );
-    }
-
-    private GuiItem getAutoStoreButton() {
-        String statusStr = plot.isSetting(AutoStoreSetting.class) ? "<green>ON</green>" : "<red>OFF</red>";
-        Component status = MiniMessage.miniMessage().deserialize("<white>Status: " + statusStr + "</white>");
-        List<Component> lore = List.of(
-                Component.text("Automatically puts crops into silo", NamedTextColor.GRAY),
-                Component.empty(),
-                status,
-                Component.empty(),
-                Component.text("Click to change status", NamedTextColor.DARK_GRAY)
-        );
-
-        return new AutoStoreSettingButton(lore, event -> {
-            Player player = ((Player) event.getWhoClicked());
-            if (!this.plot.setAutoStore(!plot.isSetting(AutoStoreSetting.class))) {
-                player.sendMessage("TO ADD - No free AutoStore slots 1");
-            } else {
-                player.sendMessage("TO ADD - changed auto store status 1");
-            }
-            new FarmPlotMainMenu(this.plot, this.closeOnGoBack).show(player);
-        });
     }
 }

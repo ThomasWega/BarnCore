@@ -10,7 +10,7 @@ import com.bof.barn.core.region.plot.Plot;
 import com.bof.barn.core.region.plot.PlotSetting;
 import com.bof.barn.core.region.plot.PlotType;
 import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
-import com.bof.barn.core.region.plot.harvestable.settings.HarvestablePlotSetting;
+import com.bof.barn.core.region.plot.harvestable.setting.HarvestablePlotSetting;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.gui.type.util.Gui;

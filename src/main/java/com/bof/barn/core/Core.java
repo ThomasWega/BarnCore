@@ -36,9 +36,9 @@ public final class Core extends JavaPlugin implements Listener {
     private RegionManager regionManager;
     public static World WORLD;
 
-    //TODO create menu for upgrades
-    //TODO create buttons for replant + auto harvest
     //TODO cancel the tasks at some time
+    //TODO change handle break to one harvestable only
+    //TODO add info about upgrades ON/OFF to lore of Upgrades button
 
     @EventHandler(priority = EventPriority.LOWEST)
     private void onGridLoad(GridLoadedEvent event) {

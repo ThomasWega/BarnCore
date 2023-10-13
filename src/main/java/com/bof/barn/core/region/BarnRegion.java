@@ -6,7 +6,7 @@ import com.bof.barn.core.region.plot.PlotSetting;
 import com.bof.barn.core.region.plot.PlotType;
 import com.bof.barn.core.region.plot.harvestable.animal.AnimalType;
 import com.bof.barn.core.region.plot.harvestable.farm.CropType;
-import com.bof.barn.core.region.plot.harvestable.settings.AutoStoreSetting;
+import com.bof.barn.core.region.plot.harvestable.setting.AutoStoreSetting;
 import com.bof.barn.core.region.plot.selling.barn.BarnPlot;
 import com.bof.barn.core.region.plot.selling.silo.SiloPlot;
 import com.bof.barn.core.utils.HarvestableUtils;

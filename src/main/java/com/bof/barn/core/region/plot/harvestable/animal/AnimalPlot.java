@@ -8,7 +8,7 @@ import com.bof.barn.core.region.plot.PlotType;
 import com.bof.barn.core.region.plot.harvestable.AdditionResult;
 import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
 import com.bof.barn.core.region.plot.harvestable.animal.menu.AnimalPlotMainMenu;
-import com.bof.barn.core.region.plot.harvestable.settings.AutoStoreSetting;
+import com.bof.barn.core.region.plot.harvestable.setting.AutoStoreSetting;
 import com.bof.barn.core.region.plot.selling.barn.BarnPlot;
 import com.bof.barn.core.utils.BoxUtils;
 import com.github.unldenis.hologram.Hologram;
@@ -272,9 +272,8 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
     @Override
     public List<Component> getLore() {
         return this.parsePlaceholdersAndConvertToComponent(List.of(
-                "<color:#FCDB03>Upgrades: <red>OFF</red></color>",
-                "<color:#D4F542>Enchanted Rain: <red>OFF</red></color>",
-                "<color:#2B84FF>Auto Store: %barn_plot_animal_colored_status_autostore_" + this.id + "%</color>"
+                "<color:#FCDB03>Production: <red>N/s</red></color>",
+                "<color:#D4F542>Multipliers: <red>0x</red></color>"
         ));
     }
 }

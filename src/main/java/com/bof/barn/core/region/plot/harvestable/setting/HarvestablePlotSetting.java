@@ -1,4 +1,4 @@
-package com.bof.barn.core.region.plot.harvestable.settings;
+package com.bof.barn.core.region.plot.harvestable.setting;
 
 import com.bof.barn.core.region.plot.PlotSetting;
 import org.bukkit.inventory.ItemStack;

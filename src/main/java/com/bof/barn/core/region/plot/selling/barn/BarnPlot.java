@@ -99,8 +99,7 @@ public class BarnPlot implements ContainerPlot<AnimalType> {
     public List<Component> getLore() {
         return this.parsePlaceholdersAndConvertToComponent(List.of(
                 "<color:#FCDB03>Capacity: <red>%barn_plot_barn_capacity_" + this.id + "%</red></color>",
-                "<color:#D4F542>Filled: <red>%barn_plot_barn_filled_" + this.id + "%/%barn_plot_barn_capacity_" + this.id + "% (%barn_plot_barn_percentage_filled_" + this.id + "%%)</red></color>",
-                "<color:#2B84FF>Auto Sell: %barn_plot_barn_colored_status_autosell_" + this.id + "%</color>"
+                "<color:#D4F542>Filled: <red>%barn_plot_barn_filled_" + this.id + "%/%barn_plot_barn_capacity_" + this.id + "% (%barn_plot_barn_percentage_filled_" + this.id + "%%)</red></color>"
         ));
     }
 }
