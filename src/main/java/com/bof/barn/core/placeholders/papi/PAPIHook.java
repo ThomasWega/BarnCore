@@ -65,6 +65,8 @@ public class PAPIHook extends PlaceholderExpansion {
                 return String.valueOf(region.getAllBarnsCapacityAmount());
             case "farmcoins":
                 return String.valueOf(region.getFarmCoins());
+            case "farmcoins_rounded":
+                return String.valueOf(region.getFarmCoinsRounded(2));
         }
 
         if (params.startsWith("plot_farm_setting_autostore_")) {

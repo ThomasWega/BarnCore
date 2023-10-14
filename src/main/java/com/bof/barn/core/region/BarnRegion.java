@@ -9,6 +9,7 @@ import com.bof.barn.core.region.plot.harvestable.farm.CropType;
 import com.bof.barn.core.region.plot.selling.barn.BarnPlot;
 import com.bof.barn.core.region.plot.selling.silo.SiloPlot;
 import com.bof.barn.core.utils.HarvestableUtils;
+import com.bof.toolkit.utils.NumberUtils;
 import com.github.unldenis.hologram.HologramPool;
 import com.github.unldenis.hologram.InteractiveHologramPool;
 import lombok.Data;
@@ -42,6 +43,10 @@ public class BarnRegion {
     private InteractiveHologramPool interactiveHologramPool;
     private float farmCoins = 10000;
 
+
+    public float getFarmCoinsRounded(int roundNum) {
+        return NumberUtils.roundBy(this.farmCoins, roundNum);
+    }
 
     /**
      * @param value Value to check against

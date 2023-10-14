@@ -68,7 +68,7 @@ public class PlotUpgradesMenuGUI<T extends Plot> extends ChestGui {
                         if (!levelSetting.isAtMaxLevel()) {
                             displayItemBuilder
                                     .appendLoreLine(Component.text("Next level price: " + levelSetting.getNextLevelPrice(), NamedTextColor.WHITE))
-                                    .appendLoreLine(Component.text("Your balance: " + plot.getOwningRegion().getFarmCoins() + "$", NamedTextColor.WHITE))
+                                    .appendLoreLine(Component.text("Your balance: " + plot.getOwningRegion().getFarmCoinsRounded(2) + "$", NamedTextColor.WHITE))
                                     .appendLoreLine(Component.empty())
                                     .appendLoreLine(Component.text("Shift-click to upgrade level", NamedTextColor.YELLOW));
                         }
@@ -105,7 +105,7 @@ public class PlotUpgradesMenuGUI<T extends Plot> extends ChestGui {
                             .skin(new Skin("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODE2MjNkNTIzOGRhYjdkZWNkMzIwMjY1Y2FlMWRjNmNhOTFiN2ZhOTVmMzQ2NzNhYWY0YjNhZDVjNmJhMTZlMSJ9fX0=", null))
                             .appendLoreLine(Component.empty())
                             .appendLoreLine(Component.text("Price: " + price + "$", NamedTextColor.WHITE))
-                            .appendLoreLine(Component.text("Your balance: " + plot.getOwningRegion().getFarmCoins() + "$", NamedTextColor.WHITE))
+                            .appendLoreLine(Component.text("Your balance: " + plot.getOwningRegion().getFarmCoinsRounded(2) + "$", NamedTextColor.WHITE))
                             .appendLoreLine(Component.empty())
                             .appendLoreLine(Component.text("Shift-click to purchase this upgrade", NamedTextColor.RED))
                             .build();
