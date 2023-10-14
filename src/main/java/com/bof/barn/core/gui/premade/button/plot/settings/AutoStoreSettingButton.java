@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 
 public class AutoStoreSettingButton extends SoundedGUIButton {
     public AutoStoreSettingButton(@NotNull List<Component> lore, @Nullable Consumer<InventoryClickEvent> action) {
-        super (new SkullBuilder()
+        super(new SkullBuilder()
                 .displayName(MiniMessage.miniMessage().deserialize("<b><color:#2b84ff>Auto Store</color></b>"))
                 .lore(lore)
                 .skin(new Skin("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTVhMGIwN2UzNmVhZmRlY2YwNTljOGNiMTM0YTdiZjBhMTY3ZjkwMDk2NmYxMDk5MjUyZDkwMzI3NjQ2MWNjZSJ9fX0=", null))

@@ -3,8 +3,8 @@ package com.bof.barn.core.region.plot.task;
 import com.bof.barn.core.Core;
 import com.bof.barn.core.region.plot.Plot;
 import com.bof.barn.core.region.plot.PlotType;
-import com.bof.barn.core.region.plot.event.setting.PlotSettingEvent;
 import com.bof.barn.core.region.plot.event.setting.PlotSettingLevelIncreaseEvent;
+import com.bof.barn.core.region.plot.event.setting.PlotSettingToggleEvent;
 import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
 import com.bof.barn.core.region.plot.harvestable.setting.AutoHarvestSetting;
 import com.bof.barn.core.region.plot.harvestable.task.AutoHarvestTask;
@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Handles starting and stopping of the {@link PlotTask}
+ * Handles scheduling and cancelling of {@link PlotTask}s
  */
 @RequiredArgsConstructor
 public class PlotTasksManager implements Listener {
@@ -30,7 +30,7 @@ public class PlotTasksManager implements Listener {
     private final Map<PlotType, Map<Integer, Map<Class<? extends PlotTask>, BukkitTask>>> runningTasks = new HashMap<>();
 
     @EventHandler
-    private void onPlotSetting(PlotSettingEvent event) {
+    private void onPlotSetting(PlotSettingToggleEvent event) {
         PlotSetting setting = event.getPlotSetting();
         Plot plot = event.getPlot();
         if (setting instanceof AutoHarvestSetting) {
@@ -38,6 +38,9 @@ public class PlotTasksManager implements Listener {
         }
     }
 
+    /**
+     * When the level increases, we need to rerun the task to reset the timer period
+     */
     @EventHandler
     private void onLevelIncrease(PlotSettingLevelIncreaseEvent event) {
         if (event.getPlotSetting() instanceof AutoHarvestSetting autoHarvestSetting) {
@@ -47,6 +50,14 @@ public class PlotTasksManager implements Listener {
         }
     }
 
+    /**
+     * If the setting gets toggled, start the task and save it to the map.
+     * If the settings gets untoggled, cancel the task
+     *
+     * @param plot    Plot to start or cancel the task for
+     * @param setting Setting instance
+     * @see #cancelTask(Class, Plot)
+     */
     private void handleAutoHarvestTask(HarvestablePlot<?> plot, AutoHarvestSetting setting) {
         if (setting.isToggled()) {
             Map<Integer, Map<Class<? extends PlotTask>, BukkitTask>> typeTasks = this.runningTasks.computeIfAbsent(plot.getType(), k -> new HashMap<>());
@@ -58,6 +69,12 @@ public class PlotTasksManager implements Listener {
         }
     }
 
+    /**
+     * Cancel the task and remove it from the map
+     *
+     * @param taskClazz Class of the task
+     * @param plot      Plot the task belongs to
+     */
     private void cancelTask(Class<? extends PlotTask> taskClazz, Plot plot) {
         Map<Integer, Map<Class<? extends PlotTask>, BukkitTask>> typeTasks = this.runningTasks.get(plot.getType());
         if (typeTasks == null) return;

@@ -7,6 +7,9 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Called when a new {@link Plot} is created
+ */
 @Getter
 @RequiredArgsConstructor
 public class PlotCreatedEvent extends Event {

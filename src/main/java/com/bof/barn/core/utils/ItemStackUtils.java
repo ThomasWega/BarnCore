@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * Various utilities for {@link ItemStack}
+ */
 public class ItemStackUtils {
 
     private ItemStackUtils() {

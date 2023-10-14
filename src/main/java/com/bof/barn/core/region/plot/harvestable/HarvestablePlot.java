@@ -13,7 +13,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
 import java.util.List;
 
-
+/**
+ * Plot which grows/raises specific thing that can be harvested by the player
+ *
+ * @param <T> Types the plot is allowed to harvest
+ */
 public interface HarvestablePlot<T extends HarvestableType> extends Plot {
 
     /**

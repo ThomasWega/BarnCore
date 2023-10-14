@@ -2,11 +2,11 @@ package com.bof.barn.core.region.plot.selling.barn;
 
 import com.bof.barn.core.Core;
 import com.bof.barn.core.region.BarnRegion;
-import com.bof.barn.core.region.plot.setting.PlotSetting;
 import com.bof.barn.core.region.plot.PlotType;
 import com.bof.barn.core.region.plot.harvestable.animal.AnimalType;
 import com.bof.barn.core.region.plot.selling.ContainerPlot;
 import com.bof.barn.core.region.plot.selling.barn.menu.BarnPlotMainMenu;
+import com.bof.barn.core.region.plot.setting.PlotSetting;
 import com.bof.barn.core.utils.BoxUtils;
 import com.bof.toolkit.utils.NumberUtils;
 import com.github.unldenis.hologram.Hologram;

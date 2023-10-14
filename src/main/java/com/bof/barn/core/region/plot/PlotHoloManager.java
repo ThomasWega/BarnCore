@@ -35,6 +35,11 @@ public class PlotHoloManager implements Listener {
         this.handleHologram(event.getPlot());
     }
 
+    /**
+     * Create the holograms
+     *
+     * @param plot Plot to create holograms for
+     */
     private void handleHologram(Plot plot) {
         PlotUtils.identifyHologram(plot).ifPresent(loc -> {
             loc.getBlock().setType(Material.AIR);
@@ -42,6 +47,15 @@ public class PlotHoloManager implements Listener {
         });
     }
 
+    /**
+     * Constructs the hologram
+     *
+     * @param plugin   Core instance
+     * @param plot     Plot the hologram will belong to
+     * @param loc      Exact location where the holo sign was at
+     * @param holoPool The regions hologram pool
+     * @return Constructed hologram with all it's texts and attributes
+     */
     private Hologram getHologram(Core plugin, Plot plot, Location loc, HologramPool holoPool) {
         Location holoLoc = loc.add(0.5, 0.75, 0);
 
@@ -58,10 +72,17 @@ public class PlotHoloManager implements Listener {
                 .loadAndBuild(holoPool);
 
 
-        this.addItemLine(plot, holo);
+        this.addBlockLine(plot, holo);
         return holo;
     }
 
+    /**
+     * Get the offset for the block item from the config
+     *
+     * @param type Type of the plot
+     * @param loc  The block line location
+     * @return new Calculated location
+     */
     private Location setOffsetValues(PlotType type, Location loc) {
         Location newLoc = loc.clone();
         ConfigurationSection section = plugin.getConfig().getConfigurationSection("plots." + type.getIdentifier() + ".holo-item-offset");
@@ -74,7 +95,13 @@ public class PlotHoloManager implements Listener {
         return newLoc;
     }
 
-    private void addItemLine(Plot plot, Hologram holo) {
+    /**
+     * Adds the block line and handles all it's modifications
+     *
+     * @param plot Plot the hologram belongs to
+     * @param holo Hologram instance
+     */
+    private void addBlockLine(Plot plot, Hologram holo) {
         Location loc = holo.getLines().get(0).getLocation().clone();
         Location offSetLoc = this.setOffsetValues(plot.getType(), loc);
 

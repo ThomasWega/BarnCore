@@ -3,13 +3,13 @@ package com.bof.barn.core.region.plot.harvestable.animal;
 import com.bof.barn.core.Core;
 import com.bof.barn.core.HarvestableManager;
 import com.bof.barn.core.region.BarnRegion;
-import com.bof.barn.core.region.plot.setting.PlotSetting;
 import com.bof.barn.core.region.plot.PlotType;
 import com.bof.barn.core.region.plot.harvestable.AdditionResult;
 import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
 import com.bof.barn.core.region.plot.harvestable.animal.menu.AnimalPlotMainMenu;
 import com.bof.barn.core.region.plot.harvestable.setting.AutoStoreSetting;
 import com.bof.barn.core.region.plot.selling.barn.BarnPlot;
+import com.bof.barn.core.region.plot.setting.PlotSetting;
 import com.bof.barn.core.utils.BoxUtils;
 import com.github.unldenis.hologram.Hologram;
 import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
@@ -104,7 +104,8 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
         if (this.getRemainingHarvestablesCount() == 0) return 0;
         this.handleAutoReplant();
         int i = 0;
-        animalLoop: for (LivingEntity entity : this.getEntities()) {
+        animalLoop:
+        for (LivingEntity entity : this.getEntities()) {
             switch (this.handleAnimalKill(player, false, entity)) {
                 case SUCCESS -> i++;
                 case INV_FULL -> {

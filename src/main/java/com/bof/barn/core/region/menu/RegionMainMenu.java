@@ -1,15 +1,15 @@
 package com.bof.barn.core.region.menu;
 
+import com.bof.barn.core.gui.premade.button.back.GoBackPane;
 import com.bof.barn.core.gui.premade.sound.SoundedGUIButton;
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.item.SkullBuilder;
-import com.bof.barn.core.gui.premade.button.back.GoBackPane;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.Plot;
 import com.bof.barn.core.region.plot.PlotType;
 import com.bof.barn.core.region.plot.harvestable.animal.menu.AnimalPlotsMenu;
 import com.bof.barn.core.region.plot.harvestable.farm.menu.FarmPlotsMenu;
-import com.bof.barn.core.region.plot.harvestable.menu.HarvestableSettingsMainMenu;
+import com.bof.barn.core.region.plot.harvestable.menu.HarvestableUpgradesMainMenu;
 import com.bof.barn.core.region.plot.selling.barn.BarnPlot;
 import com.bof.barn.core.region.plot.selling.barn.menu.BarnPlotMainMenu;
 import com.bof.barn.core.region.plot.selling.silo.SiloPlot;
@@ -39,11 +39,11 @@ public class RegionMainMenu extends ChestGui {
 
     private void initialize() {
         this.mainPane.addItem(this.getFarmPlotsButton(), 0, 0);
-        this.mainPane.addItem(this.getAnimalPlotsButton(),3, 0);
-        this.mainPane.addItem(this.getSiloPlotButton(),6, 0);
+        this.mainPane.addItem(this.getAnimalPlotsButton(), 3, 0);
+        this.mainPane.addItem(this.getSiloPlotButton(), 6, 0);
 
-        this.mainPane.addItem(this.getBarnPlotButton(),1, 1);
-        this.mainPane.addItem(this.getModifyPlotsButton(),5, 1);
+        this.mainPane.addItem(this.getBarnPlotButton(), 1, 1);
+        this.mainPane.addItem(this.getModifyPlotsButton(), 5, 1);
 
         this.addPane(new GoBackPane(4, 3, null));
         this.addPane(this.mainPane);
@@ -123,7 +123,7 @@ public class RegionMainMenu extends ChestGui {
                                 Component.text("Click to open modify menu", NamedTextColor.DARK_GRAY)
                         ))
                         .build(),
-                event -> new HarvestableSettingsMainMenu(this.region).show(event.getWhoClicked())
+                event -> new HarvestableUpgradesMainMenu(this.region).show(event.getWhoClicked())
         );
     }
 }

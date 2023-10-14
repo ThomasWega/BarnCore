@@ -12,6 +12,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Handles the automatic harvesting of the harvestables on the plot
+ *
+ * @param <T>
+ */
 @RequiredArgsConstructor
 public class AutoHarvestTask<T extends HarvestablePlot<?>> implements PlotTask {
     private final T plot;

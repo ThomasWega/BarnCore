@@ -8,9 +8,12 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Called when toggle boolean changes for a {@link PlotSetting}
+ */
 @Getter
 @RequiredArgsConstructor
-public class PlotSettingEvent extends Event {
+public class PlotSettingToggleEvent extends Event {
     private static final HandlerList HANDLERS = new HandlerList();
     private final @NotNull Plot plot;
     private final @NotNull PlotSetting plotSetting;

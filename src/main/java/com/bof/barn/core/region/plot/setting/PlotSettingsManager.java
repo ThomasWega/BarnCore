@@ -3,8 +3,8 @@ package com.bof.barn.core.region.plot.setting;
 import com.bof.barn.core.region.plot.Plot;
 import com.bof.barn.core.region.plot.event.PlotCreatedEvent;
 import com.bof.barn.core.region.plot.harvestable.setting.AutoHarvestSetting;
-import com.bof.barn.core.region.plot.harvestable.setting.ReplantAllSetting;
 import com.bof.barn.core.region.plot.harvestable.setting.AutoStoreSetting;
+import com.bof.barn.core.region.plot.harvestable.setting.ReplantAllSetting;
 import com.bof.barn.core.region.plot.selling.settings.AutoSellSetting;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.event.EventHandler;
@@ -24,6 +24,7 @@ public class PlotSettingsManager implements Listener {
 
     /**
      * Put all settings into the plot
+     *
      * @param plot Plot to place settings into
      */
     private void handleSettingsSet(Plot plot) {
@@ -36,9 +37,9 @@ public class PlotSettingsManager implements Listener {
                 ));
                 break;
             case BARN, SILO:
-                plot.getSettings().putAll(Map.of(
+                plot.getSettings().put(
                         AutoSellSetting.class, new AutoSellSetting()
-                ));
+                );
                 break;
         }
     }

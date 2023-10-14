@@ -8,6 +8,9 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Called when level of {@link com.bof.barn.core.region.setting.LeveledSetting} increases
+ */
 @Getter
 @RequiredArgsConstructor
 public class PlotSettingLevelIncreaseEvent extends Event {

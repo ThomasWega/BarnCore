@@ -35,6 +35,7 @@ public class SoundedGUIButton extends GuiItem {
     public SoundedGUIButton(@NotNull ItemStack item, @NotNull Plugin plugin) {
         super(item, plugin);
     }
+
     public SoundedGUIButton(@NotNull ItemStack item) {
         super(item);
     }

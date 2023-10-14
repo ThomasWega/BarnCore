@@ -9,6 +9,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
+/**
+ * Various utilities for {@link Plot}
+ */
 public class PlotUtils {
 
     private PlotUtils() {

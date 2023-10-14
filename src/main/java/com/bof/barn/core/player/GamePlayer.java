@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Handles the data about the player
+ * Handles the data and other info about the player
  */
 @Data
 public class GamePlayer {

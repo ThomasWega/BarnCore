@@ -2,7 +2,7 @@ package com.bof.barn.core.region.plot;
 
 import com.bof.barn.core.Core;
 import com.bof.barn.core.region.BarnRegion;
-import com.bof.barn.core.region.plot.event.setting.PlotSettingEvent;
+import com.bof.barn.core.region.plot.event.setting.PlotSettingToggleEvent;
 import com.bof.barn.core.region.plot.harvestable.animal.AnimalPlot;
 import com.bof.barn.core.region.plot.harvestable.farm.FarmPlot;
 import com.bof.barn.core.region.plot.selling.barn.BarnPlot;
@@ -20,7 +20,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.BoundingBox;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -57,18 +60,29 @@ public interface Plot {
      */
     @NotNull Map<Class<? extends PlotSetting>, PlotSetting> getSettings();
 
+    /**
+     * @return All settings that are toggled true
+     */
     default @NotNull List<? extends PlotSetting> getToggledSettings() {
         return this.getSettings().values().stream()
                 .filter(PlotSetting::isToggled)
                 .toList();
     }
 
+    /**
+     * @return All settings that are locked
+     * @see #getUnlockedSettings()
+     */
     default @NotNull List<? extends PlotSetting> getLockedSettings() {
         return this.getSettings().values().stream()
                 .filter(plotSetting -> !plotSetting.isUnlocked())
                 .toList();
     }
 
+    /**
+     * @return All settings that are unlocked
+     * @see #getLockedSettings()
+     */
     default @NotNull List<? extends PlotSetting> getUnlockedSettings() {
         return this.getSettings().values().stream()
                 .filter(PlotSetting::isUnlocked)
@@ -85,15 +99,33 @@ public interface Plot {
         return this.getSettings().containsKey(settingClazz);
     }
 
+    /**
+     * Get the instance of the setting
+     *
+     * @param settingClazz Class of the settings
+     * @param <T>          Which exact setting to get
+     * @return Instance of the setting
+     */
     default <T extends PlotSetting> T getSetting(@NotNull Class<T> settingClazz) {
         //noinspection unchecked
         return (T) this.getSettings().get(settingClazz);
     }
 
+    /**
+     * @param settingClazz Class of the specific setting
+     * @return the toggle boolean of the setting
+     */
     default boolean getSettingToggle(@NotNull Class<? extends PlotSetting> settingClazz) {
         return this.getSetting(settingClazz).isToggled();
     }
 
+    /**
+     * Switches the toggle boolean for the given setting (e.g. from true to false)
+     *
+     * @param settingClazz Class of the specific setting
+     * @return New value of the toggle boolean
+     * @see #setSetting(Class, boolean)
+     */
     default boolean switchSettingToggle(@NotNull Class<? extends PlotSetting> settingClazz) {
         boolean newValue = !this.getSettingToggle(settingClazz);
         this.setSetting(settingClazz, newValue);
@@ -115,7 +147,7 @@ public interface Plot {
      * Check for the given setting and value
      *
      * @param settingClazz The specific Setting class
-     * @param value Value to check against
+     * @param value        Value to check against
      * @return whether the setting is true
      * @see #isSetting(Class)
      */
@@ -134,17 +166,17 @@ public interface Plot {
     }
 
     /**
-     * Sets the setting to the given value, updates the hologram and calls the {@link PlotSettingEvent}
+     * Sets the setting to the given value, updates the hologram and calls the {@link PlotSettingToggleEvent}
      *
      * @param settingClazz Class of the setting to set a value for
-     * @param value Value to set the setting to
+     * @param value        Value to set the setting to
      * @see #setSetting(Class)
      */
     default void setSetting(@NotNull Class<? extends PlotSetting> settingClazz, boolean value) {
         PlotSetting setting = this.getSettings().get(settingClazz);
         setting.setToggled(value);
         this.updateHologram();
-        Bukkit.getPluginManager().callEvent(new PlotSettingEvent(this, setting));
+        Bukkit.getPluginManager().callEvent(new PlotSettingToggleEvent(this, setting));
     }
 
     PlotType getType();
@@ -185,6 +217,9 @@ public interface Plot {
      */
     Set<Block> getBoxBlocks();
 
+    /**
+     * Handles updating every line of the hologram including updating the placeholders
+     */
     void updateHologram();
 
     /**

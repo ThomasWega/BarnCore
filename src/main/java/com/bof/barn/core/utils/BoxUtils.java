@@ -1,5 +1,6 @@
 package com.bof.barn.core.utils;
 
+import com.bof.barn.core.region.plot.Plot;
 import com.bof.barn.core.region.plot.PlotType;
 import com.bof.toolkit.utils.ColorUtils;
 import org.apache.commons.lang3.tuple.MutablePair;
@@ -21,6 +22,9 @@ import java.util.stream.Collectors;
 
 import static com.bof.barn.core.Core.WORLD;
 
+/**
+ * Various utilities for {@link BoundingBox} combined with {@link Plot}
+ */
 public class BoxUtils {
 
     private BoxUtils() {

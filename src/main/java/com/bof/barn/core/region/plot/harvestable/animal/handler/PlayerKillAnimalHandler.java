@@ -38,6 +38,9 @@ public class PlayerKillAnimalHandler implements Listener {
         );
     }
 
+    /**
+     * Kill the animal on any player hit and handle the kill ourselves
+     */
     @EventHandler(ignoreCancelled = true)
     private void onPlayerDamageAnimal(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player player)) return;

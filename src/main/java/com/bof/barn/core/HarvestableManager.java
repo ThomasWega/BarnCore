@@ -13,11 +13,15 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
 import java.util.Random;
 
+/**
+ * Handles the drops including bonus drops and multipliers
+ */
 public class HarvestableManager {
 
-    private HarvestableManager() {}
-
     private static final Random random = new Random();
+
+    private HarvestableManager() {
+    }
 
     /**
      * Calculates the drop. Handles chances for special drops
@@ -71,7 +75,7 @@ public class HarvestableManager {
     }
 
     /**
-     * @param plot Plot the items were harvested on
+     * @param plot         Plot the items were harvested on
      * @param harvestables Items to handle the bonus drops for (if any bonus is applied)
      * @return amount of bonus drops handled
      * @see #handleBonusDrops(HarvestablePlot, int)
@@ -81,7 +85,7 @@ public class HarvestableManager {
     }
 
     /**
-     * @param plot Plot the items were harvested on
+     * @param plot            Plot the items were harvested on
      * @param bonusDropAmount Amount of bonus drops to give
      * @return Amount of bonus drops actually given
      * @see #handleBonusDrops(HarvestablePlot, Collection)

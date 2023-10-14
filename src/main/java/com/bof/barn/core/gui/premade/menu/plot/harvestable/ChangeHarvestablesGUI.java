@@ -1,8 +1,8 @@
 package com.bof.barn.core.gui.premade.menu.plot.harvestable;
 
+import com.bof.barn.core.gui.premade.button.back.GoBackPane;
 import com.bof.barn.core.gui.premade.sound.SoundedGUIButton;
 import com.bof.barn.core.item.ItemBuilder;
-import com.bof.barn.core.gui.premade.button.back.GoBackPane;
 import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
 import com.bof.barn.core.region.plot.harvestable.HarvestableType;
 import com.github.stefvanschie.inventoryframework.adventuresupport.TextHolder;
@@ -34,7 +34,7 @@ public abstract class ChangeHarvestablesGUI<T extends HarvestableType, P extends
     private final P plot;
     private final OutlinePane mainPane = new OutlinePane(1, 1, 7, 1);
     private final Gui goBackGui;
-    
+
     public ChangeHarvestablesGUI(@NotNull Class<T> plotType, @NotNull P plot, @Nullable Gui goBackGui, @NotNull TextHolder title) {
         super(3, title);
         this.plotType = plotType;

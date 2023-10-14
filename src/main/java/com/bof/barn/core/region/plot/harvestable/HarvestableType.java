@@ -4,11 +4,15 @@ import net.kyori.adventure.text.TextComponent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Things that can be harvested on {@link HarvestablePlot}
+ */
 public interface HarvestableType {
     /**
      * @return Item to use in menus
      */
     @NotNull ItemStack getItem();
+
     /**
      * @return Value of the item
      */

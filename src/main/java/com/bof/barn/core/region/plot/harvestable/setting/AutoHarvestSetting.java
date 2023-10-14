@@ -17,10 +17,10 @@ import java.util.List;
  */
 @Getter
 public class AutoHarvestSetting extends HarvestablePlotSetting implements LeveledSetting {
-    private long tickSpeed = 200;
-    private int currentLevel = 1;
     private final int maxLevel = 5;
     private final float basePrice = this.getPrice();
+    private long tickSpeed = 200;
+    private int currentLevel = 1;
 
     public AutoHarvestSetting() {
         super("Auto Harvest", new ItemBuilder(Material.SHEARS)

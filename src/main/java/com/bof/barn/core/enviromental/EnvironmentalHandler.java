@@ -14,8 +14,8 @@ import static com.bof.barn.core.Core.WORLD;
  * Handles different environment events and their occurrence
  */
 public class EnvironmentalHandler {
-    private final Core plugin;
     public final EnchantedRain enchantedRain = new EnchantedRain();
+    private final Core plugin;
 
     public EnvironmentalHandler(@NotNull Core plugin) {
         this.plugin = plugin;
@@ -30,21 +30,23 @@ public class EnvironmentalHandler {
      */
     private void handle() {
         Bukkit.getScheduler().runTaskTimer(this.plugin, () -> {
-            if (this.enchantedRain.shouldStartEnchantedRain()) {
-                if (this.enchantedRain.start()) {
-                    this.handleRainStart();
-                }
-                return;
-            }
+                    if (this.enchantedRain.shouldStartEnchantedRain()) {
+                        if (this.enchantedRain.start()) {
+                            this.handleRainStart();
+                        }
+                        return;
+                    }
 
-            if (this.enchantedRain.stop()) {
-                this.handleRainStop();
-            }
-        }, 20, //300 * 20, // start checking after first 5 mins
+                    if (this.enchantedRain.stop()) {
+                        this.handleRainStop();
+                    }
+                }, 20, //300 * 20, // start checking after first 5 mins
                 600 * 20); // check every 10 mins
     }
 
-    // send title and play sound for all
+    /**
+     * Sends a title message and plays a sound for all players
+     */
     private void handleRainStart() {
         WORLD.showTitle(Title.title(
                 enchantedRain.getTitle(),
@@ -57,7 +59,9 @@ public class EnvironmentalHandler {
         ));
     }
 
-    // send title and sound for all
+    /**
+     * Sends a title message and plays a sound for all players
+     */
     private void handleRainStop() {
         WORLD.showTitle(Title.title(
                 enchantedRain.getTitle(),

@@ -6,7 +6,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-
+/**
+ * Cancels tramping of the crops on {@link com.bof.barn.core.region.plot.harvestable.farm.FarmPlot}
+ */
 public class CropsTrampingHandler implements Listener {
 
     @EventHandler(ignoreCancelled = true)

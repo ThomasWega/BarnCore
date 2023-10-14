@@ -1,9 +1,9 @@
 package com.bof.barn.core.region.plot.harvestable.menu;
 
+import com.bof.barn.core.gui.premade.button.back.GoBackPane;
 import com.bof.barn.core.gui.premade.sound.SoundedGUIButton;
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.item.SkullBuilder;
-import com.bof.barn.core.gui.premade.button.back.GoBackPane;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.menu.RegionMainMenu;
 import com.bof.barn.core.region.plot.harvestable.animal.menu.upgrades.AnimalUpgradesMenu;
@@ -21,19 +21,23 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class HarvestableSettingsMainMenu extends ChestGui {
+/**
+ * Menu which lets the player select between {@link com.bof.barn.core.region.plot.harvestable.animal.AnimalPlot} and
+ * {@link com.bof.barn.core.region.plot.harvestable.farm.FarmPlot} buttons.
+ */
+public class HarvestableUpgradesMainMenu extends ChestGui {
     private final BarnRegion region;
     private final StaticPane mainPane = new StaticPane(1, 1, 7, 1);
 
-    public HarvestableSettingsMainMenu(@NotNull BarnRegion region) {
+    public HarvestableUpgradesMainMenu(@NotNull BarnRegion region) {
         super(3, ComponentHolder.of(Component.text("Select plot type")));
         this.region = region;
         this.initialize();
     }
 
     private void initialize() {
-        this.mainPane.addItem(this.getFarmPlotsButton(),1, 0);
-        this.mainPane.addItem(this.getAnimalPlotsButton(),5, 0);
+        this.mainPane.addItem(this.getFarmPlotsButton(), 1, 0);
+        this.mainPane.addItem(this.getAnimalPlotsButton(), 5, 0);
 
         this.addPane(new GoBackPane(4, 2, new RegionMainMenu(this.region)));
         this.addPane(this.mainPane);

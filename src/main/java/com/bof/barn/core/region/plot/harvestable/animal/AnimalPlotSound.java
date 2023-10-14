@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.sound.Sound;
 
+/**
+ * Premade sounds for {@link AnimalPlot}
+ */
 @Getter
 @RequiredArgsConstructor
 public enum AnimalPlotSound implements BoFSound {

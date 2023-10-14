@@ -3,13 +3,13 @@ package com.bof.barn.core.region.plot.harvestable.farm;
 import com.bof.barn.core.Core;
 import com.bof.barn.core.HarvestableManager;
 import com.bof.barn.core.region.BarnRegion;
-import com.bof.barn.core.region.plot.setting.PlotSetting;
 import com.bof.barn.core.region.plot.PlotType;
 import com.bof.barn.core.region.plot.harvestable.AdditionResult;
 import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
 import com.bof.barn.core.region.plot.harvestable.farm.menu.FarmPlotMainMenu;
 import com.bof.barn.core.region.plot.harvestable.setting.AutoStoreSetting;
 import com.bof.barn.core.region.plot.selling.silo.SiloPlot;
+import com.bof.barn.core.region.plot.setting.PlotSetting;
 import com.bof.barn.core.utils.BoxUtils;
 import com.github.unldenis.hologram.Hologram;
 import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
@@ -87,7 +87,8 @@ public class FarmPlot implements HarvestablePlot<CropType> {
         if (this.getRemainingHarvestablesCount() == 0) return 0;
         this.handleAutoReplant();
         List<Block> successfulBlocks = new ArrayList<>();
-        blockLoop: for (Block block : this.boxBlocks) {
+        blockLoop:
+        for (Block block : this.boxBlocks) {
             AdditionResult result = this.handleCropBreak(player, false, block);
             if (result == null) continue;
             switch (result) {

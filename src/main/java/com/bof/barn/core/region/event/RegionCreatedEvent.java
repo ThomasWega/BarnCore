@@ -7,6 +7,9 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Called when region is created
+ */
 @Getter
 @RequiredArgsConstructor
 public class RegionCreatedEvent extends Event {

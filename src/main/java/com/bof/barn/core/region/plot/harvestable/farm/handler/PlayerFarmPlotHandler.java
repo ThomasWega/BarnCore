@@ -10,8 +10,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
+/**
+ * Handles the interaction with {@link FarmPlot} harvestables (crops)
+ */
 public class PlayerFarmPlotHandler implements Listener {
 
+    /**
+     * handles the breaking manually instead of the default event's way
+     */
     @EventHandler(ignoreCancelled = true)
     private void onPlayerHarvestCrops(BlockBreakEvent event) {
         Player player = event.getPlayer();

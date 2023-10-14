@@ -2,12 +2,12 @@ package com.bof.barn.core.region;
 
 
 import com.bof.barn.core.region.plot.Plot;
-import com.bof.barn.core.region.plot.setting.PlotSetting;
 import com.bof.barn.core.region.plot.PlotType;
 import com.bof.barn.core.region.plot.harvestable.animal.AnimalType;
 import com.bof.barn.core.region.plot.harvestable.farm.CropType;
 import com.bof.barn.core.region.plot.selling.barn.BarnPlot;
 import com.bof.barn.core.region.plot.selling.silo.SiloPlot;
+import com.bof.barn.core.region.plot.setting.PlotSetting;
 import com.bof.barn.core.utils.HarvestableUtils;
 import com.bof.toolkit.utils.NumberUtils;
 import com.github.unldenis.hologram.HologramPool;
@@ -36,6 +36,7 @@ public class BarnRegion {
     private boolean isAssigned = false;
     private Player owner;
     private Location spawnLocation;
+    // otherwise stackoverflow is produced (https://github.com/projectlombok/lombok/issues/993)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Map<PlotType, Set<Plot>> plots;
@@ -203,7 +204,7 @@ public class BarnRegion {
      * Retrieves the number of plots that have the {@link PlotSetting} set to specified value
      *
      * @param settingClazz The class representing the type of PlotSetting.
-     * @param value value to check against
+     * @param value        value to check against
      * @return The number of plots associated with the specified PlotSetting.
      * @see #getSettingPlotsCount(Class)
      */
@@ -226,7 +227,7 @@ public class BarnRegion {
      * Retrieves the plots that have the {@link PlotSetting} set to specified value
      *
      * @param settingClazz The class representing the type of PlotSetting.
-     * @param value value to check against
+     * @param value        value to check against
      * @return plots with specified PlotSetting and value
      * @see #getSettingPlots(Class)
      */
@@ -237,7 +238,6 @@ public class BarnRegion {
                 .filter(plot -> plot.isSetting(settingClazz, value))
                 .collect(Collectors.toSet());
     }
-
 
 
     /**

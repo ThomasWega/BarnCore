@@ -1,9 +1,9 @@
 package com.bof.barn.core.region.plot.harvestable.farm.menu.upgrades;
 
-import com.bof.barn.core.gui.premade.button.plot.settings.AutoStoreSettingButton;
 import com.bof.barn.core.gui.premade.button.back.GoBackPane;
+import com.bof.barn.core.gui.premade.button.plot.settings.AutoStoreSettingButton;
 import com.bof.barn.core.region.BarnRegion;
-import com.bof.barn.core.region.plot.harvestable.menu.HarvestableSettingsMainMenu;
+import com.bof.barn.core.region.plot.harvestable.menu.HarvestableUpgradesMainMenu;
 import com.bof.barn.core.region.plot.harvestable.setting.AutoStoreSetting;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
@@ -27,9 +27,9 @@ public class FarmUpgradesMenu extends ChestGui {
     }
 
     private void initialize() {
-        this.mainPane.addItem(this.getAutoStoreButton(),1, 0);
+        this.mainPane.addItem(this.getAutoStoreButton(), 1, 0);
 
-        this.addPane(new GoBackPane(4, 2, new HarvestableSettingsMainMenu(this.region)));
+        this.addPane(new GoBackPane(4, 2, new HarvestableUpgradesMainMenu(this.region)));
         this.addPane(this.mainPane);
 
         this.setOnGlobalClick(event -> event.setCancelled(true));

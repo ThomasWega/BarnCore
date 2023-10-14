@@ -1,11 +1,11 @@
 package com.bof.barn.core.region.plot.selling.barn.menu;
 
+import com.bof.barn.core.gui.premade.button.back.GoBackPane;
 import com.bof.barn.core.gui.premade.button.plot.UpgradesButton;
 import com.bof.barn.core.gui.premade.sound.SoundedGUIButton;
-import com.bof.barn.core.gui.premade.button.back.GoBackPane;
-import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.item.SkullBuilder;
+import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.menu.RegionMainMenu;
 import com.bof.barn.core.region.plot.selling.barn.BarnPlot;
 import com.bof.toolkit.skin.Skin;
@@ -45,10 +45,10 @@ public class BarnPlotMainMenu extends ChestGui {
     }
 
     private void addSections() {
-        this.mainPane.addItem(this.getSellAnimalsButton(),0, 0);
-        this.mainPane.addItem(this.getSeeAnimalsButton(),2, 0);
-        this.mainPane.addItem(this.getPutAnimalsButton(),4, 0);
-        this.mainPane.addItem(new UpgradesButton(this.plot, event -> new BarnPlotUpgradesMenu(this.plot).show(event.getWhoClicked())) ,6, 0);
+        this.mainPane.addItem(this.getSellAnimalsButton(), 0, 0);
+        this.mainPane.addItem(this.getSeeAnimalsButton(), 2, 0);
+        this.mainPane.addItem(this.getPutAnimalsButton(), 4, 0);
+        this.mainPane.addItem(new UpgradesButton(this.plot, event -> new BarnPlotUpgradesMenu(this.plot).show(event.getWhoClicked())), 6, 0);
     }
 
     private GuiItem getSellAnimalsButton() {

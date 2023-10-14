@@ -1,8 +1,8 @@
 package com.bof.barn.core.region.storage;
 
-import com.bof.barn.world_generator.data.SchematicsStorage;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.event.RegionCreatedEvent;
+import com.bof.barn.world_generator.data.SchematicsStorage;
 import lombok.Data;
 import org.bukkit.Bukkit;
 
@@ -10,6 +10,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Holds all the {@link BarnRegion}s
+ */
 @Data
 public class RegionStorage {
     public Set<BarnRegion> regions = new HashSet<>();

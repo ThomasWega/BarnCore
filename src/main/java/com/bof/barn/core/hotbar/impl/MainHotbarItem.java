@@ -1,9 +1,9 @@
 package com.bof.barn.core.hotbar.impl;
 
 import com.bof.barn.core.Core;
+import com.bof.barn.core.hotbar.HotbarItem;
 import com.bof.barn.core.item.SkullBuilder;
 import com.bof.barn.core.player.GamePlayer;
-import com.bof.barn.core.hotbar.HotbarItem;
 import com.bof.barn.core.region.menu.RegionMainMenu;
 import com.bof.toolkit.skin.Skin;
 import net.kyori.adventure.text.Component;

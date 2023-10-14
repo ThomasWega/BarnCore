@@ -6,6 +6,9 @@ import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.sound.Sound;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Premade sounds for {@link SoundedGUIButton}
+ */
 @Getter
 @RequiredArgsConstructor
 public enum ButtonSound implements BoFSound {

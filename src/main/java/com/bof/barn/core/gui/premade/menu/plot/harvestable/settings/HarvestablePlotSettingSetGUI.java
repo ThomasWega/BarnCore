@@ -1,16 +1,16 @@
 package com.bof.barn.core.gui.premade.menu.plot.harvestable.settings;
 
-import com.bof.barn.core.gui.premade.sound.SoundedGUIButton;
-import com.bof.barn.core.gui.premade.button.plot.LockedPlotButton;
-import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.gui.premade.button.back.GoBackPane;
+import com.bof.barn.core.gui.premade.button.plot.LockedPlotButton;
+import com.bof.barn.core.gui.premade.sound.SoundedGUIButton;
+import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.Plot;
-import com.bof.barn.core.region.plot.setting.PlotSetting;
 import com.bof.barn.core.region.plot.PlotType;
 import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
 import com.bof.barn.core.region.plot.harvestable.setting.AutoStoreSetting;
 import com.bof.barn.core.region.plot.harvestable.setting.HarvestablePlotSetting;
+import com.bof.barn.core.region.plot.setting.PlotSetting;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;

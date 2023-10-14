@@ -31,6 +31,7 @@ public class PlotManager implements Listener {
 
     /**
      * Create a new plot and call appropriate events
+     *
      * @param region Region that owns the plot
      */
     private void handlePlotsCreation(BarnRegion region) {
