@@ -1,6 +1,6 @@
 package com.bof.barn.core.region.plot.selling.silo.menu;
 
-import com.bof.barn.core.gui.premade.menu.harvestable.HarvestablesContainerGUI;
+import com.bof.barn.core.gui.premade.menu.plot.harvestable.HarvestablesContainerGUI;
 import com.bof.barn.core.region.plot.harvestable.farm.CropType;
 import com.bof.barn.core.region.plot.selling.silo.SiloPlot;
 import net.kyori.adventure.text.Component;

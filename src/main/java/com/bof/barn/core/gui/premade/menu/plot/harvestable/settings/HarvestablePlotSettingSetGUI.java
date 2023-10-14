@@ -1,4 +1,4 @@
-package com.bof.barn.core.gui.premade.menu.harvestable.settings;
+package com.bof.barn.core.gui.premade.menu.plot.harvestable.settings;
 
 import com.bof.barn.core.gui.premade.sound.SoundedGUIButton;
 import com.bof.barn.core.gui.premade.button.plot.LockedPlotButton;

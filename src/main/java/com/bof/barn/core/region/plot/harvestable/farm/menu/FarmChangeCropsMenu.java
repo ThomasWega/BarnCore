@@ -1,6 +1,6 @@
 package com.bof.barn.core.region.plot.harvestable.farm.menu;
 
-import com.bof.barn.core.gui.premade.menu.harvestable.ChangeHarvestablesGUI;
+import com.bof.barn.core.gui.premade.menu.plot.harvestable.ChangeHarvestablesGUI;
 import com.bof.barn.core.region.plot.harvestable.farm.CropType;
 import com.bof.barn.core.region.plot.harvestable.farm.FarmPlot;
 import com.github.stefvanschie.inventoryframework.adventuresupport.StringHolder;

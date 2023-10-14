@@ -1,6 +1,6 @@
 package com.bof.barn.core.region.plot.harvestable.animal.menu;
 
-import com.bof.barn.core.gui.premade.menu.harvestable.ChangeHarvestablesGUI;
+import com.bof.barn.core.gui.premade.menu.plot.harvestable.ChangeHarvestablesGUI;
 import com.bof.barn.core.region.plot.harvestable.animal.AnimalPlot;
 import com.bof.barn.core.region.plot.harvestable.animal.AnimalType;
 import com.github.stefvanschie.inventoryframework.adventuresupport.StringHolder;

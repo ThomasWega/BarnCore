@@ -36,13 +36,12 @@ public final class Core extends JavaPlugin implements Listener {
     private RegionManager regionManager;
     public static World WORLD;
 
+    //TODO add upgrades menu to other plots as well
+    //TODO change the task time on level upgrade
+
     //TODO add info about upgrades ON/OFF to lore of Upgrades button
 
     //TODO test island members
-    //TODO have only one menu for upgrades multi set (maybe rename the classes)
-
-    //TODO change the task time on level upgrade
-    //TODO improve upgrades menu -- add to other plots as well
 
     @EventHandler(priority = EventPriority.LOWEST)
     private void onGridLoad(GridLoadedEvent event) {

@@ -1,4 +1,4 @@
-package com.bof.barn.core.gui.premade.menu.harvestable;
+package com.bof.barn.core.gui.premade.menu.plot.harvestable;
 
 import com.bof.barn.core.gui.premade.button.page.NextPageButton;
 import com.bof.barn.core.gui.premade.button.page.PreviousPageButton;

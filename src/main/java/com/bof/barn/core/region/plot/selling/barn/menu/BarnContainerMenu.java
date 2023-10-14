@@ -1,6 +1,6 @@
 package com.bof.barn.core.region.plot.selling.barn.menu;
 
-import com.bof.barn.core.gui.premade.menu.harvestable.HarvestablesContainerGUI;
+import com.bof.barn.core.gui.premade.menu.plot.harvestable.HarvestablesContainerGUI;
 import com.bof.barn.core.region.plot.harvestable.animal.AnimalType;
 import com.bof.barn.core.region.plot.selling.barn.BarnPlot;
 import net.kyori.adventure.text.Component;
