@@ -47,7 +47,7 @@ public class FarmPlotMainMenu extends ChestGui {
 
     private void addSections() {
         this.mainPane.addItem(this.getChangeCropsButton(), 0, 0);
-        this.mainPane.addItem(new UpgradesButton(event -> new FarmPlotUpgradesMenu(this.plot, closeOnGoBack).show(event.getWhoClicked())), 2, 0);
+        this.mainPane.addItem(new UpgradesButton(this.plot, event -> new FarmPlotUpgradesMenu(this.plot, closeOnGoBack).show(event.getWhoClicked())), 2, 0);
         this.mainPane.addItem(this.getBoostersButton(), 4, 0);
         this.mainPane.addItem(this.getHarvestButton(), 6, 0);
     }

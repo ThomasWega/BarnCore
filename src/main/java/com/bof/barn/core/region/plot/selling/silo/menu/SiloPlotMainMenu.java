@@ -48,7 +48,7 @@ public class SiloPlotMainMenu extends ChestGui {
         this.mainPane.addItem(this.getSellCropsButton(),0, 0);
         this.mainPane.addItem(this.getOpenSiloButton(),2, 0);
         this.mainPane.addItem(this.getPutCropsButton(),4, 0);
-        this.mainPane.addItem(new UpgradesButton(event -> new SiloPlotUpgradesMenu(this.plot).show(event.getWhoClicked())) ,6, 0);
+        this.mainPane.addItem(new UpgradesButton(this.plot, event -> new SiloPlotUpgradesMenu(this.plot).show(event.getWhoClicked())) ,6, 0);
     }
 
     private GuiItem getSellCropsButton() {

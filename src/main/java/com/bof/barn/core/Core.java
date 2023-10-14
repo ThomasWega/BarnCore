@@ -36,7 +36,7 @@ public final class Core extends JavaPlugin implements Listener {
     private RegionManager regionManager;
     public static World WORLD;
 
-    //TODO add info about upgrades ON/OFF to lore of Upgrades button
+    //TODO update the upgrades button properly
     //TODO add comments
 
     //TODO test island members
