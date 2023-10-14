@@ -17,7 +17,6 @@ public class AutoStoreSetting extends HarvestablePlotSetting {
                 .lore(List.of(
                         Component.text("Automatically stores harvestables", NamedTextColor.GRAY)
                 ))
-                .build(), false
-        );
+                .build(), 500, false);
     }
 }

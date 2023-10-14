@@ -1,10 +1,13 @@
-package com.bof.barn.core.region.plot;
+package com.bof.barn.core.region.plot.task;
 
 import com.bof.barn.core.Core;
+import com.bof.barn.core.region.plot.Plot;
+import com.bof.barn.core.region.plot.PlotType;
 import com.bof.barn.core.region.plot.event.PlotSettingEvent;
 import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
 import com.bof.barn.core.region.plot.harvestable.setting.AutoHarvestSetting;
 import com.bof.barn.core.region.plot.harvestable.task.AutoHarvestTask;
+import com.bof.barn.core.region.plot.setting.PlotSetting;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;

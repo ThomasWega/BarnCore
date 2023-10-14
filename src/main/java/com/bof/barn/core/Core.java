@@ -5,8 +5,8 @@ import com.bof.barn.core.hotbar.PlayerHotbarHandler;
 import com.bof.barn.core.region.handler.PlayerRegionAssignHandler;
 import com.bof.barn.core.region.plot.PlotHoloManager;
 import com.bof.barn.core.region.plot.PlotManager;
-import com.bof.barn.core.region.plot.PlotSettingsManager;
-import com.bof.barn.core.region.plot.PlotTasksManager;
+import com.bof.barn.core.region.plot.setting.PlotSettingsManager;
+import com.bof.barn.core.region.plot.task.PlotTasksManager;
 import com.bof.barn.core.region.spawn.SpawnManager;
 import com.bof.barn.core.region.storage.RegionStorage;
 import com.bof.barn.world_generator.WorldGenerator;
@@ -37,6 +37,12 @@ public final class Core extends JavaPlugin implements Listener {
     public static World WORLD;
 
     //TODO add info about upgrades ON/OFF to lore of Upgrades button
+
+    //TODO figure out global upgrades and upgradeable upgrades
+    //TODO create menu with upgrades and make them purchasable
+
+    //TODO test island members
+    //TODO have only one menu for upgrades multi set (maybe rename the classes)
 
     @EventHandler(priority = EventPriority.LOWEST)
     private void onGridLoad(GridLoadedEvent event) {

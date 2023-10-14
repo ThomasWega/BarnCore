@@ -1,4 +1,4 @@
-package com.bof.barn.core.gui.premade.menu;
+package com.bof.barn.core.gui.premade.menu.plot;
 
 import com.bof.barn.core.gui.premade.button.back.GoBackPane;
 import com.bof.barn.core.gui.premade.button.plot.HarvestablePlotButton;

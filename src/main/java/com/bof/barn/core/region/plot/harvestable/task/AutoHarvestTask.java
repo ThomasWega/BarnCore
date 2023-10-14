@@ -1,7 +1,7 @@
 package com.bof.barn.core.region.plot.harvestable.task;
 
 
-import com.bof.barn.core.region.plot.PlotTask;
+import com.bof.barn.core.region.plot.task.PlotTask;
 import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
 import com.bof.barn.core.region.plot.harvestable.farm.CropType;
 import com.bof.barn.core.region.plot.harvestable.farm.FarmPlot;

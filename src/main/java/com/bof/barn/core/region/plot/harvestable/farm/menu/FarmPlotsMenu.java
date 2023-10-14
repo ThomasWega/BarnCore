@@ -1,6 +1,6 @@
 package com.bof.barn.core.region.plot.harvestable.farm.menu;
 
-import com.bof.barn.core.gui.premade.menu.SelectPlotGUI;
+import com.bof.barn.core.gui.premade.menu.plot.SelectPlotGUI;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.menu.RegionMainMenu;
 import com.bof.barn.core.region.plot.PlotType;

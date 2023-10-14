@@ -1,5 +1,6 @@
-package com.bof.barn.core.region.plot;
+package com.bof.barn.core.region.plot.setting;
 
+import com.bof.barn.core.region.plot.Plot;
 import com.bof.barn.core.region.plot.event.PlotCreatedEvent;
 import com.bof.barn.core.region.plot.harvestable.setting.AutoHarvestSetting;
 import com.bof.barn.core.region.plot.harvestable.setting.ReplantAllSetting;

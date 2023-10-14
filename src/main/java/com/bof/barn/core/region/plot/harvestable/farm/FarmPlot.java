@@ -3,7 +3,7 @@ package com.bof.barn.core.region.plot.harvestable.farm;
 import com.bof.barn.core.Core;
 import com.bof.barn.core.HarvestableManager;
 import com.bof.barn.core.region.BarnRegion;
-import com.bof.barn.core.region.plot.PlotSetting;
+import com.bof.barn.core.region.plot.setting.PlotSetting;
 import com.bof.barn.core.region.plot.PlotType;
 import com.bof.barn.core.region.plot.harvestable.AdditionResult;
 import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
@@ -86,12 +86,12 @@ public class FarmPlot implements HarvestablePlot<CropType> {
     public int harvest(@NotNull Player player) {
         if (this.getRemainingHarvestablesCount() == 0) return 0;
         this.handleAutoReplant();
-        int i = 0;
+        List<Block> successfulBlocks = new ArrayList<>();
         blockLoop: for (Block block : this.boxBlocks) {
             AdditionResult result = this.handleCropBreak(player, false, block);
             if (result == null) continue;
             switch (result) {
-                case SUCCESS -> i++;
+                case SUCCESS -> successfulBlocks.add(block);
                 case INV_FULL -> {
                     player.sendMessage("TO ADD - Crops inventory is full 1");
                     break blockLoop;
@@ -103,12 +103,12 @@ public class FarmPlot implements HarvestablePlot<CropType> {
             }
         }
 
-        int bonusCount = HarvestableManager.handleBonusDrops(this, this.boxBlocks);
+        int bonusCount = HarvestableManager.handleBonusDrops(this, successfulBlocks);
         if (bonusCount > 0) {
             player.sendMessage("TO ADD - bonus drops " + bonusCount);
         }
 
-        return i;
+        return successfulBlocks.size();
     }
 
 

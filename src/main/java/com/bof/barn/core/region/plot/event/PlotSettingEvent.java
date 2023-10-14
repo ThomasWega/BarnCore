@@ -1,7 +1,7 @@
 package com.bof.barn.core.region.plot.event;
 
 import com.bof.barn.core.region.plot.Plot;
-import com.bof.barn.core.region.plot.PlotSetting;
+import com.bof.barn.core.region.plot.setting.PlotSetting;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.event.Event;

@@ -7,6 +7,7 @@ import com.bof.barn.core.region.plot.harvestable.animal.AnimalPlot;
 import com.bof.barn.core.region.plot.harvestable.farm.FarmPlot;
 import com.bof.barn.core.region.plot.selling.barn.BarnPlot;
 import com.bof.barn.core.region.plot.selling.silo.SiloPlot;
+import com.bof.barn.core.region.plot.setting.PlotSetting;
 import com.bof.toolkit.utils.ColorUtils;
 import com.github.unldenis.hologram.Hologram;
 import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
@@ -56,6 +57,23 @@ public interface Plot {
      */
     @NotNull Map<Class<? extends PlotSetting>, PlotSetting> getSettings();
 
+    default @NotNull List<? extends PlotSetting> getToggledSettings() {
+        return this.getSettings().values().stream()
+                .filter(PlotSetting::isToggled)
+                .toList();
+    }
+
+    default @NotNull List<? extends PlotSetting> getLockedSettings() {
+        return this.getSettings().values().stream()
+                .filter(plotSetting -> !plotSetting.isUnlocked())
+                .toList();
+    }
+
+    default @NotNull List<? extends PlotSetting> getUnlockedSettings() {
+        return this.getSettings().values().stream()
+                .filter(PlotSetting::isUnlocked)
+                .toList();
+    }
 
     /**
      * Check if the given plot has the setting mapped

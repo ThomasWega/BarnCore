@@ -3,7 +3,7 @@ package com.bof.barn.core.region.plot.harvestable.animal;
 import com.bof.barn.core.Core;
 import com.bof.barn.core.HarvestableManager;
 import com.bof.barn.core.region.BarnRegion;
-import com.bof.barn.core.region.plot.PlotSetting;
+import com.bof.barn.core.region.plot.setting.PlotSetting;
 import com.bof.barn.core.region.plot.PlotType;
 import com.bof.barn.core.region.plot.harvestable.AdditionResult;
 import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
@@ -118,7 +118,7 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
             }
         }
 
-        int bonusCount = HarvestableManager.handleBonusDrops(this, this.boxBlocks);
+        int bonusCount = HarvestableManager.handleBonusDrops(this, this.animals);
         if (bonusCount > 0) {
             player.sendMessage("TO ADD - bonus drops " + bonusCount);
         }

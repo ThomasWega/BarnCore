@@ -2,7 +2,7 @@ package com.bof.barn.core.region;
 
 
 import com.bof.barn.core.region.plot.Plot;
-import com.bof.barn.core.region.plot.PlotSetting;
+import com.bof.barn.core.region.plot.setting.PlotSetting;
 import com.bof.barn.core.region.plot.PlotType;
 import com.bof.barn.core.region.plot.harvestable.animal.AnimalType;
 import com.bof.barn.core.region.plot.harvestable.farm.CropType;
@@ -41,6 +41,15 @@ public class BarnRegion {
     private HologramPool hologramPool;
     private InteractiveHologramPool interactiveHologramPool;
     private float farmCoins = 0;
+
+
+    /**
+     * @param value Value to check against
+     * @return Whether the region has enough balance
+     */
+    public boolean hasEnoughCoins(float value) {
+        return this.farmCoins >= value;
+    }
 
     /**
      * @param addValue Amount to be added to the total

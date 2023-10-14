@@ -18,6 +18,6 @@ public class AutoSellSetting extends ContainerPlotSetting {
                 .lore(List.of(
                         Component.text("Automatically sells harvestables")
                 ))
-                .build(),false);
+                .build(), 500, false);
     }
 }

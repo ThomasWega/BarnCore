@@ -21,6 +21,6 @@ public class AutoHarvestSetting extends HarvestablePlotSetting {
                 .lore(List.of(
                         Component.text("Automatically harvests crops/animals", NamedTextColor.GRAY)
                 ))
-                .build(), false);
+                .build(), 500, false);
     }
 }

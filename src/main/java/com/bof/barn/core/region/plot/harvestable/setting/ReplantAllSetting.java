@@ -18,6 +18,6 @@ public class ReplantAllSetting extends HarvestablePlotSetting {
                         Component.text("Automatically replants all harvestables ", NamedTextColor.GRAY),
                         Component.text("when harvesting all at once", NamedTextColor.GRAY)
                 ))
-                .build(), false);
+                .build(), 500, false);
     }
 }
