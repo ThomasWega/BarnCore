@@ -1,5 +1,7 @@
 package com.bof.barn.core.region.setting;
 
+import com.bof.toolkit.utils.NumberUtils;
+
 public interface LeveledSetting {
     int getCurrentLevel();
     int getMaxLevel();
@@ -12,6 +14,6 @@ public interface LeveledSetting {
     default float getNextLevelPrice() {
         float priceMultiplier = 1.2f;
 
-        return (float) (this.getBasePrice() * Math.pow(priceMultiplier, this.getCurrentLevel()));
+        return NumberUtils.roundBy(this.getBasePrice() * Math.pow(priceMultiplier, this.getCurrentLevel()), 2).floatValue();
     }
 }
