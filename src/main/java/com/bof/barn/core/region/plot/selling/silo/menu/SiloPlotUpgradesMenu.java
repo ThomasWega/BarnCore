@@ -7,6 +7,6 @@ import org.jetbrains.annotations.NotNull;
 public class SiloPlotUpgradesMenu extends PlotUpgradesMenuGUI<SiloPlot> {
 
     public SiloPlotUpgradesMenu(@NotNull SiloPlot plot) {
-        super(plot, new SiloPlotMainMenu(plot));
+        super(plot, () -> new SiloPlotMainMenu(plot));
     }
 }

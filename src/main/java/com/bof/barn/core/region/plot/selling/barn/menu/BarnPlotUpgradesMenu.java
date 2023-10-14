@@ -7,6 +7,6 @@ import org.jetbrains.annotations.NotNull;
 public class BarnPlotUpgradesMenu extends PlotUpgradesMenuGUI<BarnPlot> {
 
     public BarnPlotUpgradesMenu(@NotNull BarnPlot plot) {
-        super(plot, new BarnPlotMainMenu(plot));
+        super(plot, () -> new BarnPlotMainMenu(plot));
     }
 }

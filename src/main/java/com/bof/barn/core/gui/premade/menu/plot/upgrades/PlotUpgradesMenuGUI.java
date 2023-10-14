@@ -20,10 +20,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * Menu which shows upgrades for the given plot
@@ -32,20 +32,20 @@ import java.util.function.Consumer;
  */
 public class PlotUpgradesMenuGUI<T extends Plot> extends ChestGui {
     private final T plot;
-    private final Gui goBackGui;
+    private final Supplier<Gui> goBackGuiSupplier;
     private final OutlinePane mainPane = new OutlinePane(1, 1, 7, 1);
 
-    public PlotUpgradesMenuGUI(@NotNull T plot, @Nullable Gui goBackGui) {
+    public PlotUpgradesMenuGUI(@NotNull T plot, @NotNull Supplier<Gui> goBackGuiSupplier) {
         super(3, ComponentHolder.of(Component.text(WordUtils.capitalize(plot.getType().getIdentifier()) + " upgrades")));
         this.plot = plot;
-        this.goBackGui = goBackGui;
+        this.goBackGuiSupplier = goBackGuiSupplier;
         this.initialize();
     }
 
     private void initialize() {
         this.fillWithUpgradeButtons();
 
-        this.addPane(new GoBackPane(4, 2, this.goBackGui));
+        this.addPane(new GoBackPane(4, 2, this.goBackGuiSupplier.get()));
         this.addPane(this.mainPane);
 
         this.setOnGlobalClick(event -> event.setCancelled(true));
@@ -108,7 +108,7 @@ public class PlotUpgradesMenuGUI<T extends Plot> extends ChestGui {
             } else {
                 player.sendMessage(Component.text("TO ADD - Switched " + plotSetting.getSettingName() + " for this plot to " + plot.switchSettingToggle(plotSetting.getClass())));
             }
-            new PlotUpgradesMenuGUI<>(this.plot, this.goBackGui).show(event.getWhoClicked());
+            new PlotUpgradesMenuGUI<>(this.plot, this.goBackGuiSupplier).show(event.getWhoClicked());
             this.plot.updateHologram();
             event.setCancelled(true);
         };
@@ -138,7 +138,7 @@ public class PlotUpgradesMenuGUI<T extends Plot> extends ChestGui {
             } else {
                 player.sendMessage(Component.text("TO ADD - You don't have enough coins"));
             }
-            new PlotUpgradesMenuGUI<>(this.plot, this.goBackGui).show(event.getWhoClicked());
+            new PlotUpgradesMenuGUI<>(this.plot, this.goBackGuiSupplier).show(event.getWhoClicked());
             this.plot.updateHologram();
             event.setCancelled(true);
         };

@@ -7,6 +7,6 @@ import org.jetbrains.annotations.NotNull;
 public class AnimalPlotUpgradesMenu extends PlotUpgradesMenuGUI<AnimalPlot> {
 
     public AnimalPlotUpgradesMenu(@NotNull AnimalPlot plot, boolean closeOnGoBack) {
-        super(plot, new AnimalPlotMainMenu(plot, closeOnGoBack));
+        super(plot, () -> new AnimalPlotMainMenu(plot, closeOnGoBack));
     }
 }
