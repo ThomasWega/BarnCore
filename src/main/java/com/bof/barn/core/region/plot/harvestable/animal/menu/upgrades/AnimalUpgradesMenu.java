@@ -1,7 +1,7 @@
 package com.bof.barn.core.region.plot.harvestable.animal.menu.upgrades;
 
-import com.bof.barn.core.gui.premade.button.setting.AutoStoreSettingButton;
 import com.bof.barn.core.gui.premade.button.back.GoBackPane;
+import com.bof.barn.core.gui.premade.button.plot.settings.AutoStoreSettingButton;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.harvestable.menu.HarvestableSettingsMainMenu;
 import com.bof.barn.core.region.plot.harvestable.setting.AutoStoreSetting;
@@ -16,11 +16,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class AnimalUpgradesMainMenu extends ChestGui {
+public class AnimalUpgradesMenu extends ChestGui {
     private final BarnRegion region;
     private final StaticPane mainPane = new StaticPane(1, 1, 7, 1);
 
-    public AnimalUpgradesMainMenu(@NotNull BarnRegion region) {
+    public AnimalUpgradesMenu(@NotNull BarnRegion region) {
         super(3, ComponentHolder.of(Component.text("Select setting type")));
         this.region = region;
         this.initialize();

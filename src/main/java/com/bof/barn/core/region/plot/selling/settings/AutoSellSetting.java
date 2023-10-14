@@ -2,6 +2,7 @@ package com.bof.barn.core.region.plot.selling.settings;
 
 import com.bof.barn.core.item.ItemBuilder;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Material;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public class AutoSellSetting extends ContainerPlotSetting {
         super("Auto Sell", new ItemBuilder(Material.BARREL)
                 .displayName(Component.text("Auto Sell"))
                 .lore(List.of(
-                        Component.text("Automatically sells harvestables")
+                        Component.text("Automatically sells harvestables", NamedTextColor.GRAY)
                 ))
                 .build(), 500, false);
     }

@@ -1,12 +1,12 @@
 package com.bof.barn.core.region.plot.selling.silo.menu;
 
+import com.bof.barn.core.gui.premade.button.back.GoBackPane;
+import com.bof.barn.core.gui.premade.button.plot.UpgradesButton;
 import com.bof.barn.core.gui.premade.sound.SoundedGUIButton;
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.item.SkullBuilder;
-import com.bof.barn.core.gui.premade.button.back.GoBackPane;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.menu.RegionMainMenu;
-import com.bof.barn.core.region.plot.selling.settings.AutoSellSetting;
 import com.bof.barn.core.region.plot.selling.silo.SiloPlot;
 import com.bof.toolkit.skin.Skin;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
@@ -48,7 +48,7 @@ public class SiloPlotMainMenu extends ChestGui {
         this.mainPane.addItem(this.getSellCropsButton(),0, 0);
         this.mainPane.addItem(this.getOpenSiloButton(),2, 0);
         this.mainPane.addItem(this.getPutCropsButton(),4, 0);
-        this.mainPane.addItem(this.getAutoSellButton(),6, 0);
+        this.mainPane.addItem(new UpgradesButton(event -> new SiloPlotUpgradesMenu(this.plot).show(event.getWhoClicked())) ,6, 0);
     }
 
     private GuiItem getSellCropsButton() {
@@ -87,29 +87,6 @@ public class SiloPlotMainMenu extends ChestGui {
                         Component.text("Click to open silo", NamedTextColor.DARK_GRAY)
                 ))
                 .build(), event -> new SiloContainerMenu(this.plot).show(event.getWhoClicked())
-        );
-    }
-
-    private GuiItem getAutoSellButton() {
-        Component name = MiniMessage.miniMessage().deserialize("<b><color:#2b84ff>Auto Sell</color></b>");
-        String statusStr = this.plot.isSetting(AutoSellSetting.class) ? "<green>ON</green>" : "<red>OFF</red>";
-        Component status = MiniMessage.miniMessage().deserialize("<white>Status: " + statusStr + "</white>");
-        return new SoundedGUIButton(new SkullBuilder()
-                .displayName(name)
-                .lore(List.of(
-                        status,
-                        Component.empty(),
-                        Component.text("Click to change status", NamedTextColor.DARK_GRAY)
-                ))
-                .skin(new Skin("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGNlZDM0MjExZmVkNDAxMGE4Yzg1NzI0YTI3ZmE1ZmIyMDVkNjc2ODRiM2RhNTE3YjY4MjEyNzljNmI2NWQzZiJ9fX0=", null))
-                .hideFlags()
-                .build(),
-                event -> {
-                    Player player = ((Player) event.getWhoClicked());
-                    this.plot.setSetting(AutoSellSetting.class, !this.plot.getSettingToggle(AutoSellSetting.class));
-                    player.sendMessage("TO ADD - changed auto sell");
-                    player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
-                }
         );
     }
 

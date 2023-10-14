@@ -9,6 +9,6 @@ import org.jetbrains.annotations.NotNull;
 public class AnimalUpgradeAutoStoreMenu extends HarvestablePlotSettingGUI<AutoStoreSetting> {
 
     public AnimalUpgradeAutoStoreMenu(@NotNull BarnRegion region) {
-        super(region, PlotType.ANIMAL, AutoStoreSetting.class, new AnimalUpgradesMainMenu(region));
+        super(region, PlotType.ANIMAL, AutoStoreSetting.class, new AnimalUpgradesMenu(region));
     }
 }

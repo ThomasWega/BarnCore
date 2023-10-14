@@ -1,5 +1,6 @@
 package com.bof.barn.core.region.plot.harvestable.farm.menu;
 
+import com.bof.barn.core.gui.premade.button.plot.UpgradesButton;
 import com.bof.barn.core.gui.premade.sound.SoundedGUIButton;
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.item.SkullBuilder;
@@ -46,7 +47,7 @@ public class FarmPlotMainMenu extends ChestGui {
 
     private void addSections() {
         this.mainPane.addItem(this.getChangeCropsButton(), 0, 0);
-        this.mainPane.addItem(this.getUpgradesButton(), 2, 0);
+        this.mainPane.addItem(new UpgradesButton(event -> new FarmPlotUpgradesMenu(this.plot, closeOnGoBack).show(event.getWhoClicked())), 2, 0);
         this.mainPane.addItem(this.getBoostersButton(), 4, 0);
         this.mainPane.addItem(this.getHarvestButton(), 6, 0);
     }
@@ -61,20 +62,6 @@ public class FarmPlotMainMenu extends ChestGui {
                                 Component.text("Click to change the crops", NamedTextColor.DARK_GRAY)
                         ))
                         .build(), event -> new FarmChangeCropsMenu(this.plot, this.closeOnGoBack).show(event.getWhoClicked())
-        );
-    }
-
-    private GuiItem getUpgradesButton() {
-        Component name = MiniMessage.miniMessage().deserialize("<b><color:#4FFFD3>Upgrades</color></b>");
-        return new SoundedGUIButton(
-                new SkullBuilder()
-                        .displayName(name)
-                        .lore(List.of(
-                                Component.empty(),
-                                Component.text("Click to open upgrades", NamedTextColor.DARK_GRAY)
-                        ))
-                        .skin(new Skin("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmI0OWEyY2I5MDczNzk5MzIwMWZlNzJhMWYxYWI3NWM1YzkzYzI4ZjA0N2Y2ODVmZmFkNWFiMjBjN2IwY2FmMCJ9fX0=", null))
-                        .build(), event -> new FarmUpgradesMenu(this.plot, closeOnGoBack).show(event.getWhoClicked())
         );
     }
 
