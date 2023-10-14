@@ -8,6 +8,7 @@ import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
 import com.bof.barn.core.region.plot.harvestable.setting.AutoHarvestSetting;
 import com.bof.barn.core.region.plot.harvestable.task.AutoHarvestTask;
 import com.bof.barn.core.region.plot.setting.PlotSetting;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -24,6 +25,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class PlotTasksManager implements Listener {
     private final @NotNull Core plugin;
+    @Getter
     private final Map<PlotType, Map<Integer, Map<Class<? extends PlotTask>, BukkitTask>>> runningTasks = new HashMap<>();
 
     @EventHandler

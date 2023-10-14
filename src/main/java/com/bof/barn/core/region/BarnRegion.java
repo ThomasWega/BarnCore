@@ -40,7 +40,7 @@ public class BarnRegion {
     private Map<PlotType, Set<Plot>> plots;
     private HologramPool hologramPool;
     private InteractiveHologramPool interactiveHologramPool;
-    private float farmCoins = 0;
+    private float farmCoins = 10000;
 
 
     /**

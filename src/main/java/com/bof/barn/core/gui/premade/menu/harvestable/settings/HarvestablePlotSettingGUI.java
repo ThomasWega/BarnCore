@@ -19,7 +19,6 @@ import com.github.stefvanschie.inventoryframework.pane.Pane;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -109,7 +108,7 @@ public class HarvestablePlotSettingGUI<S extends HarvestablePlotSetting> extends
 
     private Consumer<InventoryClickEvent> handleSelectAction(@Nullable HarvestablePlot<?> plot) {
         return event -> {
-            if (event.getClick() == ClickType.SHIFT_LEFT || event.getClick() == ClickType.SHIFT_RIGHT) {
+            if (event.isShiftClick()) {
                 if (plot != null) {
                     plot.setSetting(this.setting, false);
                 }

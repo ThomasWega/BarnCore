@@ -5,6 +5,7 @@ import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.item.SkullBuilder;
 import com.bof.barn.core.region.plot.Plot;
 import com.bof.barn.core.region.plot.setting.PlotSetting;
+import com.bof.barn.core.region.setting.LeveledSetting;
 import com.bof.toolkit.skin.Skin;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
@@ -16,7 +17,6 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -53,18 +53,46 @@ public class PlotUpgradesGUI<T extends Plot> extends ChestGui {
         this.plot.getUnlockedSettings().stream()
                 .sorted(Comparator.comparing(PlotSetting::getSettingName))
                 .forEach(plotSetting -> {
-                    ItemStack displayItem = new ItemBuilder(plotSetting.getItem())
-                            .appendLoreLine(Component.empty())
-                            .appendLoreLine(plotSetting.isToggled()
+                    ItemBuilder displayItemBuilder = new ItemBuilder(plotSetting.getItem());
+
+                    displayItemBuilder.appendLoreLine(Component.empty())
+                            .appendLoreLine(Component.text("Status: ", NamedTextColor.WHITE).append(plotSetting.isToggled()
                                     ? Component.text("ON", NamedTextColor.GREEN)
                                     : Component.text("OFF", NamedTextColor.RED)
-                            )
-                            .build();
-                    this.mainPane.addItem(new GuiItem(displayItem, event -> {
+                            ));
+
+                    if (plotSetting instanceof LeveledSetting levelSetting) {
+                        displayItemBuilder.appendLoreLine(Component.empty())
+                                .appendLoreLine(Component.text("Level: " + levelSetting.getCurrentLevel() + "/" + levelSetting.getMaxLevel(), NamedTextColor.WHITE));
+
+                        if (!levelSetting.isAtMaxLevel()) {
+                            displayItemBuilder
+                                    .appendLoreLine(Component.text("Next level price: " + levelSetting.getNextLevelPrice(), NamedTextColor.WHITE))
+                                    .appendLoreLine(Component.text("Your balance: " + plot.getOwningRegion().getFarmCoins() + "$", NamedTextColor.WHITE))
+                                    .appendLoreLine(Component.empty())
+                                    .appendLoreLine(Component.text("Shift-click to upgrade level", NamedTextColor.YELLOW));
+                        }
+                    }
+
+                    displayItemBuilder
+                            .appendLoreLine(Component.text("Click to change status", NamedTextColor.GREEN));
+
+                    this.mainPane.addItem(new GuiItem(displayItemBuilder.build(), event -> {
                         Player player = ((Player) event.getWhoClicked());
-                        player.sendMessage(Component.text("TO ADD - Switched " + plotSetting.getSettingName() + " for this plot to " + plot.switchSettingToggle(plotSetting.getClass())));
-                        player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
+                        if (event.isShiftClick() && plotSetting instanceof LeveledSetting levelSetting && !levelSetting.isAtMaxLevel()) {
+                            if (this.plot.getOwningRegion().hasEnoughCoins(levelSetting.getNextLevelPrice())) {
+                                levelSetting.upgradeLevel();
+                                this.plot.getOwningRegion().removeFarmCoins(levelSetting.getNextLevelPrice());
+                                player.sendMessage(Component.text("TO ADD - purchased next level for upgrade " + plotSetting.getSettingName()));
+                            } else {
+                                player.sendMessage(Component.text("TO ADD - You don't have enough coins"));
+                            }
+                        } else {
+                            player.sendMessage(Component.text("TO ADD - Switched " + plotSetting.getSettingName() + " for this plot to " + plot.switchSettingToggle(plotSetting.getClass())));
+                        }
+                        new PlotUpgradesGUI<>(this.plot, this.goBackGui).show(event.getWhoClicked());
                         this.plot.updateHologram();
+                        event.setCancelled(true);
                     }));
                 });
 
@@ -79,19 +107,21 @@ public class PlotUpgradesGUI<T extends Plot> extends ChestGui {
                             .appendLoreLine(Component.text("Price: " + price + "$", NamedTextColor.WHITE))
                             .appendLoreLine(Component.text("Your balance: " + plot.getOwningRegion().getFarmCoins() + "$", NamedTextColor.WHITE))
                             .appendLoreLine(Component.empty())
-                            .appendLoreLine(Component.text("Click to purchase this upgrade", NamedTextColor.RED))
+                            .appendLoreLine(Component.text("Shift-click to purchase this upgrade", NamedTextColor.RED))
                             .build();
                     this.mainPane.addItem(new GuiItem(displayItem, event -> {
+                        if (!event.isShiftClick()) return;
                         Player player = ((Player) event.getWhoClicked());
-                        if (plot.getOwningRegion().hasEnoughCoins(price)) {
+                        if (this.plot.getOwningRegion().hasEnoughCoins(price)) {
                             plotSetting.setUnlocked(true);
-                            plot.getOwningRegion().removeFarmCoins(price);
+                            this.plot.getOwningRegion().removeFarmCoins(price);
                             player.sendMessage(Component.text("TO ADD - purchased upgrade " + plotSetting.getSettingName()));
                         } else {
                             player.sendMessage(Component.text("TO ADD - You don't have enough coins"));
                         }
-                        player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
+                        new PlotUpgradesGUI<>(this.plot, this.goBackGui).show(event.getWhoClicked());
                         this.plot.updateHologram();
+                        event.setCancelled(true);
                     }));
                 });
     }

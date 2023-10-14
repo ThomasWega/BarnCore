@@ -38,11 +38,11 @@ public final class Core extends JavaPlugin implements Listener {
 
     //TODO add info about upgrades ON/OFF to lore of Upgrades button
 
-    //TODO figure out global upgrades and upgradeable upgrades
-    //TODO create menu with upgrades and make them purchasable
-
     //TODO test island members
     //TODO have only one menu for upgrades multi set (maybe rename the classes)
+
+    //TODO change the task time on level upgrade
+    //TODO improve upgrades menu
 
     @EventHandler(priority = EventPriority.LOWEST)
     private void onGridLoad(GridLoadedEvent event) {
