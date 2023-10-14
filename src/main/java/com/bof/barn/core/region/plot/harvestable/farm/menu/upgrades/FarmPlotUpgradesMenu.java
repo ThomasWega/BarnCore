@@ -16,11 +16,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class FarmUpgradesMainMenu extends ChestGui {
+public class FarmPlotUpgradesMenu extends ChestGui {
     private final BarnRegion region;
     private final StaticPane mainPane = new StaticPane(1, 1, 7, 1);
 
-    public FarmUpgradesMainMenu(@NotNull BarnRegion region) {
+    public FarmPlotUpgradesMenu(@NotNull BarnRegion region) {
         super(3, ComponentHolder.of(Component.text("Select setting type")));
         this.region = region;
         this.initialize();

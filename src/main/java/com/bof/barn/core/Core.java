@@ -42,7 +42,9 @@ public final class Core extends JavaPlugin implements Listener {
     //TODO have only one menu for upgrades multi set (maybe rename the classes)
 
     //TODO change the task time on level upgrade
-    //TODO improve upgrades menu
+    //TODO improve upgrades menu -- add to other plots as well
+
+    //TODO round up float prices
 
     @EventHandler(priority = EventPriority.LOWEST)
     private void onGridLoad(GridLoadedEvent event) {

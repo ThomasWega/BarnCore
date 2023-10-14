@@ -7,7 +7,7 @@ import com.bof.barn.core.gui.premade.button.back.GoBackPane;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.menu.RegionMainMenu;
 import com.bof.barn.core.region.plot.harvestable.animal.menu.upgrades.AnimalUpgradesMainMenu;
-import com.bof.barn.core.region.plot.harvestable.farm.menu.upgrades.FarmUpgradesMainMenu;
+import com.bof.barn.core.region.plot.harvestable.farm.menu.upgrades.FarmPlotUpgradesMenu;
 import com.bof.toolkit.skin.Skin;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
@@ -51,7 +51,7 @@ public class HarvestableSettingsMainMenu extends ChestGui {
                                 Component.text("Click to modify plots", NamedTextColor.DARK_GRAY)
                         ))
                         .skin(new Skin("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjY0NTliZTA5OTk4ZTUwYWJkMmNjZjRjZDM4M2U2YjM4YWI1YmM5MDVmYWNiNjZkY2UwZTE0ZTAzOGJhMTk2OCJ9fX0=", null))
-                        .build(), event -> new FarmUpgradesMainMenu(this.region).show(event.getWhoClicked())
+                        .build(), event -> new FarmPlotUpgradesMenu(this.region).show(event.getWhoClicked())
         );
     }
 
