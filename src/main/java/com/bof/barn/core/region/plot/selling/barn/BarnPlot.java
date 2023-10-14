@@ -8,6 +8,7 @@ import com.bof.barn.core.region.plot.harvestable.animal.AnimalType;
 import com.bof.barn.core.region.plot.selling.ContainerPlot;
 import com.bof.barn.core.region.plot.selling.barn.menu.BarnPlotMainMenu;
 import com.bof.barn.core.utils.BoxUtils;
+import com.bof.toolkit.utils.NumberUtils;
 import com.github.unldenis.hologram.Hologram;
 import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
 import com.github.unldenis.hologram.line.BlockLine;
@@ -64,7 +65,7 @@ public class BarnPlot implements ContainerPlot<AnimalType> {
 
     @Override
     public float getFilledPercentageRounded(int roundNum) {
-        return Math.round(this.getFilledPercentage() * Math.pow(10, roundNum)) / (float) Math.pow(10, roundNum);
+        return NumberUtils.roundBy(this.getFilledPercentage(), roundNum);
     }
 
     @Override
