@@ -2,7 +2,7 @@ package com.bof.barn.core.region.plot;
 
 import com.bof.barn.core.Core;
 import com.bof.barn.core.region.BarnRegion;
-import com.bof.barn.core.region.plot.event.PlotSettingEvent;
+import com.bof.barn.core.region.plot.event.setting.PlotSettingEvent;
 import com.bof.barn.core.region.plot.harvestable.animal.AnimalPlot;
 import com.bof.barn.core.region.plot.harvestable.farm.FarmPlot;
 import com.bof.barn.core.region.plot.selling.barn.BarnPlot;

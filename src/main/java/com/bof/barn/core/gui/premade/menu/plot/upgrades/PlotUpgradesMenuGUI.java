@@ -99,7 +99,7 @@ public class PlotUpgradesMenuGUI<T extends Plot> extends ChestGui {
             Player player = ((Player) event.getWhoClicked());
             if (event.isShiftClick() && plotSetting instanceof LeveledSetting levelSetting && !levelSetting.isAtMaxLevel()) {
                 if (this.plot.getOwningRegion().hasEnoughCoins(levelSetting.getNextLevelPrice())) {
-                    levelSetting.upgradeLevel();
+                    levelSetting.upgradeLevel(this.plot);
                     this.plot.getOwningRegion().removeFarmCoins(levelSetting.getNextLevelPrice());
                     player.sendMessage(Component.text("TO ADD - purchased next level for upgrade " + plotSetting.getSettingName()));
                 } else {
@@ -116,7 +116,7 @@ public class PlotUpgradesMenuGUI<T extends Plot> extends ChestGui {
 
     private @NotNull ItemStack createLockedSettingItem(PlotSetting plotSetting) {
         // use the ItemStack but change the material
-        ItemStack displayItem = new SkullBuilder(new ItemBuilder(plotSetting.getItem()).material(Material.PLAYER_HEAD))
+        return new SkullBuilder(new ItemBuilder(plotSetting.getItem()).material(Material.PLAYER_HEAD))
                 .skin(new Skin("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODE2MjNkNTIzOGRhYjdkZWNkMzIwMjY1Y2FlMWRjNmNhOTFiN2ZhOTVmMzQ2NzNhYWY0YjNhZDVjNmJhMTZlMSJ9fX0=", null))
                 .appendLoreLine(Component.empty())
                 .appendLoreLine(Component.text("Price: " + plotSetting.getPrice() + "$", NamedTextColor.WHITE))
@@ -124,8 +124,6 @@ public class PlotUpgradesMenuGUI<T extends Plot> extends ChestGui {
                 .appendLoreLine(Component.empty())
                 .appendLoreLine(Component.text("Shift-click to purchase this upgrade", NamedTextColor.RED))
                 .build();
-
-        return displayItem;
     }
 
     private @NotNull Consumer<InventoryClickEvent> getLockedSettingAction(PlotSetting plotSetting) {

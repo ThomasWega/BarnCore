@@ -36,9 +36,8 @@ public final class Core extends JavaPlugin implements Listener {
     private RegionManager regionManager;
     public static World WORLD;
 
-    //TODO change the task time on level upgrade
-
     //TODO add info about upgrades ON/OFF to lore of Upgrades button
+    //TODO add comments
 
     //TODO test island members
 

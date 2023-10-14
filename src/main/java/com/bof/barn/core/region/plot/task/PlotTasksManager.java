@@ -3,7 +3,8 @@ package com.bof.barn.core.region.plot.task;
 import com.bof.barn.core.Core;
 import com.bof.barn.core.region.plot.Plot;
 import com.bof.barn.core.region.plot.PlotType;
-import com.bof.barn.core.region.plot.event.PlotSettingEvent;
+import com.bof.barn.core.region.plot.event.setting.PlotSettingEvent;
+import com.bof.barn.core.region.plot.event.setting.PlotSettingLevelIncreaseEvent;
 import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
 import com.bof.barn.core.region.plot.harvestable.setting.AutoHarvestSetting;
 import com.bof.barn.core.region.plot.harvestable.task.AutoHarvestTask;
@@ -34,6 +35,15 @@ public class PlotTasksManager implements Listener {
         Plot plot = event.getPlot();
         if (setting instanceof AutoHarvestSetting) {
             this.handleAutoHarvestTask(((HarvestablePlot<?>) plot), ((AutoHarvestSetting) setting));
+        }
+    }
+
+    @EventHandler
+    private void onLevelIncrease(PlotSettingLevelIncreaseEvent event) {
+        if (event.getPlotSetting() instanceof AutoHarvestSetting autoHarvestSetting) {
+            Plot plot = event.getPlot();
+            this.cancelTask(AutoHarvestTask.class, plot);
+            this.handleAutoHarvestTask((HarvestablePlot<?>) plot, autoHarvestSetting);
         }
     }
 

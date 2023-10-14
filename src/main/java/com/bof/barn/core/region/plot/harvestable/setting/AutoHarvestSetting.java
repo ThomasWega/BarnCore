@@ -1,10 +1,13 @@
 package com.bof.barn.core.region.plot.harvestable.setting;
 
 import com.bof.barn.core.item.ItemBuilder;
+import com.bof.barn.core.region.plot.Plot;
+import com.bof.barn.core.region.plot.event.setting.PlotSettingLevelIncreaseEvent;
 import com.bof.barn.core.region.setting.LeveledSetting;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
 import java.util.List;
@@ -29,11 +32,12 @@ public class AutoHarvestSetting extends HarvestablePlotSetting implements Levele
     }
 
     @Override
-    public boolean upgradeLevel() {
+    public boolean upgradeLevel(Plot plot) {
         if (this.isAtMaxLevel()) return false;
 
         currentLevel++;
         tickSpeed -= 20;
+        Bukkit.getPluginManager().callEvent(new PlotSettingLevelIncreaseEvent(plot, this));
         return true;
     }
 }

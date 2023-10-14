@@ -1,12 +1,13 @@
 package com.bof.barn.core.region.setting;
 
+import com.bof.barn.core.region.plot.Plot;
 import com.bof.toolkit.utils.NumberUtils;
 
 public interface LeveledSetting {
     int getCurrentLevel();
     int getMaxLevel();
     float getBasePrice();
-    boolean upgradeLevel();
+    boolean upgradeLevel(Plot plot);
     default boolean isAtMaxLevel() {
         return this.getCurrentLevel() == this.getMaxLevel();
     }

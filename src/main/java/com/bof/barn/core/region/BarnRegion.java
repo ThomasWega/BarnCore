@@ -43,7 +43,6 @@ public class BarnRegion {
     private InteractiveHologramPool interactiveHologramPool;
     private float farmCoins = 10000;
 
-
     public float getFarmCoinsRounded(int roundNum) {
         return NumberUtils.roundBy(this.farmCoins, roundNum);
     }
