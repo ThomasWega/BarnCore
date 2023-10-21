@@ -127,7 +127,6 @@ public abstract class AbstractHarvestablePlot<T extends HarvestableType> extends
                 return AdditionResult.INV_FULL;
             }
         }
-
         return AdditionResult.SUCCESS;
     }
 

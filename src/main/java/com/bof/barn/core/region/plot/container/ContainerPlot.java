@@ -34,7 +34,7 @@ public abstract class ContainerPlot<T extends HarvestableType> extends AbstractP
     /**
      * @return Max capacity the container can take
      */
-    private int capacity;
+    private int capacity = 1000;
 
     public ContainerPlot(@NotNull Core plugin, @NotNull PlotType type, @NotNull BarnRegion owningRegion, @NotNull BoundingBox box, int id, @NotNull Class<T> storeType) {
         super(plugin, type, owningRegion, box, id);
