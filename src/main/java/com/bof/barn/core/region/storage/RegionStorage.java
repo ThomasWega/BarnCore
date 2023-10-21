@@ -1,7 +1,7 @@
 package com.bof.barn.core.region.storage;
 
 import com.bof.barn.core.region.BarnRegion;
-import com.bof.barn.core.region.event.RegionCreatedEvent;
+import com.bof.barn.core.region.events.RegionCreatedEvent;
 import com.bof.barn.world_generator.data.SchematicsStorage;
 import lombok.Data;
 import org.bukkit.Bukkit;

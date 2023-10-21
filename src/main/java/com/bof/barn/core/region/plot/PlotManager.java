@@ -2,7 +2,7 @@ package com.bof.barn.core.region.plot;
 
 import com.bof.barn.core.Core;
 import com.bof.barn.core.region.BarnRegion;
-import com.bof.barn.core.region.event.RegionCreatedEvent;
+import com.bof.barn.core.region.events.RegionCreatedEvent;
 import com.bof.barn.core.region.plot.event.PlotCreatedEvent;
 import com.bof.barn.core.utils.BoxUtils;
 import lombok.RequiredArgsConstructor;

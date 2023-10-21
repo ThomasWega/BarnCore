@@ -2,7 +2,7 @@ package com.bof.barn.core.hotbar;
 
 import com.bof.barn.core.Core;
 import com.bof.barn.core.hotbar.impl.MainHotbarItem;
-import com.bof.barn.core.region.event.RegionAssignedEvent;
+import com.bof.barn.core.region.events.RegionAssignedEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

@@ -1,7 +1,7 @@
 package com.bof.barn.core.region.spawn;
 
 import com.bof.barn.core.region.BarnRegion;
-import com.bof.barn.core.region.event.RegionCreatedEvent;
+import com.bof.barn.core.region.events.RegionCreatedEvent;
 import com.bof.barn.core.utils.BoxUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;

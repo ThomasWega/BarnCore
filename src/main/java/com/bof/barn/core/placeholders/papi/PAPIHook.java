@@ -4,7 +4,7 @@ import com.bof.barn.core.player.GamePlayer;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.AbstractPlot;
 import com.bof.barn.core.region.plot.PlotType;
-import com.bof.barn.core.region.plot.harvestable.setting.AutoStoreSetting;
+import com.bof.barn.core.region.plot.harvestable.settings.AutoStoreSetting;
 import com.bof.barn.core.region.plot.container.barn.BarnPlot;
 import com.bof.barn.core.region.plot.container.settings.AutoSellSetting;
 import com.bof.barn.core.region.plot.container.silo.SiloPlot;

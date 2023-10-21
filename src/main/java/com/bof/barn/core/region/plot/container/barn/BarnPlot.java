@@ -4,7 +4,7 @@ import com.bof.barn.core.Core;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.PlotType;
 import com.bof.barn.core.region.plot.container.ContainerPlot;
-import com.bof.barn.core.region.plot.container.barn.menu.BarnPlotMainMenu;
+import com.bof.barn.core.region.plot.container.barn.menus.BarnPlotMainMenu;
 import com.bof.barn.core.region.plot.harvestable.animal.AnimalType;
 import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
 import com.github.unldenis.hologram.line.BlockLine;
