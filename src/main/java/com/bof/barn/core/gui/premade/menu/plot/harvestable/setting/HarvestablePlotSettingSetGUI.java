@@ -98,4 +98,33 @@ class HarvestablePlotSettingSetGUI<S extends HarvestablePlotSettingGUI<? extends
                     ));
                 });
     }
+
+    private void addLockedUpgradePlots() {
+        this.region.getLockedSettingPlots(this.setting).stream()
+                .filter(plot -> plot.getType() == this.plotType)
+                // sort by id, so first plot is always 1, second is 2, etc.
+                .sorted(Comparator.comparingInt(AbstractPlot::getId))
+                .map(plot -> ((AbstractHarvestablePlot<?>) plot))
+                .forEach(plot -> {
+                    List<Component> lore = new ArrayList<>(plot.getLore());
+                    lore.addAll(List.of(
+                            Component.empty(),
+                            Component.text("Click to select this plot", NamedTextColor.DARK_GRAY)
+                    ));
+                    this.mainPane.addItem(new SoundedGUIButton(
+                            new ItemBuilder(plot.getCurrentlyHarvesting().getItem())
+                                    .displayName(plot.getDisplayName())
+                                    .lore(lore)
+                                    .build(),
+                            event -> {
+                                if (this.previousSelectedPlot != null) {
+                                    this.previousSelectedPlot.setSetting(this.setting, SettingState.OFF);
+                                }
+                                plot.setSetting(this.setting, SettingState.ON);
+                                new HarvestablePlotSettingGUI<>(this.region, this.plotType, this.setting, this.mainSettingMenu.getGoBackGui())
+                                        .show(event.getWhoClicked());
+                            }
+                    ));
+                });
+    }
 }

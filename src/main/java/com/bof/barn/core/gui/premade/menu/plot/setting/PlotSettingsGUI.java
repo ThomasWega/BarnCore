@@ -30,12 +30,12 @@ import java.util.function.Supplier;
  *
  * @param <T> Plot to get upgrades for
  */
-public class PlotSettingsMenuGUI<T extends AbstractPlot> extends ChestGui {
+public class PlotSettingsGUI<T extends AbstractPlot> extends ChestGui {
     private final T plot;
     private final Supplier<Gui> goBackGuiSupplier;
     private final OutlinePane mainPane = new OutlinePane(1, 1, 7, 1);
 
-    public PlotSettingsMenuGUI(@NotNull T plot, @NotNull Supplier<Gui> goBackGuiSupplier) {
+    public PlotSettingsGUI(@NotNull T plot, @NotNull Supplier<Gui> goBackGuiSupplier) {
         super(3, ComponentHolder.of(Component.text(WordUtils.capitalize(plot.getType().getIdentifier()) + " upgrades")));
         this.plot = plot;
         this.goBackGuiSupplier = goBackGuiSupplier;
@@ -108,7 +108,7 @@ public class PlotSettingsMenuGUI<T extends AbstractPlot> extends ChestGui {
             } else {
                 player.sendMessage(Component.text("TO ADD - Switched " + plotSetting.getSettingName() + " for this plot to " + plot.switchSettingToggle(plotSetting.getClass())));
             }
-            new PlotSettingsMenuGUI<>(this.plot, this.goBackGuiSupplier).show(event.getWhoClicked());
+            new PlotSettingsGUI<>(this.plot, this.goBackGuiSupplier).show(event.getWhoClicked());
             this.plot.updateHologram();
             event.setCancelled(true);
         };
@@ -138,7 +138,7 @@ public class PlotSettingsMenuGUI<T extends AbstractPlot> extends ChestGui {
             } else {
                 player.sendMessage(Component.text("TO ADD - You don't have enough coins"));
             }
-            new PlotSettingsMenuGUI<>(this.plot, this.goBackGuiSupplier).show(event.getWhoClicked());
+            new PlotSettingsGUI<>(this.plot, this.goBackGuiSupplier).show(event.getWhoClicked());
             this.plot.updateHologram();
             event.setCancelled(true);
         };
