@@ -1,7 +1,7 @@
-package com.bof.barn.core.region.plot.selling.barn.menu;
+package com.bof.barn.core.region.plot.container.barn.menu;
 
 import com.bof.barn.core.gui.premade.menu.plot.upgrades.PlotUpgradesMenuGUI;
-import com.bof.barn.core.region.plot.selling.barn.BarnPlot;
+import com.bof.barn.core.region.plot.container.barn.BarnPlot;
 import org.jetbrains.annotations.NotNull;
 
 public class BarnPlotUpgradesMenu extends PlotUpgradesMenuGUI<BarnPlot> {

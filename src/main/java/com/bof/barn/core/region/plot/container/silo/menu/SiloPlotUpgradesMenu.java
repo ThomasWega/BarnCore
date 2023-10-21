@@ -1,7 +1,7 @@
-package com.bof.barn.core.region.plot.selling.silo.menu;
+package com.bof.barn.core.region.plot.container.silo.menu;
 
 import com.bof.barn.core.gui.premade.menu.plot.upgrades.PlotUpgradesMenuGUI;
-import com.bof.barn.core.region.plot.selling.silo.SiloPlot;
+import com.bof.barn.core.region.plot.container.silo.SiloPlot;
 import org.jetbrains.annotations.NotNull;
 
 public class SiloPlotUpgradesMenu extends PlotUpgradesMenuGUI<SiloPlot> {

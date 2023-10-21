@@ -1,6 +1,6 @@
 package com.bof.barn.core.region.setting;
 
-import com.bof.barn.core.region.plot.Plot;
+import com.bof.barn.core.region.plot.AbstractPlot;
 import com.bof.toolkit.utils.NumberUtils;
 
 /**
@@ -19,7 +19,7 @@ public interface LeveledSetting {
      * @param plot Plot that issued the ugrade
      * @return whether the upgrade succeeded
      */
-    boolean upgradeLevel(Plot plot);
+    boolean upgradeLevel(AbstractPlot plot);
 
     /**
      * @return Whether the setting is currently at it's max level

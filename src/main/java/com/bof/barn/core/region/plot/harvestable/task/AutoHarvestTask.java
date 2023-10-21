@@ -1,7 +1,7 @@
 package com.bof.barn.core.region.plot.harvestable.task;
 
 
-import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
+import com.bof.barn.core.region.plot.harvestable.AbstractHarvestablePlot;
 import com.bof.barn.core.region.plot.harvestable.animal.AnimalPlot;
 import com.bof.barn.core.region.plot.harvestable.animal.AnimalType;
 import com.bof.barn.core.region.plot.harvestable.farm.CropType;
@@ -21,7 +21,7 @@ import java.util.Optional;
  * @param <T>
  */
 @RequiredArgsConstructor
-public class AutoHarvestTask<T extends HarvestablePlot<?>> implements PlotTask {
+public class AutoHarvestTask<T extends AbstractHarvestablePlot<?>> implements PlotTask {
     private final T plot;
 
     @Override

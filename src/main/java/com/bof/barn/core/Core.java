@@ -40,7 +40,7 @@ public final class Core extends JavaPlugin implements Listener {
 
     //TODO create multi set menus to other settings as well
 
-    // TODO make Plot abstract class
+    //TODO make Plot abstract class
     //TODO test island members
 
     @EventHandler(priority = EventPriority.LOWEST)

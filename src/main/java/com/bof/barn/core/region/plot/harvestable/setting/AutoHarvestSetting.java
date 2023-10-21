@@ -1,7 +1,7 @@
 package com.bof.barn.core.region.plot.harvestable.setting;
 
 import com.bof.barn.core.item.ItemBuilder;
-import com.bof.barn.core.region.plot.Plot;
+import com.bof.barn.core.region.plot.AbstractPlot;
 import com.bof.barn.core.region.plot.event.setting.PlotSettingLevelIncreaseEvent;
 import com.bof.barn.core.region.setting.LeveledSetting;
 import lombok.Getter;
@@ -32,7 +32,7 @@ public class AutoHarvestSetting extends HarvestablePlotSetting implements Levele
     }
 
     @Override
-    public boolean upgradeLevel(Plot plot) {
+    public boolean upgradeLevel(AbstractPlot plot) {
         if (this.isAtMaxLevel()) return false;
 
         currentLevel++;

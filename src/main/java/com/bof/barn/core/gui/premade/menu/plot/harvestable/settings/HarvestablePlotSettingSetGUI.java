@@ -5,9 +5,9 @@ import com.bof.barn.core.gui.premade.button.plot.LockedPlotButton;
 import com.bof.barn.core.gui.premade.sound.SoundedGUIButton;
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.region.BarnRegion;
-import com.bof.barn.core.region.plot.Plot;
+import com.bof.barn.core.region.plot.AbstractPlot;
 import com.bof.barn.core.region.plot.PlotType;
-import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
+import com.bof.barn.core.region.plot.harvestable.AbstractHarvestablePlot;
 import com.bof.barn.core.region.plot.harvestable.setting.AutoStoreSetting;
 import com.bof.barn.core.region.plot.harvestable.setting.HarvestablePlotSetting;
 import com.bof.barn.core.region.plot.setting.PlotSetting;
@@ -38,11 +38,11 @@ public class HarvestablePlotSettingSetGUI<S extends HarvestablePlotSettingGUI<? 
     private final OutlinePane mainPane = new OutlinePane(1, 1, 7, 2, Pane.Priority.NORMAL);
     private final OutlinePane lockedPane = mainPane.copy();
     @Nullable
-    private final HarvestablePlot<?> previousSelectedPlot;
+    private final AbstractHarvestablePlot<?> previousSelectedPlot;
     private final PlotType plotType;
     private final S mainSettingMenu;
 
-    public HarvestablePlotSettingSetGUI(@NotNull BarnRegion region, @NotNull PlotType plotType, @NotNull S mainSettingMenu, @Nullable HarvestablePlot<?> previousSelectedPlot) {
+    public HarvestablePlotSettingSetGUI(@NotNull BarnRegion region, @NotNull PlotType plotType, @NotNull S mainSettingMenu, @Nullable AbstractHarvestablePlot<?> previousSelectedPlot) {
         super(4, ComponentHolder.of(Component.text("Toggle " + PlotSetting.getSettingName(mainSettingMenu.getSetting()) + " for plot")));
         this.region = region;
         this.plotType = plotType;
@@ -72,8 +72,8 @@ public class HarvestablePlotSettingSetGUI<S extends HarvestablePlotSettingGUI<? 
         this.region.getSettingPlots(AutoStoreSetting.class, false).stream()
                 .filter(plot -> plot.getType() == this.plotType)
                 // sort by id, so first plot is always 1, second is 2, etc.
-                .sorted(Comparator.comparingInt(Plot::getId))
-                .map(plot -> ((HarvestablePlot<?>) plot))
+                .sorted(Comparator.comparingInt(AbstractPlot::getId))
+                .map(plot -> ((AbstractHarvestablePlot<?>) plot))
                 .forEach(plot -> {
                     List<Component> lore = new ArrayList<>(plot.getLore());
                     lore.addAll(List.of(

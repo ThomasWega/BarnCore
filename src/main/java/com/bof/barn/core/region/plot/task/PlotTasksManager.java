@@ -1,11 +1,11 @@
 package com.bof.barn.core.region.plot.task;
 
 import com.bof.barn.core.Core;
-import com.bof.barn.core.region.plot.Plot;
+import com.bof.barn.core.region.plot.AbstractPlot;
 import com.bof.barn.core.region.plot.PlotType;
 import com.bof.barn.core.region.plot.event.setting.PlotSettingLevelIncreaseEvent;
 import com.bof.barn.core.region.plot.event.setting.PlotSettingToggleEvent;
-import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
+import com.bof.barn.core.region.plot.harvestable.AbstractHarvestablePlot;
 import com.bof.barn.core.region.plot.harvestable.setting.AutoHarvestSetting;
 import com.bof.barn.core.region.plot.harvestable.task.AutoHarvestTask;
 import com.bof.barn.core.region.plot.setting.PlotSetting;
@@ -32,9 +32,9 @@ public class PlotTasksManager implements Listener {
     @EventHandler
     private void onPlotSetting(PlotSettingToggleEvent event) {
         PlotSetting setting = event.getPlotSetting();
-        Plot plot = event.getPlot();
+        AbstractPlot plot = event.getPlot();
         if (setting instanceof AutoHarvestSetting) {
-            this.handleAutoHarvestTask(((HarvestablePlot<?>) plot), ((AutoHarvestSetting) setting));
+            this.handleAutoHarvestTask(((AbstractHarvestablePlot<?>) plot), ((AutoHarvestSetting) setting));
         }
     }
 
@@ -44,9 +44,9 @@ public class PlotTasksManager implements Listener {
     @EventHandler
     private void onLevelIncrease(PlotSettingLevelIncreaseEvent event) {
         if (event.getPlotSetting() instanceof AutoHarvestSetting autoHarvestSetting) {
-            Plot plot = event.getPlot();
+            AbstractPlot plot = event.getPlot();
             this.cancelTask(AutoHarvestTask.class, plot);
-            this.handleAutoHarvestTask((HarvestablePlot<?>) plot, autoHarvestSetting);
+            this.handleAutoHarvestTask((AbstractHarvestablePlot<?>) plot, autoHarvestSetting);
         }
     }
 
@@ -56,13 +56,13 @@ public class PlotTasksManager implements Listener {
      *
      * @param plot    Plot to start or cancel the task for
      * @param setting Setting instance
-     * @see #cancelTask(Class, Plot)
+     * @see #cancelTask(Class, AbstractPlot)
      */
-    private void handleAutoHarvestTask(HarvestablePlot<?> plot, AutoHarvestSetting setting) {
+    private void handleAutoHarvestTask(AbstractHarvestablePlot<?> plot, AutoHarvestSetting setting) {
         if (setting.isToggled()) {
             Map<Integer, Map<Class<? extends PlotTask>, BukkitTask>> typeTasks = this.runningTasks.computeIfAbsent(plot.getType(), k -> new HashMap<>());
             Map<Class<? extends PlotTask>, BukkitTask> plotTasks = typeTasks.computeIfAbsent(plot.getId(), k -> new HashMap<>());
-            BukkitTask task = Bukkit.getScheduler().runTaskTimer(this.plugin, new AutoHarvestTask<>((HarvestablePlot<?>) plot), 1L, setting.getTickSpeed());
+            BukkitTask task = Bukkit.getScheduler().runTaskTimer(this.plugin, new AutoHarvestTask<>((AbstractHarvestablePlot<?>) plot), 1L, setting.getTickSpeed());
             plotTasks.put(AutoHarvestTask.class, task);
         } else {
             this.cancelTask(AutoHarvestTask.class, plot);
@@ -75,7 +75,7 @@ public class PlotTasksManager implements Listener {
      * @param taskClazz Class of the task
      * @param plot      Plot the task belongs to
      */
-    private void cancelTask(Class<? extends PlotTask> taskClazz, Plot plot) {
+    private void cancelTask(Class<? extends PlotTask> taskClazz, AbstractPlot plot) {
         Map<Integer, Map<Class<? extends PlotTask>, BukkitTask>> typeTasks = this.runningTasks.get(plot.getType());
         if (typeTasks == null) return;
 

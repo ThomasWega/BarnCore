@@ -1,7 +1,7 @@
 package com.bof.barn.core.region.plot.harvestable;
 
 /**
- * Enumeration representing the possible results of an addition operation to a {@link com.bof.barn.core.region.plot.selling.ContainerPlot}.
+ * Enumeration representing the possible results of an addition operation to a {@link com.bof.barn.core.region.plot.container.ContainerPlot}.
  */
 public enum AdditionResult {
     /**

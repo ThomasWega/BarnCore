@@ -2,7 +2,7 @@ package com.bof.barn.core.gui.premade.button.plot;
 
 import com.bof.barn.core.gui.premade.sound.SoundedGUIButton;
 import com.bof.barn.core.item.ItemBuilder;
-import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
+import com.bof.barn.core.region.plot.harvestable.AbstractHarvestablePlot;
 import net.kyori.adventure.text.Component;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -13,12 +13,12 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class HarvestablePlotButton extends SoundedGUIButton {
-    public HarvestablePlotButton(@NotNull HarvestablePlot<?> plot, @Nullable Consumer<List<Component>> loreAction,
+    public HarvestablePlotButton(@NotNull AbstractHarvestablePlot<?> plot, @Nullable Consumer<List<Component>> loreAction,
                                  @Nullable Consumer<InventoryClickEvent> action) {
         super(createItem(plot, loreAction), action);
     }
 
-    private static ItemStack createItem(@NotNull HarvestablePlot<?> plot, @Nullable Consumer<List<Component>> loreAction) {
+    private static ItemStack createItem(@NotNull AbstractHarvestablePlot<?> plot, @Nullable Consumer<List<Component>> loreAction) {
         List<Component> lore = plot.getLore();
         if (loreAction != null) {
             loreAction.accept(lore);

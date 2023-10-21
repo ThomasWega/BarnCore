@@ -6,9 +6,9 @@ import com.bof.barn.core.gui.premade.button.slot.UnlockedSlotButton;
 import com.bof.barn.core.gui.premade.sound.SoundedGUIButton;
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.region.BarnRegion;
-import com.bof.barn.core.region.plot.Plot;
+import com.bof.barn.core.region.plot.AbstractPlot;
 import com.bof.barn.core.region.plot.PlotType;
-import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
+import com.bof.barn.core.region.plot.harvestable.AbstractHarvestablePlot;
 import com.bof.barn.core.region.plot.harvestable.setting.HarvestablePlotSetting;
 import com.bof.barn.core.region.plot.setting.PlotSetting;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
@@ -77,8 +77,8 @@ public class HarvestablePlotSettingGUI<S extends HarvestablePlotSetting> extends
         this.region.getSettingPlots(this.setting).stream()
                 .filter(plot -> plot.getType() == this.plotType)
                 // sort by id, so first plot is always 1, second is 2, etc.
-                .sorted(Comparator.comparingInt(Plot::getId))
-                .map(plot -> ((HarvestablePlot<?>) plot))
+                .sorted(Comparator.comparingInt(AbstractPlot::getId))
+                .map(plot -> ((AbstractHarvestablePlot<?>) plot))
                 .forEach(plot -> {
                             List<Component> lore = new ArrayList<>(plot.getLore());
                             lore.addAll(List.of(
@@ -106,7 +106,7 @@ public class HarvestablePlotSettingGUI<S extends HarvestablePlotSetting> extends
                 this.lockedSlotsPane.addItem(new LockedSlotButton()));
     }
 
-    private Consumer<InventoryClickEvent> handleSelectAction(@Nullable HarvestablePlot<?> plot) {
+    private Consumer<InventoryClickEvent> handleSelectAction(@Nullable AbstractHarvestablePlot<?> plot) {
         return event -> {
             if (event.isShiftClick()) {
                 if (plot != null) {

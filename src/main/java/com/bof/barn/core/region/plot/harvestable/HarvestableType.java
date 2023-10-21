@@ -5,7 +5,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Things that can be harvested on {@link HarvestablePlot}
+ * Things that can be harvested on {@link AbstractHarvestablePlot}
  */
 public interface HarvestableType {
     /**

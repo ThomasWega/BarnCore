@@ -4,17 +4,13 @@ import com.bof.barn.core.Core;
 import com.bof.barn.core.HarvestableManager;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.PlotType;
+import com.bof.barn.core.region.plot.container.silo.SiloPlot;
+import com.bof.barn.core.region.plot.harvestable.AbstractHarvestablePlot;
 import com.bof.barn.core.region.plot.harvestable.AdditionResult;
-import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
 import com.bof.barn.core.region.plot.harvestable.farm.menu.FarmPlotMainMenu;
 import com.bof.barn.core.region.plot.harvestable.setting.AutoStoreSetting;
-import com.bof.barn.core.region.plot.selling.silo.SiloPlot;
-import com.bof.barn.core.region.plot.setting.PlotSetting;
-import com.bof.barn.core.utils.BoxUtils;
-import com.github.unldenis.hologram.Hologram;
 import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
 import com.github.unldenis.hologram.line.BlockLine;
-import lombok.Data;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
@@ -33,24 +29,10 @@ import java.util.stream.Collectors;
 
 import static com.bof.barn.core.Core.WORLD;
 
-@Data
-public class FarmPlot implements HarvestablePlot<CropType> {
-    private final Core plugin;
-    private final Map<Class<? extends PlotSetting>, PlotSetting> settings = new HashMap<>();
-    private final BarnRegion owningRegion;
-    private final PlotType type = PlotType.FARM;
-    private final BoundingBox box;
-    private final int id;
-    private final Set<Block> boxBlocks;
-    private CropType currentlyHarvesting = CropType.NONE;
-    private Hologram hologram;
+public class FarmPlot extends AbstractHarvestablePlot<CropType> {
 
-    public FarmPlot(Core plugin, BarnRegion owningRegion, BoundingBox box, int id) {
-        this.plugin = plugin;
-        this.owningRegion = owningRegion;
-        this.box = box;
-        this.boxBlocks = BoxUtils.getBlocksInBox(box, true);
-        this.id = id;
+    public FarmPlot(@NotNull Core plugin, @NotNull BarnRegion owningRegion, @NotNull BoundingBox box, int id) {
+        super(plugin, PlotType.FARM, owningRegion, box, id);
     }
 
     public void setCurrentlyHarvesting(@NotNull CropType cropType) {
@@ -60,7 +42,7 @@ public class FarmPlot implements HarvestablePlot<CropType> {
 
     @Override
     public void changeType(@NotNull CropType type) {
-        this.boxBlocks.forEach(block -> {
+        this.getBoxBlocks().forEach(block -> {
             if (block.getRelative(BlockFace.DOWN).getType() == Material.FARMLAND) {
                 if (type == CropType.NONE) {
                     WORLD.playSound(block.getLocation(), block.getBlockSoundGroup().getBreakSound(), 1f, 1f);
@@ -88,7 +70,7 @@ public class FarmPlot implements HarvestablePlot<CropType> {
         this.handleAutoReplant();
         List<Block> successfulBlocks = new ArrayList<>();
         blockLoop:
-        for (Block block : this.boxBlocks) {
+        for (Block block : this.getBoxBlocks()) {
             AdditionResult result = this.handleCropBreak(player, false, block);
             if (result == null) continue;
             switch (result) {
@@ -115,7 +97,7 @@ public class FarmPlot implements HarvestablePlot<CropType> {
 
     /**
      * Handles the breakage of block.
-     * Changes the {@link #currentlyHarvesting} type, puts the items into {@link SiloPlot} on {@link AutoStoreSetting},
+     * Changes the {@link #getCurrentlyHarvesting()} type, puts the items into {@link SiloPlot} on {@link AutoStoreSetting},
      * if the silo is full, tries putting it into {@link BarnRegion#getCropsInventory()}.
      *
      * @param player Player that broke the crop
@@ -200,7 +182,7 @@ public class FarmPlot implements HarvestablePlot<CropType> {
     }
 
     public @NotNull Map<Block, CropType> getRemainingHarvestables() {
-        return this.boxBlocks.stream()
+        return this.getBoxBlocks().stream()
                 .filter(block -> block.getType() != Material.AIR)
                 .map(block -> Map.entry(block, CropType.getByMaterial(block.getType())))
                 .filter(entry -> entry.getValue().isPresent())
@@ -212,18 +194,18 @@ public class FarmPlot implements HarvestablePlot<CropType> {
 
     @Override
     public void updateHologram() {
-        this.hologram.getLines().stream()
+        this.getHologram().getLines().stream()
                 .filter(iLine -> iLine instanceof BlockLine)
                 .map(iLine -> ((BlockLine) iLine))
                 .forEach(blockLine -> blockLine.setObj(this.getCurrentlyHarvesting().getItem()));
 
-        this.hologram.getLines().forEach(iLine -> iLine.update(this.owningRegion.getAllOnlinePlayers()));
+        this.getHologram().getLines().forEach(iLine -> iLine.update(this.getOwningRegion().getAllOnlinePlayers()));
     }
 
     @Override
     public Consumer<PlayerHologramInteractEvent> getHologramAction() {
         return event -> {
-            if (event.getHologram().equals(this.hologram)) {
+            if (event.getHologram().equals(this.getHologram())) {
                 new FarmPlotMainMenu(this, true).show(event.getPlayer());
             }
         };
@@ -231,7 +213,7 @@ public class FarmPlot implements HarvestablePlot<CropType> {
 
     @Override
     public Component getDisplayName() {
-        return MiniMessage.miniMessage().deserialize("<b><color:#FC7B03>Farm Plot " + id + "</color></b>");
+        return MiniMessage.miniMessage().deserialize("<b><color:#FC7B03>Farm Plot " + getId() + "</color></b>");
     }
 
     @Override

@@ -3,7 +3,7 @@ package com.bof.barn.core.gui.premade.menu.plot.harvestable;
 import com.bof.barn.core.gui.premade.button.back.GoBackPane;
 import com.bof.barn.core.gui.premade.sound.SoundedGUIButton;
 import com.bof.barn.core.item.ItemBuilder;
-import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
+import com.bof.barn.core.region.plot.harvestable.AbstractHarvestablePlot;
 import com.bof.barn.core.region.plot.harvestable.HarvestableType;
 import com.github.stefvanschie.inventoryframework.adventuresupport.TextHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
@@ -29,7 +29,7 @@ import java.util.List;
  * @param <T> Type of the harvestables
  * @param <P> Plot where harvestables will be changed (this menu belongs to)
  */
-public abstract class ChangeHarvestablesGUI<T extends HarvestableType, P extends HarvestablePlot<T>> extends ChestGui {
+public abstract class ChangeHarvestablesGUI<T extends HarvestableType, P extends AbstractHarvestablePlot<T>> extends ChestGui {
     private final Class<T> plotType;
     private final P plot;
     private final OutlinePane mainPane = new OutlinePane(1, 1, 7, 1);
@@ -100,5 +100,5 @@ public abstract class ChangeHarvestablesGUI<T extends HarvestableType, P extends
 
     public abstract Component getChangedToTypeMessage(@NotNull T type);
 
-    public abstract Component getCurrentlyHarvestingText(@NotNull T Type);
+    public abstract Component getCurrentlyHarvestingText(@NotNull T type);
 }

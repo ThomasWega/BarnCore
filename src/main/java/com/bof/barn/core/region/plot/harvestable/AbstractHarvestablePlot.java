@@ -1,13 +1,18 @@
 package com.bof.barn.core.region.plot.harvestable;
 
 
+import com.bof.barn.core.Core;
 import com.bof.barn.core.region.BarnRegion;
-import com.bof.barn.core.region.plot.Plot;
+import com.bof.barn.core.region.plot.AbstractPlot;
+import com.bof.barn.core.region.plot.PlotType;
 import com.bof.barn.core.region.plot.harvestable.setting.AutoStoreSetting;
 import com.bof.barn.core.region.plot.harvestable.setting.ReplantAllSetting;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.BoundingBox;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -18,19 +23,25 @@ import java.util.List;
  *
  * @param <T> Types the plot is allowed to harvest
  */
-public interface HarvestablePlot<T extends HarvestableType> extends Plot {
-
+@Getter
+@Setter
+public abstract class AbstractHarvestablePlot<T extends HarvestableType> extends AbstractPlot {
     /**
      * @return Type the plot is currently farming
      */
-    T getCurrentlyHarvesting();
+    public T currentlyHarvesting;
+
+
+    public AbstractHarvestablePlot(@NotNull Core plugin, @NotNull PlotType type, @NotNull BarnRegion owningRegion, @NotNull BoundingBox box, int id) {
+        super(plugin, type, owningRegion, box, id);
+    }
 
     /**
      * Changed the type and handles the changes and updates
      *
      * @param type Type to change to
      */
-    void changeType(@NotNull T type);
+    public abstract void changeType(@NotNull T type);
 
     /**
      * Handles the harvest of all at once
@@ -38,17 +49,17 @@ public interface HarvestablePlot<T extends HarvestableType> extends Plot {
      * @param player Player that initiated the harvest
      * @return amount of harvested things
      */
-    int harvest(@NotNull Player player);
+    public abstract int harvest(@NotNull Player player);
 
     /**
      * @return The amount of harvestable objects present on the plot
      */
-    int getRemainingHarvestablesCount();
+    public abstract int getRemainingHarvestablesCount();
 
     /**
      * @return if any harvestable objest is present on the plot
      */
-    default boolean isHarvestablePresent() {
+    public boolean isHarvestablePresent() {
         return this.getRemainingHarvestablesCount() > 0;
     }
 
@@ -58,7 +69,7 @@ public interface HarvestablePlot<T extends HarvestableType> extends Plot {
      * @param items Items to put to the inventory
      * @return Items that couldn't be added to the inventory
      */
-    @NotNull List<ItemStack> addToInventory(@NotNull ItemStack... items);
+    public abstract @NotNull List<ItemStack> addToInventory(@NotNull ItemStack... items);
 
     /**
      * Tries putting the items to the {@link BarnRegion#getCropsInventory()}
@@ -66,7 +77,7 @@ public interface HarvestablePlot<T extends HarvestableType> extends Plot {
      * @param items Items to put to the inventory
      * @return Items that couldn't be added to the inventory
      */
-    @NotNull List<ItemStack> addToInventory(@NotNull Collection<ItemStack> items);
+    public abstract @NotNull List<ItemStack> addToInventory(@NotNull Collection<ItemStack> items);
 
     /**
      * Tries putting the items to the next free container.
@@ -75,7 +86,7 @@ public interface HarvestablePlot<T extends HarvestableType> extends Plot {
      * @param items Items to put to the silo
      * @return Items that couldn't be added to the silo
      */
-    @NotNull List<ItemStack> addToContainer(@NotNull ItemStack... items);
+    public abstract @NotNull List<ItemStack> addToContainer(@NotNull ItemStack... items);
 
     /**
      * Tries putting the items to the next free container.
@@ -84,16 +95,16 @@ public interface HarvestablePlot<T extends HarvestableType> extends Plot {
      * @param items Items to put to the silo
      * @return Items that couldn't be added to the silo
      */
-    @NotNull List<ItemStack> addToContainer(@NotNull Collection<ItemStack> items);
+    public abstract @NotNull List<ItemStack> addToContainer(@NotNull Collection<ItemStack> items);
 
 
     /**
-     * Handles the addition of an ItemStack to the designated {@link com.bof.barn.core.region.plot.selling.ContainerPlot}
+     * Handles the addition of an ItemStack to the designated {@link com.bof.barn.core.region.plot.container.ContainerPlot}
      *
      * @param item The ItemStack to be added.
      * @return An AdditionResult enum indicating the outcome of the addition operation.
      */
-    default AdditionResult handleAddition(@NotNull ItemStack item) {
+    public @NotNull AdditionResult handleAddition(@NotNull ItemStack item) {
         if (this.isSetting(AutoStoreSetting.class)) {
             if (!this.addToContainer(item).isEmpty()) {
                 if (!this.addToInventory(item).isEmpty()) {
@@ -110,7 +121,7 @@ public interface HarvestablePlot<T extends HarvestableType> extends Plot {
         return AdditionResult.SUCCESS;
     }
 
-    default void handleAutoReplant() {
+    public void handleAutoReplant() {
         // handle auto replant all
         if (this.isSetting(ReplantAllSetting.class)) {
             T harvesting = this.getCurrentlyHarvesting();

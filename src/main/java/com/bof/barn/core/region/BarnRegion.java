@@ -1,12 +1,12 @@
 package com.bof.barn.core.region;
 
 
-import com.bof.barn.core.region.plot.Plot;
+import com.bof.barn.core.region.plot.AbstractPlot;
 import com.bof.barn.core.region.plot.PlotType;
 import com.bof.barn.core.region.plot.harvestable.animal.AnimalType;
 import com.bof.barn.core.region.plot.harvestable.farm.CropType;
-import com.bof.barn.core.region.plot.selling.barn.BarnPlot;
-import com.bof.barn.core.region.plot.selling.silo.SiloPlot;
+import com.bof.barn.core.region.plot.container.barn.BarnPlot;
+import com.bof.barn.core.region.plot.container.silo.SiloPlot;
 import com.bof.barn.core.region.plot.setting.PlotSetting;
 import com.bof.barn.core.utils.HarvestableUtils;
 import com.bof.toolkit.utils.NumberUtils;
@@ -39,7 +39,7 @@ public class BarnRegion {
     // otherwise stackoverflow is produced (https://github.com/projectlombok/lombok/issues/993)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private Map<PlotType, Set<Plot>> plots;
+    private Map<PlotType, Set<AbstractPlot>> plots;
     private HologramPool hologramPool;
     private InteractiveHologramPool interactiveHologramPool;
     private float farmCoins = 10000;
@@ -219,7 +219,7 @@ public class BarnRegion {
      * @return plots with specified PlotSetting set to true
      * @see #getSettingPlots(Class, boolean)
      */
-    public Set<Plot> getSettingPlots(Class<? extends PlotSetting> settingClazz) {
+    public Set<AbstractPlot> getSettingPlots(Class<? extends PlotSetting> settingClazz) {
         return this.getSettingPlots(settingClazz, true);
     }
 
@@ -231,7 +231,7 @@ public class BarnRegion {
      * @return plots with specified PlotSetting and value
      * @see #getSettingPlots(Class)
      */
-    public Set<Plot> getSettingPlots(Class<? extends PlotSetting> settingClazz, boolean value) {
+    public Set<AbstractPlot> getSettingPlots(Class<? extends PlotSetting> settingClazz, boolean value) {
         return plots.values().stream()
                 .flatMap(Set::stream)
                 .filter(plot -> plot.hasSetting(settingClazz))
@@ -284,7 +284,7 @@ public class BarnRegion {
      * @param type Type of the plot
      * @return Plot that is locked
      */
-    public Set<Plot> getLockedPlots(@NotNull PlotType type) {
+    public Set<AbstractPlot> getLockedPlots(@NotNull PlotType type) {
         // TODO get actual locked plots when locked plots mechanism exists
         return this.plots.get(type);
     }
@@ -322,7 +322,7 @@ public class BarnRegion {
      * @param id   ID of the plot
      * @return Option if any plot was found, empty otherwise
      */
-    public Optional<Plot> getPlot(@NotNull PlotType type, int id) {
+    public Optional<AbstractPlot> getPlot(@NotNull PlotType type, int id) {
         return this.plots.get(type).stream()
                 .filter(plot -> plot.getId() == id)
                 .findAny();

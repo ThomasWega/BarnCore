@@ -5,15 +5,15 @@ import com.bof.barn.core.gui.premade.sound.SoundedGUIButton;
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.item.SkullBuilder;
 import com.bof.barn.core.region.BarnRegion;
-import com.bof.barn.core.region.plot.Plot;
+import com.bof.barn.core.region.plot.AbstractPlot;
 import com.bof.barn.core.region.plot.PlotType;
 import com.bof.barn.core.region.plot.harvestable.animal.menu.AnimalPlotsMenu;
 import com.bof.barn.core.region.plot.harvestable.farm.menu.FarmPlotsMenu;
 import com.bof.barn.core.region.plot.harvestable.menu.HarvestableUpgradesMainMenu;
-import com.bof.barn.core.region.plot.selling.barn.BarnPlot;
-import com.bof.barn.core.region.plot.selling.barn.menu.BarnPlotMainMenu;
-import com.bof.barn.core.region.plot.selling.silo.SiloPlot;
-import com.bof.barn.core.region.plot.selling.silo.menu.SiloPlotMainMenu;
+import com.bof.barn.core.region.plot.container.barn.BarnPlot;
+import com.bof.barn.core.region.plot.container.barn.menu.BarnPlotMainMenu;
+import com.bof.barn.core.region.plot.container.silo.SiloPlot;
+import com.bof.barn.core.region.plot.container.silo.menu.SiloPlotMainMenu;
 import com.bof.toolkit.skin.Skin;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
@@ -90,7 +90,7 @@ public class RegionMainMenu extends ChestGui {
                         .skin(new Skin("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmRhMGMyNDBjOGM3ZjMyOGYyZTYzOGYxYmY4NjJiODg5YjZlOTdiNjYwNzAwOTcxMTM5YmQ2MzQ4MWVjZDQzOSJ9fX0=", null))
                         .build(),
                 event -> {
-                    BarnPlot barnPlot = (BarnPlot) this.region.getPlots().get(PlotType.BARN).toArray(Plot[]::new)[0];
+                    BarnPlot barnPlot = (BarnPlot) this.region.getPlots().get(PlotType.BARN).toArray(AbstractPlot[]::new)[0];
                     new BarnPlotMainMenu(barnPlot).show(event.getWhoClicked());
                 }
         );
@@ -107,7 +107,7 @@ public class RegionMainMenu extends ChestGui {
                         ))
                         .build(),
                 event -> {
-                    SiloPlot siloPlot = (SiloPlot) this.region.getPlots().get(PlotType.SILO).toArray(Plot[]::new)[0];
+                    SiloPlot siloPlot = (SiloPlot) this.region.getPlots().get(PlotType.SILO).toArray(AbstractPlot[]::new)[0];
                     new SiloPlotMainMenu(siloPlot).show(event.getWhoClicked());
                 }
         );

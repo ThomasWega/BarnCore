@@ -3,7 +3,7 @@ package com.bof.barn.core.gui.premade.menu.plot.upgrades;
 import com.bof.barn.core.gui.premade.button.back.GoBackPane;
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.item.SkullBuilder;
-import com.bof.barn.core.region.plot.Plot;
+import com.bof.barn.core.region.plot.AbstractPlot;
 import com.bof.barn.core.region.plot.setting.PlotSetting;
 import com.bof.barn.core.region.setting.LeveledSetting;
 import com.bof.toolkit.skin.Skin;
@@ -30,7 +30,7 @@ import java.util.function.Supplier;
  *
  * @param <T> Plot to get upgrades for
  */
-public class PlotUpgradesMenuGUI<T extends Plot> extends ChestGui {
+public class PlotUpgradesMenuGUI<T extends AbstractPlot> extends ChestGui {
     private final T plot;
     private final Supplier<Gui> goBackGuiSupplier;
     private final OutlinePane mainPane = new OutlinePane(1, 1, 7, 1);

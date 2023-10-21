@@ -4,21 +4,17 @@ import com.bof.barn.core.Core;
 import com.bof.barn.core.HarvestableManager;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.PlotType;
+import com.bof.barn.core.region.plot.container.barn.BarnPlot;
+import com.bof.barn.core.region.plot.harvestable.AbstractHarvestablePlot;
 import com.bof.barn.core.region.plot.harvestable.AdditionResult;
-import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
 import com.bof.barn.core.region.plot.harvestable.animal.menu.AnimalPlotMainMenu;
 import com.bof.barn.core.region.plot.harvestable.setting.AutoStoreSetting;
-import com.bof.barn.core.region.plot.selling.barn.BarnPlot;
-import com.bof.barn.core.region.plot.setting.PlotSetting;
 import com.bof.barn.core.utils.BoxUtils;
-import com.github.unldenis.hologram.Hologram;
 import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
 import com.github.unldenis.hologram.line.BlockLine;
-import lombok.Data;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -33,28 +29,14 @@ import java.util.stream.Collectors;
 
 import static com.bof.barn.core.Core.WORLD;
 
-
-@Data
-public class AnimalPlot implements HarvestablePlot<AnimalType> {
-    private final Core plugin;
-    private final Map<Class<? extends PlotSetting>, PlotSetting> settings = new HashMap<>();
-    private final BarnRegion owningRegion;
-    private final PlotType type = PlotType.ANIMAL;
-    private final BoundingBox box;
-    private final int id;
-    private final Set<Block> boxBlocks;
+public class AnimalPlot extends AbstractHarvestablePlot<AnimalType> {
     private final Set<UUID> animals = new HashSet<>();
     private final int animalCount = 6;
-    private AnimalType currentlyHarvesting = AnimalType.NONE;
-    private Hologram hologram;
 
-    public AnimalPlot(Core plugin, BarnRegion owningRegion, BoundingBox box, int id) {
-        this.plugin = plugin;
-        this.owningRegion = owningRegion;
-        this.box = box;
-        this.boxBlocks = BoxUtils.getBlocksInBox(box, true);
-        this.id = id;
+    public AnimalPlot(@NotNull Core plugin, @NotNull BarnRegion owningRegion, @NotNull BoundingBox box, int id) {
+        super(plugin, PlotType.ANIMAL, owningRegion, box, id);
     }
+
 
     public void setCurrentlyHarvesting(@NotNull AnimalType animalType) {
         this.currentlyHarvesting = animalType;
@@ -230,18 +212,18 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
 
     @Override
     public void updateHologram() {
-        this.hologram.getLines().stream()
+        this.getHologram().getLines().stream()
                 .filter(iLine -> iLine instanceof BlockLine)
                 .map(iLine -> ((BlockLine) iLine))
                 .forEach(blockLine -> blockLine.setObj(new ItemStack(this.currentlyHarvesting.getItem())));
 
-        this.hologram.getLines().forEach(iLine -> iLine.update(this.owningRegion.getAllOnlinePlayers()));
+        this.getHologram().getLines().forEach(iLine -> iLine.update(this.getOwningRegion().getAllOnlinePlayers()));
     }
 
     @Override
     public Consumer<PlayerHologramInteractEvent> getHologramAction() {
         return event -> {
-            if (event.getHologram().equals(this.hologram)) {
+            if (event.getHologram().equals(this.getHologram())) {
                 new AnimalPlotMainMenu(this, true).show(event.getPlayer());
             }
         };
@@ -249,7 +231,7 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
 
     @Override
     public Component getDisplayName() {
-        return MiniMessage.miniMessage().deserialize("<b><color:#3bff5b>Animal Plot " + id + "</color></b>");
+        return MiniMessage.miniMessage().deserialize("<b><color:#3bff5b>Animal Plot " + getId() + "</color></b>");
     }
 
     @Override

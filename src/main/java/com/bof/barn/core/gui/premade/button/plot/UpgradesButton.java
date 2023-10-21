@@ -2,7 +2,7 @@ package com.bof.barn.core.gui.premade.button.plot;
 
 import com.bof.barn.core.gui.premade.sound.SoundedGUIButton;
 import com.bof.barn.core.item.SkullBuilder;
-import com.bof.barn.core.region.plot.Plot;
+import com.bof.barn.core.region.plot.AbstractPlot;
 import com.bof.barn.core.region.plot.setting.PlotSetting;
 import com.bof.barn.core.region.setting.LeveledSetting;
 import com.bof.toolkit.skin.Skin;
@@ -19,11 +19,11 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class UpgradesButton extends SoundedGUIButton {
-    public UpgradesButton(@NotNull Plot plot, @Nullable Consumer<InventoryClickEvent> action) {
+    public UpgradesButton(@NotNull AbstractPlot plot, @Nullable Consumer<InventoryClickEvent> action) {
         super(createItem(plot), action);
     }
 
-    private static @NotNull ItemStack createItem(Plot plot) {
+    private static @NotNull ItemStack createItem(AbstractPlot plot) {
         SkullBuilder builder = new SkullBuilder()
                 .displayName(MiniMessage.miniMessage().deserialize("<b><color:#4FFFD3>Upgrades</color></b>"))
                 .lore(List.of(

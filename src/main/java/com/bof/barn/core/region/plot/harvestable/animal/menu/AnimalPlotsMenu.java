@@ -4,7 +4,7 @@ import com.bof.barn.core.gui.premade.menu.plot.SelectPlotGUI;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.menu.RegionMainMenu;
 import com.bof.barn.core.region.plot.PlotType;
-import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
+import com.bof.barn.core.region.plot.harvestable.AbstractHarvestablePlot;
 import com.bof.barn.core.region.plot.harvestable.animal.AnimalPlot;
 import com.github.stefvanschie.inventoryframework.adventuresupport.StringHolder;
 import com.github.stefvanschie.inventoryframework.gui.type.util.Gui;
@@ -17,7 +17,7 @@ public class AnimalPlotsMenu extends SelectPlotGUI {
     }
 
     @Override
-    public Gui getActivePlotMenu(@NotNull HarvestablePlot<?> plot) {
+    public Gui getActivePlotMenu(@NotNull AbstractHarvestablePlot<?> plot) {
         return new AnimalPlotMainMenu(((AnimalPlot) plot), false);
     }
 }

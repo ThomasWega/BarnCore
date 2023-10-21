@@ -1,6 +1,6 @@
 package com.bof.barn.core.utils;
 
-import com.bof.barn.core.region.plot.Plot;
+import com.bof.barn.core.region.plot.AbstractPlot;
 import com.bof.toolkit.utils.ColorUtils;
 import org.bukkit.Location;
 import org.bukkit.block.Sign;
@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
 /**
- * Various utilities for {@link Plot}
+ * Various utilities for {@link AbstractPlot}
  */
 public class PlotUtils {
 
@@ -24,7 +24,7 @@ public class PlotUtils {
      * @param plot Plot to check for signs in
      * @return Optional with location of the sign, or empty if no sign with holo is present
      */
-    public static Optional<Location> identifyHologram(@NotNull Plot plot) {
+    public static Optional<Location> identifyHologram(@NotNull AbstractPlot plot) {
         return BoxUtils.getBlocksInBox(plot.getBox(), "SIGN").stream()
                 .map(block -> ((Sign) block.getState()))
                 .filter(sign -> ColorUtils.stripColor(sign.getSide(Side.FRONT).line(0)).equals("holo"))

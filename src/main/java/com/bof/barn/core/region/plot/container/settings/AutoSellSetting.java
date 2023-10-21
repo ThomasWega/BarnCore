@@ -1,4 +1,4 @@
-package com.bof.barn.core.region.plot.selling.settings;
+package com.bof.barn.core.region.plot.container.settings;
 
 import com.bof.barn.core.item.ItemBuilder;
 import net.kyori.adventure.text.Component;

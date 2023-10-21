@@ -4,7 +4,7 @@ import com.bof.barn.core.gui.premade.button.back.GoBackPane;
 import com.bof.barn.core.gui.premade.sound.SoundedGUIButton;
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.region.plot.harvestable.HarvestableType;
-import com.bof.barn.core.region.plot.selling.ContainerPlot;
+import com.bof.barn.core.region.plot.container.ContainerPlot;
 import com.bof.barn.core.utils.HarvestableUtils;
 import com.bof.barn.core.utils.ItemStackUtils;
 import com.github.stefvanschie.inventoryframework.adventuresupport.StringHolder;
@@ -53,7 +53,7 @@ public abstract class HarvestablesContainerGUI<T extends HarvestableType, P exte
     }
 
     private void fillWithHarvestables() {
-        List<ItemStack> mergedItems = ItemStackUtils.mergeItemStacks(this.plot.getStored());
+        List<ItemStack> mergedItems = ItemStackUtils.mergeItemStacks(this.plot.getStoredItems());
         List<GuiItem> items = mergedItems.stream()
                 .map(itemStack -> {
                     Optional<T> optType = Arrays.stream(type.getEnumConstants())

@@ -18,7 +18,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Handles creation of the {@link Plot} instance
+ * Handles creation of the {@link AbstractPlot} instance
  */
 @RequiredArgsConstructor
 public class PlotManager implements Listener {
@@ -35,9 +35,9 @@ public class PlotManager implements Listener {
      * @param region Region that owns the plot
      */
     private void handlePlotsCreation(BarnRegion region) {
-        Map<PlotType, Set<Plot>> plots = new HashMap<>();
+        Map<PlotType, Set<AbstractPlot>> plots = new HashMap<>();
         Arrays.stream(PlotType.values()).forEach(plotType -> plots.put(plotType, BoxUtils.identifyPlots(plotType, region.getBox()).entrySet().stream()
-                .map(entry -> Plot.newPlot(plugin, plotType, region, entry.getValue(), Integer.parseInt(entry.getKey())))
+                .map(entry -> AbstractPlot.newPlot(plugin, plotType, region, entry.getValue(), Integer.parseInt(entry.getKey())))
                 .peek(plot -> Bukkit.getPluginManager().callEvent(new PlotCreatedEvent(plot)))
                 .collect(Collectors.toSet())
         ));

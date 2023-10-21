@@ -4,9 +4,9 @@ import com.bof.barn.core.gui.premade.button.back.GoBackPane;
 import com.bof.barn.core.gui.premade.button.plot.HarvestablePlotButton;
 import com.bof.barn.core.gui.premade.button.plot.LockedPlotButton;
 import com.bof.barn.core.region.BarnRegion;
-import com.bof.barn.core.region.plot.Plot;
+import com.bof.barn.core.region.plot.AbstractPlot;
 import com.bof.barn.core.region.plot.PlotType;
-import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
+import com.bof.barn.core.region.plot.harvestable.AbstractHarvestablePlot;
 import com.github.stefvanschie.inventoryframework.adventuresupport.TextHolder;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.gui.type.util.Gui;
@@ -63,8 +63,8 @@ public abstract class SelectPlotGUI extends ChestGui {
     private void addActivePlots() {
         region.getPlots().get(plotType).stream()
                 // sort by id, so first plot is always 1, second is 2, etc.
-                .sorted(Comparator.comparingInt(Plot::getId))
-                .map(plot -> ((HarvestablePlot<?>) plot))
+                .sorted(Comparator.comparingInt(AbstractPlot::getId))
+                .map(plot -> ((AbstractHarvestablePlot<?>) plot))
                 .forEach(plot -> {
                     Consumer<List<Component>> loreAdd = lore -> lore.addAll(List.of(
                             Component.empty(),
@@ -77,5 +77,5 @@ public abstract class SelectPlotGUI extends ChestGui {
     }
 
 
-    public abstract Gui getActivePlotMenu(@NotNull HarvestablePlot<?> plot);
+    public abstract Gui getActivePlotMenu(@NotNull AbstractHarvestablePlot<?> plot);
 }

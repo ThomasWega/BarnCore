@@ -3,7 +3,7 @@ package com.bof.barn.core;
 import com.bof.barn.core.enviromental.EnchantedRain;
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.region.plot.harvestable.AdditionResult;
-import com.bof.barn.core.region.plot.harvestable.HarvestablePlot;
+import com.bof.barn.core.region.plot.harvestable.AbstractHarvestablePlot;
 import com.bof.barn.core.region.plot.harvestable.HarvestableType;
 import de.tr7zw.changeme.nbtapi.NBT;
 import org.bukkit.enchantments.Enchantment;
@@ -78,9 +78,9 @@ public class HarvestableManager {
      * @param plot         Plot the items were harvested on
      * @param harvestables Items to handle the bonus drops for (if any bonus is applied)
      * @return amount of bonus drops handled
-     * @see #handleBonusDrops(HarvestablePlot, int)
+     * @see #handleBonusDrops(AbstractHarvestablePlot, int)
      */
-    public static int handleBonusDrops(@NotNull HarvestablePlot<?> plot, @NotNull Collection<?> harvestables) {
+    public static int handleBonusDrops(@NotNull AbstractHarvestablePlot<?> plot, @NotNull Collection<?> harvestables) {
         return handleBonusDrops(plot, getBonusDrops(harvestables));
     }
 
@@ -88,9 +88,9 @@ public class HarvestableManager {
      * @param plot            Plot the items were harvested on
      * @param bonusDropAmount Amount of bonus drops to give
      * @return Amount of bonus drops actually given
-     * @see #handleBonusDrops(HarvestablePlot, Collection)
+     * @see #handleBonusDrops(AbstractHarvestablePlot, Collection)
      */
-    public static int handleBonusDrops(@NotNull HarvestablePlot<?> plot, int bonusDropAmount) {
+    public static int handleBonusDrops(@NotNull AbstractHarvestablePlot<?> plot, int bonusDropAmount) {
         int bonusCount = 0;
         for (int i = 0; i < bonusDropAmount; i++) {
             ItemStack itemStack = new ItemStack(plot.getCurrentlyHarvesting().getItem());
