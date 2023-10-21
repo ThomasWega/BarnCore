@@ -32,11 +32,11 @@ public abstract class PlotSetting implements Purchasable {
      * @param settingName The name of the plot setting.
      * @param item        Item used for this upgrade
      * @param price       Price of the setting
-     * @param state     The initial toggle status of the setting.
+     * @param initialState     The initial toggle status of the setting.
      */
-    public PlotSetting(@NotNull String settingName, @NotNull ItemStack item, float price, @NotNull SettingState state) {
+    public PlotSetting(@NotNull String settingName, @NotNull ItemStack item, float price, @NotNull SettingState initialState) {
         this.settingName = settingName;
-        this.state = state;
+        this.state = initialState;
         this.price = price;
         this.item = item;
         values.put(this.getClass(), settingName);

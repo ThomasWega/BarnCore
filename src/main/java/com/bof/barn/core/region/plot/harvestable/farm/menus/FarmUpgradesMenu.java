@@ -8,9 +8,9 @@ import com.bof.barn.core.gui.premade.menu.plot.harvestable.setting.HarvestablePl
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.PlotType;
 import com.bof.barn.core.region.plot.harvestable.menus.HarvestableUpgradesMainMenu;
-import com.bof.barn.core.region.plot.harvestable.settings.AutoHarvestSetting;
-import com.bof.barn.core.region.plot.harvestable.settings.AutoStoreSetting;
-import com.bof.barn.core.region.plot.harvestable.settings.ReplantAllSetting;
+import com.bof.barn.core.region.plot.harvestable.settings.impl.AutoHarvestSetting;
+import com.bof.barn.core.region.plot.harvestable.settings.impl.AutoStoreSetting;
+import com.bof.barn.core.region.plot.harvestable.settings.impl.ReplantAllSetting;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;

@@ -5,11 +5,9 @@ import com.bof.barn.core.Core;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.AbstractPlot;
 import com.bof.barn.core.region.plot.PlotType;
-import com.bof.barn.core.region.plot.harvestable.settings.AutoStoreSetting;
-import com.bof.barn.core.region.plot.harvestable.settings.ReplantAllSetting;
+import com.bof.barn.core.region.plot.harvestable.settings.impl.AutoStoreSetting;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BoundingBox;
@@ -128,13 +126,5 @@ public abstract class AbstractHarvestablePlot<T extends HarvestableType> extends
             }
         }
         return AdditionResult.SUCCESS;
-    }
-
-    public void handleAutoReplant() {
-        // handle auto replant all
-        if (this.isSetting(ReplantAllSetting.class)) {
-            T harvesting = this.getCurrentlyHarvesting();
-            Bukkit.getScheduler().runTaskLater(this.getPlugin(), () -> this.changeType(harvesting), 20L);
-        }
     }
 }

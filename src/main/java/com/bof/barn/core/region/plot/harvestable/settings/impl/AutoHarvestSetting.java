@@ -1,10 +1,12 @@
-package com.bof.barn.core.region.plot.harvestable.settings;
+package com.bof.barn.core.region.plot.harvestable.settings.impl;
 
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.region.plot.AbstractPlot;
 import com.bof.barn.core.region.plot.event.setting.PlotSettingLevelIncreaseEvent;
+import com.bof.barn.core.region.plot.harvestable.settings.HarvestablePlotSetting;
 import com.bof.barn.core.region.setting.LeveledSetting;
 import com.bof.barn.core.region.setting.SettingState;
+import com.bof.barn.core.region.setting.TimerSetting;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -17,10 +19,10 @@ import java.util.List;
  * Whether harvestables should be auto harvested every given period
  */
 @Getter
-public class AutoHarvestSetting extends HarvestablePlotSetting implements LeveledSetting {
+public class AutoHarvestSetting extends HarvestablePlotSetting implements LeveledSetting, TimerSetting {
     private final int maxLevel = 5;
     private final float basePrice = this.getPrice();
-    private long tickSpeed = 200;
+    private long currentTickSpeed = 200;
     private int currentLevel = 1;
 
     public AutoHarvestSetting() {
@@ -37,7 +39,7 @@ public class AutoHarvestSetting extends HarvestablePlotSetting implements Levele
         if (this.isAtMaxLevel()) return false;
 
         currentLevel++;
-        tickSpeed -= 20;
+        currentTickSpeed -= 20;
         Bukkit.getPluginManager().callEvent(new PlotSettingLevelIncreaseEvent(plot, this));
         return true;
     }

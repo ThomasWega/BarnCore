@@ -18,7 +18,7 @@ import java.util.Optional;
 /**
  * Handles the automatic harvesting of the harvestables on the plot
  *
- * @param <T>
+ * @param <T> Harvestable plot
  */
 @RequiredArgsConstructor
 public class AutoHarvestTask<T extends AbstractHarvestablePlot<?>> implements PlotTask {

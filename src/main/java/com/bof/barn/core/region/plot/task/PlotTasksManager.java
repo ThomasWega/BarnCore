@@ -6,7 +6,7 @@ import com.bof.barn.core.region.plot.PlotType;
 import com.bof.barn.core.region.plot.event.setting.PlotSettingLevelIncreaseEvent;
 import com.bof.barn.core.region.plot.event.setting.PlotSettingToggleEvent;
 import com.bof.barn.core.region.plot.harvestable.AbstractHarvestablePlot;
-import com.bof.barn.core.region.plot.harvestable.settings.AutoHarvestSetting;
+import com.bof.barn.core.region.plot.harvestable.settings.impl.AutoHarvestSetting;
 import com.bof.barn.core.region.plot.harvestable.tasks.AutoHarvestTask;
 import com.bof.barn.core.region.plot.setting.PlotSetting;
 import lombok.Getter;
@@ -62,7 +62,7 @@ public class PlotTasksManager implements Listener {
         if (setting.isToggled()) {
             Map<Integer, Map<Class<? extends PlotTask>, BukkitTask>> typeTasks = this.runningTasks.computeIfAbsent(plot.getType(), k -> new HashMap<>());
             Map<Class<? extends PlotTask>, BukkitTask> plotTasks = typeTasks.computeIfAbsent(plot.getId(), k -> new HashMap<>());
-            BukkitTask task = Bukkit.getScheduler().runTaskTimer(this.plugin, new AutoHarvestTask<>((AbstractHarvestablePlot<?>) plot), 1L, setting.getTickSpeed());
+            BukkitTask task = Bukkit.getScheduler().runTaskTimer(this.plugin, new AutoHarvestTask<>((AbstractHarvestablePlot<?>) plot), 1L, setting.getCurrentTickSpeed());
             plotTasks.put(AutoHarvestTask.class, task);
         } else {
             this.cancelTask(AutoHarvestTask.class, plot);

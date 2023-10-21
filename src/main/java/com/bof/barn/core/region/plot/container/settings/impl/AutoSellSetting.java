@@ -1,6 +1,7 @@
-package com.bof.barn.core.region.plot.container.settings;
+package com.bof.barn.core.region.plot.container.settings.impl;
 
 import com.bof.barn.core.item.ItemBuilder;
+import com.bof.barn.core.region.plot.container.settings.ContainerPlotSetting;
 import com.bof.barn.core.region.setting.SettingState;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;

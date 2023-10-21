@@ -8,7 +8,8 @@ import com.bof.barn.core.region.plot.container.barn.BarnPlot;
 import com.bof.barn.core.region.plot.harvestable.AbstractHarvestablePlot;
 import com.bof.barn.core.region.plot.harvestable.AdditionResult;
 import com.bof.barn.core.region.plot.harvestable.animal.menus.AnimalPlotMainMenu;
-import com.bof.barn.core.region.plot.harvestable.settings.AutoStoreSetting;
+import com.bof.barn.core.region.plot.harvestable.settings.impl.AutoStoreSetting;
+import com.bof.barn.core.region.plot.harvestable.tasks.ReplantAllTask;
 import com.bof.barn.core.utils.BoxUtils;
 import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
 import com.github.unldenis.hologram.line.BlockLine;
@@ -82,7 +83,9 @@ public class AnimalPlot extends AbstractHarvestablePlot<AnimalType> {
     @Override
     public int harvest(@NotNull Player player) {
         if (this.getRemainingHarvestablesCount() == 0) return 0;
-        this.handleAutoReplant();
+
+        new ReplantAllTask<>(this).run();
+
         int i = 0;
         animalLoop:
         for (LivingEntity entity : this.getEntities()) {

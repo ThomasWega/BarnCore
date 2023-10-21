@@ -5,7 +5,10 @@ import com.bof.barn.core.gui.premade.button.plot.settings.LockedSettingButton;
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.region.plot.AbstractPlot;
 import com.bof.barn.core.region.plot.setting.PlotSetting;
+import com.bof.barn.core.region.setting.ChanceSetting;
 import com.bof.barn.core.region.setting.LeveledSetting;
+import com.bof.barn.core.region.setting.TimerSetting;
+import com.bof.toolkit.utils.NumberUtils;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
@@ -72,6 +75,17 @@ public class PlotSettingsGUI<T extends AbstractPlot> extends ChestGui {
                         ? Component.text("ON", NamedTextColor.GREEN)
                         : Component.text("OFF", NamedTextColor.RED)
                 ));
+
+
+        if (plotSetting instanceof ChanceSetting chanceSetting) {
+            displayItemBuilder.appendLoreLine(Component.empty())
+                    .appendLoreLine(Component.text("Chance: " + NumberUtils.roundBy(chanceSetting.getCurrentChance(), 2) + "%", NamedTextColor.WHITE));
+        }
+
+        if (plotSetting instanceof TimerSetting timerSetting) {
+            displayItemBuilder.appendLoreLine(Component.empty())
+                    .appendLoreLine(Component.text("Interval: " + NumberUtils.roundBy((float) timerSetting.getCurrentTickSpeed() / 20, 2) + "s", NamedTextColor.WHITE));
+        }
 
         if (plotSetting instanceof LeveledSetting levelSetting) {
             displayItemBuilder.appendLoreLine(Component.empty())

@@ -6,7 +6,7 @@ import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.AbstractPlot;
 import com.bof.barn.core.region.plot.PlotType;
 import com.bof.barn.core.region.plot.harvestable.HarvestableType;
-import com.bof.barn.core.region.plot.container.settings.AutoSellSetting;
+import com.bof.barn.core.region.plot.container.settings.impl.AutoSellSetting;
 import com.bof.barn.core.utils.HarvestableUtils;
 import com.bof.toolkit.utils.NumberUtils;
 import lombok.Getter;
@@ -77,7 +77,7 @@ public abstract class ContainerPlot<T extends HarvestableType> extends AbstractP
     }
 
     /**
-     * Tries to add the items to the silo. Handles the {@link com.bof.barn.core.region.plot.container.settings.AutoSellSetting}
+     * Tries to add the items to the silo. Handles the {@link AutoSellSetting}
      *
      * @param harvestables Harvestable items to try to add
      * @return List of items that couldn't be added
@@ -87,7 +87,7 @@ public abstract class ContainerPlot<T extends HarvestableType> extends AbstractP
     }
 
     /**
-     * Tries to add the items to the silo. Handles the {@link com.bof.barn.core.region.plot.container.settings.AutoSellSetting}
+     * Tries to add the items to the silo. Handles the {@link AutoSellSetting}
      *
      * @param harvestables Harvestable items to try to add
      * @return List of items that couldn't be added

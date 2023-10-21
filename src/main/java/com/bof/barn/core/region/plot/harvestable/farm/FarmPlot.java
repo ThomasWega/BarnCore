@@ -8,7 +8,8 @@ import com.bof.barn.core.region.plot.container.silo.SiloPlot;
 import com.bof.barn.core.region.plot.harvestable.AbstractHarvestablePlot;
 import com.bof.barn.core.region.plot.harvestable.AdditionResult;
 import com.bof.barn.core.region.plot.harvestable.farm.menus.FarmPlotMainMenu;
-import com.bof.barn.core.region.plot.harvestable.settings.AutoStoreSetting;
+import com.bof.barn.core.region.plot.harvestable.settings.impl.AutoStoreSetting;
+import com.bof.barn.core.region.plot.harvestable.tasks.ReplantAllTask;
 import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
 import com.github.unldenis.hologram.line.BlockLine;
 import net.kyori.adventure.text.Component;
@@ -62,7 +63,9 @@ public class FarmPlot extends AbstractHarvestablePlot<CropType> {
     @Override
     public int harvest(@NotNull Player player) {
         if (this.getRemainingHarvestablesCount() == 0) return 0;
-        this.handleAutoReplant();
+
+        new ReplantAllTask<>(this).run();
+
         List<Block> successfulBlocks = new ArrayList<>();
         blockLoop:
         for (Block block : this.getBoxBlocks()) {

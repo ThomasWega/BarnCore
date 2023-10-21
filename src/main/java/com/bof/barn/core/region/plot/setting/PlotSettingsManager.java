@@ -2,10 +2,10 @@ package com.bof.barn.core.region.plot.setting;
 
 import com.bof.barn.core.region.plot.AbstractPlot;
 import com.bof.barn.core.region.plot.event.PlotCreatedEvent;
-import com.bof.barn.core.region.plot.harvestable.settings.AutoHarvestSetting;
-import com.bof.barn.core.region.plot.harvestable.settings.AutoStoreSetting;
-import com.bof.barn.core.region.plot.harvestable.settings.ReplantAllSetting;
-import com.bof.barn.core.region.plot.container.settings.AutoSellSetting;
+import com.bof.barn.core.region.plot.harvestable.settings.impl.AutoHarvestSetting;
+import com.bof.barn.core.region.plot.harvestable.settings.impl.AutoStoreSetting;
+import com.bof.barn.core.region.plot.harvestable.settings.impl.ReplantAllSetting;
+import com.bof.barn.core.region.plot.container.settings.impl.AutoSellSetting;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
