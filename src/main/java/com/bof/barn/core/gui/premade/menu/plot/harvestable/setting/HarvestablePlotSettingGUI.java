@@ -11,6 +11,7 @@ import com.bof.barn.core.region.plot.PlotType;
 import com.bof.barn.core.region.plot.harvestable.AbstractHarvestablePlot;
 import com.bof.barn.core.region.plot.harvestable.settings.HarvestablePlotSetting;
 import com.bof.barn.core.region.plot.setting.PlotSetting;
+import com.bof.barn.core.region.setting.SettingState;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.gui.type.util.Gui;
@@ -74,7 +75,7 @@ public class HarvestablePlotSettingGUI<S extends HarvestablePlotSetting> extends
     }
 
     private void addSelectedPlots() {
-        this.region.getSettingPlots(this.setting).stream()
+        this.region.getToggledSettingPlots(this.setting).stream()
                 .filter(plot -> plot.getType() == this.plotType)
                 // sort by id, so first plot is always 1, second is 2, etc.
                 .sorted(Comparator.comparingInt(AbstractPlot::getId))
@@ -110,7 +111,7 @@ public class HarvestablePlotSettingGUI<S extends HarvestablePlotSetting> extends
         return event -> {
             if (event.isShiftClick()) {
                 if (plot != null) {
-                    plot.setSetting(this.setting, false);
+                    plot.setSetting(this.setting, SettingState.OFF);
                 }
                 // this doesn't work for some reason
                 // this.update();

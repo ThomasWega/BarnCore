@@ -8,6 +8,7 @@ import com.bof.barn.core.region.plot.harvestable.farm.CropType;
 import com.bof.barn.core.region.plot.container.barn.BarnPlot;
 import com.bof.barn.core.region.plot.container.silo.SiloPlot;
 import com.bof.barn.core.region.plot.setting.PlotSetting;
+import com.bof.barn.core.region.setting.SettingState;
 import com.bof.barn.core.utils.HarvestableUtils;
 import com.bof.toolkit.utils.NumberUtils;
 import com.github.unldenis.hologram.HologramPool;
@@ -190,52 +191,78 @@ public class BarnRegion {
     }
 
     /**
-     * Retrieves the number of plots that have the {@link PlotSetting} set to true
+     * Retrieves the number of plots that have the {@link PlotSetting} set to {@link SettingState#ON}
      *
      * @param settingClazz The class representing the type of PlotSetting.
      * @return The number of plots associated with the specified PlotSetting.
-     * @see #getSettingPlotsCount(Class, boolean)
+     * @see #getSettingPlotsCount(Class, SettingState)
      */
-    public int getSettingPlotsCount(Class<? extends PlotSetting> settingClazz) {
-        return this.getSettingPlotsCount(settingClazz, true);
+    public int getSettingPlotsCount(@NotNull Class<? extends PlotSetting> settingClazz) {
+        return this.getSettingPlotsCount(settingClazz, SettingState.ON);
     }
 
     /**
      * Retrieves the number of plots that have the {@link PlotSetting} set to specified value
      *
      * @param settingClazz The class representing the type of PlotSetting.
-     * @param value        value to check against
+     * @param state        toggle state to check against
      * @return The number of plots associated with the specified PlotSetting.
      * @see #getSettingPlotsCount(Class)
      */
-    public int getSettingPlotsCount(Class<? extends PlotSetting> settingClazz, boolean value) {
-        return this.getSettingPlots(settingClazz, value).size();
+    public int getSettingPlotsCount(@NotNull Class<? extends PlotSetting> settingClazz, @NotNull SettingState state) {
+        return this.getToggledSettingPlots(settingClazz, state).size();
     }
 
     /**
-     * Retrieves the plots that have the {@link PlotSetting} set to true
-     *
      * @param settingClazz The class representing the type of PlotSetting.
-     * @return plots with specified PlotSetting set to true
-     * @see #getSettingPlots(Class, boolean)
+     * @return plots with specified PlotSetting set to {@link SettingState#ON}
      */
-    public Set<AbstractPlot> getSettingPlots(Class<? extends PlotSetting> settingClazz) {
-        return this.getSettingPlots(settingClazz, true);
+    public @NotNull Set<AbstractPlot> getToggledSettingPlots(@NotNull Class<? extends PlotSetting> settingClazz) {
+        return this.getToggledSettingPlots(settingClazz, SettingState.ON);
+    }
+
+
+    /**
+     * @param settingClazz The class representing the type of PlotSetting.
+     * @return plots with specified PlotSetting set to {@link SettingState#OFF}
+     */
+    public @NotNull Set<AbstractPlot> getUnToggledSettingPlots(@NotNull Class<? extends PlotSetting> settingClazz) {
+        return this.getToggledSettingPlots(settingClazz, SettingState.OFF);
+    }
+
+    /**
+     * @param settingClazz The class representing the type of PlotSetting.
+     * @return plots with specified PlotSetting set to {@link SettingState#LOCKED}
+     */
+    public @NotNull Set<AbstractPlot> getLockedSettingPlots(@NotNull Class<? extends PlotSetting> settingClazz) {
+        return this.getToggledSettingPlots(settingClazz, SettingState.LOCKED);
+    }
+
+    /**
+     * @param settingClazz The class representing the type of PlotSetting.
+     * @return plots with specified PlotSetting not set to {@link SettingState#LOCKED}
+     */
+    public @NotNull Set<AbstractPlot> getUnlockedSettingPlots(@NotNull Class<? extends PlotSetting> settingClazz) {
+        return this.plots.values().stream()
+                .flatMap(Set::stream)
+                .filter(plot -> plot.hasSetting(settingClazz))
+                .filter(plot -> plot.getSetting(settingClazz).isUnlocked())
+                .collect(Collectors.toSet());
     }
 
     /**
      * Retrieves the plots that have the {@link PlotSetting} set to specified value
      *
      * @param settingClazz The class representing the type of PlotSetting.
-     * @param value        value to check against
+     * @param state        toggle state to check against
      * @return plots with specified PlotSetting and value
-     * @see #getSettingPlots(Class)
+     * @see #getToggledSettingPlots(Class)
      */
-    public Set<AbstractPlot> getSettingPlots(Class<? extends PlotSetting> settingClazz, boolean value) {
-        return plots.values().stream()
+    public @NotNull Set<AbstractPlot> getToggledSettingPlots(@NotNull Class<? extends PlotSetting> settingClazz, @NotNull SettingState state) {
+        return this.plots.values().stream()
                 .flatMap(Set::stream)
                 .filter(plot -> plot.hasSetting(settingClazz))
-                .filter(plot -> plot.isSetting(settingClazz, value))
+                .filter(plot -> plot.isSetting(settingClazz, state))
                 .collect(Collectors.toSet());
     }
 
@@ -284,7 +311,7 @@ public class BarnRegion {
      * @param type Type of the plot
      * @return Plot that is locked
      */
-    public Set<AbstractPlot> getLockedPlots(@NotNull PlotType type) {
+    public @NotNull Set<AbstractPlot> getLockedPlots(@NotNull PlotType type) {
         // TODO get actual locked plots when locked plots mechanism exists
         return this.plots.get(type);
     }
@@ -292,7 +319,7 @@ public class BarnRegion {
     /**
      * @return Silo that is not full and has the largest capacity out of the free silos
      */
-    public Optional<SiloPlot> getFreeSilo() {
+    public @NotNull Optional<SiloPlot> getFreeSilo() {
         return this.plots.get(PlotType.SILO).stream()
                 .map(plot -> (SiloPlot) plot)
                 .filter(siloPlot -> !siloPlot.isFull())
@@ -302,7 +329,7 @@ public class BarnRegion {
     /**
      * @return Barn that is not full and has the largest capacity out of the free silos
      */
-    public Optional<BarnPlot> getFreeBarn() {
+    public @NotNull Optional<BarnPlot> getFreeBarn() {
         return this.plots.get(PlotType.BARN).stream()
                 .map(plot -> (BarnPlot) plot)
                 .filter(barnPlot -> !barnPlot.isFull())
@@ -322,7 +349,7 @@ public class BarnRegion {
      * @param id   ID of the plot
      * @return Option if any plot was found, empty otherwise
      */
-    public Optional<AbstractPlot> getPlot(@NotNull PlotType type, int id) {
+    public @NotNull Optional<AbstractPlot> getPlot(@NotNull PlotType type, int id) {
         return this.plots.get(type).stream()
                 .filter(plot -> plot.getId() == id)
                 .findAny();
@@ -331,7 +358,7 @@ public class BarnRegion {
     /**
      * @return Set of all currently online members + owner (if online)
      */
-    public Set<Player> getAllOnlinePlayers() {
+    public @NotNull Set<Player> getAllOnlinePlayers() {
         Set<Player> onlineMembers = members.stream()
                 .map(Bukkit::getPlayer)
                 .filter(Objects::nonNull)

@@ -36,6 +36,7 @@ public final class Core extends JavaPlugin implements Listener {
     private final RegionStorage regionStorage = new RegionStorage();
     private RegionManager regionManager;
 
+    // TODO auto store breaks harvest
     // TODO multi store menu ignores locked or unpurchased upgrades
     // TODO add upgrade that has chance to regenerate the crops
 

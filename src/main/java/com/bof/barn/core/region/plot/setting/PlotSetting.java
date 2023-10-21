@@ -1,6 +1,7 @@
 package com.bof.barn.core.region.plot.setting;
 
 import com.bof.barn.core.Purchasable;
+import com.bof.barn.core.region.setting.SettingState;
 import lombok.Data;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -23,8 +24,7 @@ public abstract class PlotSetting implements Purchasable {
     private final String settingName;
     private final ItemStack item;
     private final float price;
-    boolean toggled;
-    boolean unlocked = false;
+    private @NotNull SettingState state;
 
     /**
      * Constructs a new setting with the given setting name and toggle status.
@@ -32,32 +32,37 @@ public abstract class PlotSetting implements Purchasable {
      * @param settingName The name of the plot setting.
      * @param item        Item used for this upgrade
      * @param price       Price of the setting
-     * @param toggled     The initial toggle status of the setting.
+     * @param state     The initial toggle status of the setting.
      */
-    public PlotSetting(@NotNull String settingName, @NotNull ItemStack item, float price, boolean toggled) {
+    public PlotSetting(@NotNull String settingName, @NotNull ItemStack item, float price, @NotNull SettingState state) {
         this.settingName = settingName;
-        this.toggled = toggled;
+        this.state = state;
         this.price = price;
         this.item = item;
         values.put(this.getClass(), settingName);
     }
 
+    public boolean isToggled() {
+        return this.getState().isToggled();
+    }
+
+    public boolean isUnlocked() {
+        return this.getState().isUnlocked();
+    }
+
     /**
-     * Constructs a new setting with the given setting name and toggle status.
-     *
-     * @param settingName The name of the plot setting.
-     * @param item        Item used for this upgrade
-     * @param price       Price of the setting
-     * @param unlocked    Whether the setting is unlocked
-     * @param toggled     The initial toggle status of the setting.
+     * @param unlocked Whether the setting should be unlocked
+     * @return Whether the state was changed
      */
-    public PlotSetting(@NotNull String settingName, @NotNull ItemStack item, float price, boolean unlocked, boolean toggled) {
-        this.settingName = settingName;
-        this.toggled = toggled;
-        this.unlocked = unlocked;
-        this.price = price;
-        this.item = item;
-        values.put(this.getClass(), settingName);
+    public boolean setUnlocked(boolean unlocked) {
+        if (unlocked && !this.isUnlocked()) {
+            this.setState(SettingState.OFF);
+            return true;
+        } else if (!unlocked) {
+            this.setState(SettingState.LOCKED);
+            return true;
+        }
+        return false;
     }
 
     /**

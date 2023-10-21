@@ -8,9 +8,9 @@ import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.AbstractPlot;
 import com.bof.barn.core.region.plot.PlotType;
 import com.bof.barn.core.region.plot.harvestable.AbstractHarvestablePlot;
-import com.bof.barn.core.region.plot.harvestable.settings.AutoStoreSetting;
 import com.bof.barn.core.region.plot.harvestable.settings.HarvestablePlotSetting;
 import com.bof.barn.core.region.plot.setting.PlotSetting;
+import com.bof.barn.core.region.setting.SettingState;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
@@ -41,12 +41,14 @@ class HarvestablePlotSettingSetGUI<S extends HarvestablePlotSettingGUI<? extends
     private final AbstractHarvestablePlot<?> previousSelectedPlot;
     private final PlotType plotType;
     private final S mainSettingMenu;
+    private final Class<? extends HarvestablePlotSetting> setting;
 
     public HarvestablePlotSettingSetGUI(@NotNull BarnRegion region, @NotNull PlotType plotType, @NotNull S mainSettingMenu, @Nullable AbstractHarvestablePlot<?> previousSelectedPlot) {
         super(4, ComponentHolder.of(Component.text("Toggle " + PlotSetting.getSettingName(mainSettingMenu.getSetting()) + " for plot")));
         this.region = region;
         this.plotType = plotType;
         this.mainSettingMenu = mainSettingMenu;
+        this.setting = mainSettingMenu.getSetting();
         this.previousSelectedPlot = previousSelectedPlot;
         this.lockedPane.setPriority(Pane.Priority.LOW);
         this.initialize();
@@ -69,7 +71,7 @@ class HarvestablePlotSettingSetGUI<S extends HarvestablePlotSettingGUI<? extends
     }
 
     private void addSettablePlots() {
-        this.region.getSettingPlots(AutoStoreSetting.class, false).stream()
+        this.region.getUnToggledSettingPlots(this.setting).stream()
                 .filter(plot -> plot.getType() == this.plotType)
                 // sort by id, so first plot is always 1, second is 2, etc.
                 .sorted(Comparator.comparingInt(AbstractPlot::getId))
@@ -87,10 +89,10 @@ class HarvestablePlotSettingSetGUI<S extends HarvestablePlotSettingGUI<? extends
                                     .build(),
                             event -> {
                                 if (this.previousSelectedPlot != null) {
-                                    this.previousSelectedPlot.setSetting(this.mainSettingMenu.getSetting(), false);
+                                    this.previousSelectedPlot.setSetting(this.setting, SettingState.OFF);
                                 }
-                                plot.setSetting(this.mainSettingMenu.getSetting(), true);
-                                new HarvestablePlotSettingGUI<>(this.region, this.plotType, this.mainSettingMenu.getSetting(), this.mainSettingMenu.getGoBackGui())
+                                plot.setSetting(this.setting, SettingState.ON);
+                                new HarvestablePlotSettingGUI<>(this.region, this.plotType, this.setting, this.mainSettingMenu.getGoBackGui())
                                         .show(event.getWhoClicked());
                             }
                     ));

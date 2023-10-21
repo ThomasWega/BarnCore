@@ -38,8 +38,7 @@ public class UpgradesButton extends SoundedGUIButton {
                 });
 
         // add unlocked but toggled OFF settings
-        plot.getUnlockedSettings().stream()
-                .filter(plotSetting -> !plotSetting.isToggled())
+        plot.getUnToggledSettings().stream()
                 .sorted(Comparator.comparing(PlotSetting::getSettingName))
                 .forEach(plotSetting ->
                         builder.appendLoreLine(Component.text(plotSetting.getSettingName() + ": ", NamedTextColor.GRAY)

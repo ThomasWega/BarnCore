@@ -8,6 +8,7 @@ import com.bof.barn.core.region.plot.harvestable.farm.FarmPlot;
 import com.bof.barn.core.region.plot.container.barn.BarnPlot;
 import com.bof.barn.core.region.plot.container.silo.SiloPlot;
 import com.bof.barn.core.region.plot.setting.PlotSetting;
+import com.bof.barn.core.region.setting.SettingState;
 import com.bof.barn.core.utils.BoxUtils;
 import com.bof.toolkit.utils.ColorUtils;
 import com.github.unldenis.hologram.Hologram;
@@ -80,26 +81,35 @@ public abstract class AbstractPlot {
     }
 
     /**
-     * @return All settings that are toggled true
+     * @return All settings that are toggled to {@link SettingState#ON}
      */
     public @NotNull List<? extends PlotSetting> getToggledSettings() {
-        return this.getSettings().values().stream()
-                .filter(PlotSetting::isToggled)
-                .toList();
+        return this.getSettings(SettingState.ON);
     }
 
     /**
-     * @return All settings that are locked
+     * @return All settings that are toggled to {@link SettingState#OFF}
+     */
+    public @NotNull List<? extends PlotSetting> getUnToggledSettings() {
+        return this.getSettings(SettingState.OFF);
+    }
+
+    /**
+     * @return All settings that are toggled to {@link SettingState#LOCKED}
      * @see #getUnlockedSettings()
      */
     public @NotNull List<? extends PlotSetting> getLockedSettings() {
+        return this.getSettings(SettingState.LOCKED);
+    }
+
+    public @NotNull List<? extends PlotSetting> getSettings(@NotNull SettingState state) {
         return this.getSettings().values().stream()
-                .filter(plotSetting -> !plotSetting.isUnlocked())
+                .filter(plotSetting -> plotSetting.getState() == state)
                 .toList();
     }
 
     /**
-     * @return All settings that are unlocked
+     * @return All settings that are not {@link SettingState#LOCKED}
      * @see #getLockedSettings()
      */
     public @NotNull List<? extends PlotSetting> getUnlockedSettings() {
@@ -132,68 +142,74 @@ public abstract class AbstractPlot {
 
     /**
      * @param settingClazz Class of the specific setting
-     * @return the toggle boolean of the setting
+     * @return the state of the setting
      */
-    public boolean getSettingToggle(@NotNull Class<? extends PlotSetting> settingClazz) {
-        return this.getSetting(settingClazz).isToggled();
+    public @NotNull SettingState getSettingState(@NotNull Class<? extends PlotSetting> settingClazz) {
+        return this.getSetting(settingClazz).getState();
     }
 
     /**
-     * Switches the toggle boolean for the given setting (e.g. from true to false)
+     * Switches the toggle state for the given setting (ON to OFF and reverse)
      *
      * @param settingClazz Class of the specific setting
-     * @return New value of the toggle boolean
-     * @see #setSetting(Class, boolean)
+     * @return New value of the toggle state
+     * @see #setSetting(Class, SettingState)
      */
-    public boolean switchSettingToggle(@NotNull Class<? extends PlotSetting> settingClazz) {
-        boolean newValue = !this.getSettingToggle(settingClazz);
-        this.setSetting(settingClazz, newValue);
-        return newValue;
+    public @NotNull SettingState switchSettingToggle(@NotNull Class<? extends PlotSetting> settingClazz) {
+        SettingState currentState = this.getSettingState(settingClazz);
+        SettingState newState = currentState;
+        if (currentState == SettingState.ON) {
+            newState = SettingState.OFF;
+        } else if (currentState == SettingState.OFF) {
+            newState = SettingState.ON;
+        }
+        this.setSetting(settingClazz, newState);
+        return newState;
     }
 
     /**
      * Check for the given setting
      *
      * @param settingClazz The specific Setting class
-     * @return whether the setting is true
-     * @see #isSetting(Class, boolean)
+     * @return whether the setting is ON
+     * @see #isSetting(Class, SettingState)
      */
     public boolean isSetting(@NotNull Class<? extends PlotSetting> settingClazz) {
-        return this.isSetting(settingClazz, true);
+        return this.isSetting(settingClazz, SettingState.ON);
     }
 
     /**
      * Check for the given setting and value
      *
      * @param settingClazz The specific Setting class
-     * @param value        Value to check against
-     * @return whether the setting is true
+     * @param state     State to check against
+     * @return whether the setting is the specified state
      * @see #isSetting(Class)
      */
-    public boolean isSetting(@NotNull Class<? extends PlotSetting> settingClazz, boolean value) {
-        return this.getSettings().get(settingClazz).isToggled() == value;
+    public boolean isSetting(@NotNull Class<? extends PlotSetting> settingClazz, @NotNull SettingState state) {
+        return this.getSettings().get(settingClazz).getState() == state;
     }
 
     /**
-     * Sets the setting to true
+     * Sets the setting to {@link SettingState#ON}
      *
      * @param settingClazz Class of the setting to set a value for
-     * @see #setSetting(Class, boolean)
+     * @see #setSetting(Class, SettingState)
      */
     public void setSetting(@NotNull Class<? extends PlotSetting> settingClazz) {
-        this.setSetting(settingClazz, true);
+        this.setSetting(settingClazz, SettingState.ON);
     }
 
     /**
      * Sets the setting to the given value, updates the hologram and calls the {@link PlotSettingToggleEvent}
      *
      * @param settingClazz Class of the setting to set a value for
-     * @param value        Value to set the setting to
+     * @param state        State to set the setting to
      * @see #setSetting(Class)
      */
-    public void setSetting(@NotNull Class<? extends PlotSetting> settingClazz, boolean value) {
+    public void setSetting(@NotNull Class<? extends PlotSetting> settingClazz, @NotNull SettingState state) {
         PlotSetting setting = this.getSettings().get(settingClazz);
-        setting.setToggled(value);
+        setting.setState(state);
         this.updateHologram();
         Bukkit.getPluginManager().callEvent(new PlotSettingToggleEvent(this, setting));
     }

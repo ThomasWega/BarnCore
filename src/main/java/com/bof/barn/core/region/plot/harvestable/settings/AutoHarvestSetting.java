@@ -4,6 +4,7 @@ import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.region.plot.AbstractPlot;
 import com.bof.barn.core.region.plot.event.setting.PlotSettingLevelIncreaseEvent;
 import com.bof.barn.core.region.setting.LeveledSetting;
+import com.bof.barn.core.region.setting.SettingState;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -28,7 +29,7 @@ public class AutoHarvestSetting extends HarvestablePlotSetting implements Levele
                 .lore(List.of(
                         Component.text("Automatically harvests crops/animals", NamedTextColor.GRAY)
                 ))
-                .build(), 500, false);
+                .build(), 500, SettingState.LOCKED);
     }
 
     @Override

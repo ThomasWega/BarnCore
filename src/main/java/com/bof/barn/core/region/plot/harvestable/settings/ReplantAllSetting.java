@@ -1,6 +1,7 @@
 package com.bof.barn.core.region.plot.harvestable.settings;
 
 import com.bof.barn.core.item.ItemBuilder;
+import com.bof.barn.core.region.setting.SettingState;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Material;
@@ -18,6 +19,6 @@ public class ReplantAllSetting extends HarvestablePlotSetting {
                         Component.text("Automatically replants all harvestables", NamedTextColor.GRAY),
                         Component.text("when harvesting all at once", NamedTextColor.GRAY)
                 ))
-                .build(), 500, false);
+                .build(), 500, SettingState.LOCKED);
     }
 }
