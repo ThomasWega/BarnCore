@@ -1,4 +1,4 @@
-package com.bof.barn.core.gui.premade.button.plot.settings;
+package com.bof.barn.core.gui.premade.button.plot.settings.impl;
 
 import com.bof.barn.core.gui.premade.sound.SoundedGUIButton;
 import com.bof.barn.core.item.SkullBuilder;

@@ -1,12 +1,11 @@
 package com.bof.barn.core.gui.premade.menu.plot.setting;
 
 import com.bof.barn.core.gui.premade.button.back.GoBackPane;
+import com.bof.barn.core.gui.premade.button.plot.settings.LockedSettingButton;
 import com.bof.barn.core.item.ItemBuilder;
-import com.bof.barn.core.item.SkullBuilder;
 import com.bof.barn.core.region.plot.AbstractPlot;
 import com.bof.barn.core.region.plot.setting.PlotSetting;
 import com.bof.barn.core.region.setting.LeveledSetting;
-import com.bof.toolkit.skin.Skin;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
@@ -15,7 +14,6 @@ import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.apache.commons.lang.WordUtils;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -61,10 +59,9 @@ public class PlotSettingsGUI<T extends AbstractPlot> extends ChestGui {
 
         this.plot.getLockedSettings().stream()
                 .sorted(Comparator.comparing(PlotSetting::getSettingName))
-                .forEach(plotSetting -> {
-                    ItemStack displayItem = this.createLockedSettingItem(plotSetting);
-                    this.mainPane.addItem(new GuiItem(displayItem, this.getLockedSettingAction(plotSetting)));
-                });
+                .forEach(plotSetting -> this.mainPane.addItem(
+                        new LockedSettingButton(this.plot, plotSetting, this.getLockedSettingAction(plotSetting)))
+                );
     }
 
     private @NotNull ItemStack createUnlockedSettingItem(PlotSetting plotSetting) {
@@ -112,18 +109,6 @@ public class PlotSettingsGUI<T extends AbstractPlot> extends ChestGui {
             this.plot.updateHologram();
             event.setCancelled(true);
         };
-    }
-
-    private @NotNull ItemStack createLockedSettingItem(PlotSetting plotSetting) {
-        // use the ItemStack but change the material
-        return new SkullBuilder(new ItemBuilder(plotSetting.getItem()).material(Material.PLAYER_HEAD))
-                .skin(new Skin("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODE2MjNkNTIzOGRhYjdkZWNkMzIwMjY1Y2FlMWRjNmNhOTFiN2ZhOTVmMzQ2NzNhYWY0YjNhZDVjNmJhMTZlMSJ9fX0=", null))
-                .appendLoreLine(Component.empty())
-                .appendLoreLine(Component.text("Price: " + plotSetting.getPrice() + "$", NamedTextColor.WHITE))
-                .appendLoreLine(Component.text("Your balance: " + plot.getOwningRegion().getFarmCoinsRounded(2) + "$", NamedTextColor.WHITE))
-                .appendLoreLine(Component.empty())
-                .appendLoreLine(Component.text("Shift-click to purchase this upgrade", NamedTextColor.RED))
-                .build();
     }
 
     private @NotNull Consumer<InventoryClickEvent> getLockedSettingAction(PlotSetting plotSetting) {

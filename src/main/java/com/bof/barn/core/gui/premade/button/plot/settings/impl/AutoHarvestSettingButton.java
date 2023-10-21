@@ -1,4 +1,4 @@
-package com.bof.barn.core.gui.premade.button.plot.settings;
+package com.bof.barn.core.gui.premade.button.plot.settings.impl;
 
 import com.bof.barn.core.gui.premade.sound.SoundedGUIButton;
 import com.bof.barn.core.item.ItemBuilder;
@@ -12,10 +12,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class ReplantAllSettingButton extends SoundedGUIButton {
-    public ReplantAllSettingButton(@NotNull List<Component> lore, @Nullable Consumer<InventoryClickEvent> action) {
+public class AutoHarvestSettingButton extends SoundedGUIButton {
+    public AutoHarvestSettingButton(@NotNull List<Component> lore, @Nullable Consumer<InventoryClickEvent> action) {
         super(new ItemBuilder(Material.SHEARS)
-                .displayName(MiniMessage.miniMessage().deserialize("<b><color:#ff530f>Replant All</color></b>"))
+                .displayName(MiniMessage.miniMessage().deserialize("<b><color:#96ff59>Auto Harvest</color></b>"))
                 .lore(lore)
                 .hideFlags()
                 .build(), action

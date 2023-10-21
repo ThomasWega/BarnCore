@@ -1,9 +1,9 @@
 package com.bof.barn.core.region.plot.harvestable.farm.menus;
 
 import com.bof.barn.core.gui.premade.button.back.GoBackPane;
-import com.bof.barn.core.gui.premade.button.plot.settings.AutoHarvestSettingButton;
-import com.bof.barn.core.gui.premade.button.plot.settings.AutoStoreSettingButton;
-import com.bof.barn.core.gui.premade.button.plot.settings.ReplantAllSettingButton;
+import com.bof.barn.core.gui.premade.button.plot.settings.impl.AutoHarvestSettingButton;
+import com.bof.barn.core.gui.premade.button.plot.settings.impl.AutoStoreSettingButton;
+import com.bof.barn.core.gui.premade.button.plot.settings.impl.ReplantAllSettingButton;
 import com.bof.barn.core.gui.premade.menu.plot.harvestable.setting.HarvestablePlotSettingGUI;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.plot.PlotType;

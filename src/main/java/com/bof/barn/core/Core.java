@@ -36,11 +36,6 @@ public final class Core extends JavaPlugin implements Listener {
     private final RegionStorage regionStorage = new RegionStorage();
     private RegionManager regionManager;
 
-    // TODO separate upgrades buttons from the PlotSettingsGUI
-    // TODO create some kind of handler class for purchasing upgrades
-    // TODO use the same upgrade items (make sure to use the ones from PlotSettings) and purchase handlers for HarvestablePlotSettingSetGUI
-        // -- TODO add unlocked plots but not unlocked upgrade buttons to HarvestablePlotSettingGUI
-
     // TODO add upgrade that has chance to regenerate the crops
     //TODO test island members
 
