@@ -65,7 +65,7 @@ public class PlotTasksManager implements Listener {
             BukkitTask task = Bukkit.getScheduler().runTaskTimer(this.plugin, new AutoHarvestTask<>((HarvestablePlot<?>) plot), 1L, setting.getTickSpeed());
             plotTasks.put(AutoHarvestTask.class, task);
         } else {
-            cancelTask(AutoHarvestTask.class, plot);
+            this.cancelTask(AutoHarvestTask.class, plot);
         }
     }
 

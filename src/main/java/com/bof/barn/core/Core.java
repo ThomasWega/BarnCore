@@ -36,12 +36,11 @@ public final class Core extends JavaPlugin implements Listener {
     private final RegionStorage regionStorage = new RegionStorage();
     private RegionManager regionManager;
 
-    //TODO make harvestabletask work for animals as well
-    //TODO add silo and barn to modify plots menu (maybe rename some stuff?)
+    //TODO make harvestabletask work for animals as well - TEST
 
-    //TODO check if mutli set menus make sense and are named correctly
     //TODO create multi set menus to other settings as well
 
+    // TODO make Plot abstract class
     //TODO test island members
 
     @EventHandler(priority = EventPriority.LOWEST)

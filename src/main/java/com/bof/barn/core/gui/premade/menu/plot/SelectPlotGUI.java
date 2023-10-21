@@ -68,7 +68,7 @@ public abstract class SelectPlotGUI extends ChestGui {
                 .forEach(plot -> {
                     Consumer<List<Component>> loreAdd = lore -> lore.addAll(List.of(
                             Component.empty(),
-                            Component.text("Click to modify this plot", NamedTextColor.DARK_GRAY)
+                            Component.text("Click to open this plot", NamedTextColor.DARK_GRAY)
                     ));
                     this.mainPane.addItem(new HarvestablePlotButton(plot, loreAdd,
                             event -> this.getActivePlotMenu(plot).show(event.getWhoClicked()))

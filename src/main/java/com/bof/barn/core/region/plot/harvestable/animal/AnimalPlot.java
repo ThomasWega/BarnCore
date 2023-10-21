@@ -217,6 +217,17 @@ public class AnimalPlot implements HarvestablePlot<AnimalType> {
         return this.getEntities().size();
     }
 
+    public @NotNull Map<LivingEntity, AnimalType> getRemainingHarvestables() {
+        return this.animals.stream()
+                .map(uuid -> (LivingEntity) WORLD.getEntity(uuid))
+                .map(entity -> Map.entry(entity, AnimalType.getByEntityType(entity.getType())))
+                .filter(entry -> entry.getValue().isPresent())
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> entry.getValue().get()
+                ));
+    }
+
     @Override
     public void updateHologram() {
         this.hologram.getLines().stream()
