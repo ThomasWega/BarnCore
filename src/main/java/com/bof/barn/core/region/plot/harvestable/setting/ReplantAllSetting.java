@@ -15,7 +15,7 @@ public class ReplantAllSetting extends HarvestablePlotSetting {
         super("Replant All", new ItemBuilder(Material.BONE_MEAL)
                 .displayName(Component.text("Replant All"))
                 .lore(List.of(
-                        Component.text("Automatically replants all harvestables ", NamedTextColor.GRAY),
+                        Component.text("Automatically replants all harvestables", NamedTextColor.GRAY),
                         Component.text("when harvesting all at once", NamedTextColor.GRAY)
                 ))
                 .build(), 500, false);

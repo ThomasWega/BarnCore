@@ -12,6 +12,8 @@ import com.bof.barn.core.region.plot.harvestable.setting.AutoStoreSetting;
 import com.bof.barn.core.utils.BoxUtils;
 import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
 import com.github.unldenis.hologram.line.BlockLine;
+import lombok.Getter;
+import lombok.Setter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Location;
@@ -29,18 +31,14 @@ import java.util.stream.Collectors;
 
 import static com.bof.barn.core.Core.WORLD;
 
+@Getter
+@Setter
 public class AnimalPlot extends AbstractHarvestablePlot<AnimalType> {
     private final Set<UUID> animals = new HashSet<>();
     private final int animalCount = 6;
 
     public AnimalPlot(@NotNull Core plugin, @NotNull BarnRegion owningRegion, @NotNull BoundingBox box, int id) {
-        super(plugin, PlotType.ANIMAL, owningRegion, box, id);
-    }
-
-
-    public void setCurrentlyHarvesting(@NotNull AnimalType animalType) {
-        this.currentlyHarvesting = animalType;
-        this.updateHologram();
+        super(plugin, PlotType.ANIMAL, owningRegion, box, id, AnimalType.NONE);
     }
 
     @Override

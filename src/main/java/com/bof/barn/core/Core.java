@@ -36,11 +36,9 @@ public final class Core extends JavaPlugin implements Listener {
     private final RegionStorage regionStorage = new RegionStorage();
     private RegionManager regionManager;
 
-    //TODO make harvestabletask work for animals as well - TEST
+    // TODO multi store menu ignores locked or unpurchased upgrades
+    // TODO add upgrade that has chance to regenerate the crops
 
-    //TODO create multi set menus to other settings as well
-
-    //TODO make Plot abstract class
     //TODO test island members
 
     @EventHandler(priority = EventPriority.LOWEST)

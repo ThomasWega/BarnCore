@@ -32,12 +32,7 @@ import static com.bof.barn.core.Core.WORLD;
 public class FarmPlot extends AbstractHarvestablePlot<CropType> {
 
     public FarmPlot(@NotNull Core plugin, @NotNull BarnRegion owningRegion, @NotNull BoundingBox box, int id) {
-        super(plugin, PlotType.FARM, owningRegion, box, id);
-    }
-
-    public void setCurrentlyHarvesting(@NotNull CropType cropType) {
-        this.currentlyHarvesting = cropType;
-        this.updateHologram();
+        super(plugin, PlotType.FARM, owningRegion, box, id, CropType.NONE);
     }
 
     @Override

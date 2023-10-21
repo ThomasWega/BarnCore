@@ -33,7 +33,7 @@ import java.util.stream.IntStream;
  *
  * @param <S> Main setting menu
  */
-public class HarvestablePlotSettingSetGUI<S extends HarvestablePlotSettingGUI<? extends HarvestablePlotSetting>> extends ChestGui {
+class HarvestablePlotSettingSetGUI<S extends HarvestablePlotSettingGUI<? extends HarvestablePlotSetting>> extends ChestGui {
     private final BarnRegion region;
     private final OutlinePane mainPane = new OutlinePane(1, 1, 7, 2, Pane.Priority.NORMAL);
     private final OutlinePane lockedPane = mainPane.copy();

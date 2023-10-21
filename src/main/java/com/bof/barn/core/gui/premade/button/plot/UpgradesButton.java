@@ -15,7 +15,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
-import java.util.List;
 import java.util.function.Consumer;
 
 public class UpgradesButton extends SoundedGUIButton {
@@ -26,9 +25,6 @@ public class UpgradesButton extends SoundedGUIButton {
     private static @NotNull ItemStack createItem(AbstractPlot plot) {
         SkullBuilder builder = new SkullBuilder()
                 .displayName(MiniMessage.miniMessage().deserialize("<b><color:#4FFFD3>Upgrades</color></b>"))
-                .lore(List.of(
-
-                ))
                 .skin(new Skin("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmI0OWEyY2I5MDczNzk5MzIwMWZlNzJhMWYxYWI3NWM1YzkzYzI4ZjA0N2Y2ODVmZmFkNWFiMjBjN2IwY2FmMCJ9fX0=", null));
 
         // add toggled ON settings

@@ -32,8 +32,18 @@ public abstract class AbstractHarvestablePlot<T extends HarvestableType> extends
     public T currentlyHarvesting;
 
 
-    public AbstractHarvestablePlot(@NotNull Core plugin, @NotNull PlotType type, @NotNull BarnRegion owningRegion, @NotNull BoundingBox box, int id) {
+    public AbstractHarvestablePlot(@NotNull Core plugin, @NotNull PlotType type, @NotNull BarnRegion owningRegion, @NotNull BoundingBox box, int id, @NotNull T harvesting) {
         super(plugin, type, owningRegion, box, id);
+        this.currentlyHarvesting = harvesting;
+    }
+
+    /**
+     * Changes the type and updates the hologram
+     * @param type Type to change to
+     */
+    public void setCurrentlyHarvesting(@NotNull T type) {
+        this.currentlyHarvesting = type;
+        this.updateHologram();
     }
 
     /**
