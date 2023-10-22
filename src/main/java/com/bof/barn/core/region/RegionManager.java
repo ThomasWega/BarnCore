@@ -77,7 +77,7 @@ public class RegionManager implements Listener {
      */
     public Optional<BarnRegion> getRegionOf(@NotNull Player player) {
         return this.storage.getRegions().stream()
-                .filter(barnRegion -> barnRegion.getOwner() == player.getUniqueId())
+                .filter(barnRegion -> barnRegion.isMember(player.getUniqueId()))
                 .findAny();
     }
 
@@ -119,7 +119,7 @@ public class RegionManager implements Listener {
     @EventHandler
     private void onHologramInteract(PlayerHologramInteractEvent event) {
         // apply the action the plot has set for the hologram
-        getAllOccupiedRegions().forEach(region -> region.getPlots().values().forEach(plots -> plots.forEach(plot ->
+        this.getAllOccupiedRegions().forEach(region -> region.getPlots().values().forEach(plots -> plots.forEach(plot ->
                 plot.getHologramAction().accept(event))));
     }
 
@@ -129,7 +129,7 @@ public class RegionManager implements Listener {
     }
 
     private void createHoloPools(BarnRegion region) {
-        HologramPool holoPool = new HologramPool(plugin, 100);
+        HologramPool holoPool = new HologramPool(this.plugin, 100);
         region.setHologramPool(holoPool);
 
         InteractiveHologramPool interactiveHoloPool = new InteractiveHologramPool(holoPool, 0f, 5f);
