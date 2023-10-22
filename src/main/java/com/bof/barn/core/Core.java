@@ -12,6 +12,7 @@ import com.bof.barn.core.region.plot.harvestable.farm.handlers.CropsTrampingHand
 import com.bof.barn.core.region.plot.harvestable.farm.handlers.PlayerFarmPlotHandler;
 import com.bof.barn.core.region.plot.setting.PlotSettingsManager;
 import com.bof.barn.core.region.plot.task.PlotTasksManager;
+import com.bof.barn.core.region.setting.SettingManager;
 import com.bof.barn.core.region.spawn.SpawnManager;
 import com.bof.barn.core.region.storage.RegionStorage;
 import com.bof.barn.world_generator.WorldGenerator;
@@ -35,8 +36,8 @@ public final class Core extends JavaPlugin implements Listener {
     public static World WORLD;
     private final RegionStorage regionStorage = new RegionStorage();
     private RegionManager regionManager;
+    private SettingManager settingManager;
 
-    // TODO create some kind of handler class for purchasing upgrades
     // TODO use the same upgrade items (make sure to use the ones from PlotSettings) and purchase handlers for HarvestablePlotSettingSetGUI
     // -- TODO add unlocked plots but not unlocked upgrade buttons to HarvestablePlotSettingGUI
 
@@ -53,6 +54,7 @@ public final class Core extends JavaPlugin implements Listener {
     private void onGridLoad(GridLoadedEvent event) {
         WORLD = WorldGenerator.WORLD;
         this.regionManager = new RegionManager(this);
+        this.settingManager = new SettingManager();
         this.registerEventsAfterGridLoad();
         this.regionStorage.convertToRegions();
         this.onFullEnable();

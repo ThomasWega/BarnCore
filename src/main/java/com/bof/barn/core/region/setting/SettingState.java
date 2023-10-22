@@ -10,4 +10,8 @@ public enum SettingState {
     public boolean isUnlocked() {
         return this != LOCKED;
     }
+
+    public boolean isLocked() {
+        return this == LOCKED;
+    }
 }

@@ -5,6 +5,7 @@ import com.bof.barn.core.region.plot.AbstractPlot;
 import com.bof.barn.core.region.plot.event.setting.PlotSettingLevelIncreaseEvent;
 import com.bof.barn.core.region.setting.SettingState;
 import com.bof.toolkit.utils.NumberUtils;
+import com.mojang.datafixers.kinds.IdF;
 import lombok.Data;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
@@ -94,12 +95,16 @@ public abstract class PlotSetting implements Purchasable {
         return this.getState().isUnlocked();
     }
 
+    public boolean isLocked() {
+        return this.getState().isLocked();
+    }
+
     /**
      * @param unlocked Whether the setting should be unlocked
      * @return Whether the state was changed
      */
     public boolean setUnlocked(boolean unlocked) {
-        if (unlocked && !this.isUnlocked()) {
+        if (unlocked && this.isLocked()) {
             this.setState(SettingState.OFF);
             return true;
         } else if (!unlocked) {
@@ -119,8 +124,11 @@ public abstract class PlotSetting implements Purchasable {
      * @return Price of the next level
      */
     public float getNextLevelPrice() {
-        float priceMultiplier = 1.2f;
+        if (this.getState().isLocked()) {
+            return this.getPrice();
+        }
 
+        float priceMultiplier = 1.2f;
         return NumberUtils.roundBy(this.getPrice() * Math.pow(priceMultiplier, this.getCurrentLevel()), 2).floatValue();
     }
 

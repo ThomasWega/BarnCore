@@ -6,6 +6,7 @@ import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.region.plot.AbstractPlot;
 import com.bof.barn.core.region.plot.setting.PlotSetting;
 import com.bof.barn.core.region.setting.ChanceSetting;
+import com.bof.barn.core.region.setting.SettingManager;
 import com.bof.barn.core.region.setting.TimerSetting;
 import com.bof.toolkit.utils.NumberUtils;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
@@ -34,11 +35,13 @@ public class PlotSettingsGUI<T extends AbstractPlot> extends ChestGui {
     private final T plot;
     private final Supplier<Gui> goBackGuiSupplier;
     private final OutlinePane mainPane = new OutlinePane(1, 1, 7, 1);
+    private final SettingManager settingManager;
 
     public PlotSettingsGUI(@NotNull T plot, @NotNull Supplier<Gui> goBackGuiSupplier) {
         super(3, ComponentHolder.of(Component.text(WordUtils.capitalize(plot.getType().getIdentifier()) + " upgrades")));
         this.plot = plot;
         this.goBackGuiSupplier = goBackGuiSupplier;
+        this.settingManager = plot.getPlugin().getSettingManager();
         this.initialize();
     }
 
@@ -113,9 +116,7 @@ public class PlotSettingsGUI<T extends AbstractPlot> extends ChestGui {
         return event -> {
             Player player = ((Player) event.getWhoClicked());
             if (event.isShiftClick() && !setting.isAtMaxLevel()) {
-                if (this.plot.getOwningRegion().hasEnoughCoins(setting.getNextLevelPrice())) {
-                    setting.upgradeLevel(this.plot);
-                    this.plot.getOwningRegion().removeFarmCoins(setting.getNextLevelPrice());
+                if (settingManager.purchaseSetting(this.plot, setting)) {
                     player.sendMessage(Component.text("TO ADD - purchased next level for upgrade " + setting.getSettingName()));
                 } else {
                     player.sendMessage(Component.text("TO ADD - You don't have enough coins"));
@@ -132,11 +133,8 @@ public class PlotSettingsGUI<T extends AbstractPlot> extends ChestGui {
     private @NotNull Consumer<InventoryClickEvent> getLockedSettingAction(PlotSetting plotSetting) {
         return event -> {
             if (!event.isShiftClick()) return;
-            float price = plotSetting.getPrice();
             Player player = ((Player) event.getWhoClicked());
-            if (this.plot.getOwningRegion().hasEnoughCoins(price)) {
-                plotSetting.setUnlocked(true);
-                this.plot.getOwningRegion().removeFarmCoins(price);
+            if (settingManager.unlockSetting(this.plot, plotSetting)) {
                 player.sendMessage(Component.text("TO ADD - purchased upgrade " + plotSetting.getSettingName()));
             } else {
                 player.sendMessage(Component.text("TO ADD - You don't have enough coins"));
