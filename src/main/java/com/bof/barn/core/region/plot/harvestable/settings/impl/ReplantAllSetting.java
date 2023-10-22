@@ -8,6 +8,8 @@ import com.bof.barn.core.region.setting.SettingState;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.Style;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,7 +24,7 @@ public class ReplantAllSetting extends HarvestablePlotSetting implements ChanceS
 
     public ReplantAllSetting() {
         super("Replant All", new ItemBuilder(Material.BONE_MEAL)
-                .displayName(Component.text("Replant All"))
+                .displayName(Component.text("Replant All", Style.style(NamedTextColor.YELLOW, TextDecoration.BOLD)))
                 .lore(List.of(
                         Component.text("Automatically replants all harvestables", NamedTextColor.GRAY),
                         Component.text("when harvesting all at once", NamedTextColor.GRAY)

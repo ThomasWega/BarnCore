@@ -5,10 +5,7 @@ import com.bof.barn.core.gui.premade.button.plot.settings.LockedSettingButton;
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.region.plot.AbstractPlot;
 import com.bof.barn.core.region.plot.setting.PlotSetting;
-import com.bof.barn.core.region.setting.ChanceSetting;
 import com.bof.barn.core.region.setting.SettingManager;
-import com.bof.barn.core.region.setting.TimerSetting;
-import com.bof.toolkit.utils.NumberUtils;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
@@ -77,46 +74,14 @@ public class PlotSettingsGUI<T extends AbstractPlot> extends ChestGui {
                         : Component.text("OFF", NamedTextColor.RED)
                 ));
 
-
-        if (setting instanceof ChanceSetting chanceSetting) {
-            builder.appendLoreLine(Component.empty())
-                    .appendLoreLine(Component.text("Chance: " + NumberUtils.roundBy(chanceSetting.getCurrentChance(), 2) + "%", NamedTextColor.WHITE));
-
-            if (!setting.isAtMaxLevel()) {
-                builder.appendLoreLine(Component.text("Next Chance: " + NumberUtils.roundBy(chanceSetting.getNextChance(), 2) + "%", NamedTextColor.WHITE));
-            }
-        }
-
-        if (setting instanceof TimerSetting timerSetting) {
-            builder.appendLoreLine(Component.empty())
-                    .appendLoreLine(Component.text("Interval: " + NumberUtils.roundBy((float) timerSetting.getCurrentTickSpeed() / 20, 2) + "s", NamedTextColor.WHITE));
-
-            if (!setting.isAtMaxLevel()) {
-                builder.appendLoreLine(Component.text("Next Interval: " + NumberUtils.roundBy((float) timerSetting.getNextTickSpeed() / 20, 2) + "s", NamedTextColor.WHITE));
-            }
-        }
-
-        builder.appendLoreLine(Component.empty())
-                .appendLoreLine(Component.text("Level: " + setting.getCurrentLevel() + "/" + setting.getMaxLevel(), NamedTextColor.WHITE));
-
-        if (!setting.isAtMaxLevel()) {
-            builder
-                    .appendLoreLine(Component.text("Next level price: " + setting.getNextLevelPrice(), NamedTextColor.WHITE))
-                    .appendLoreLine(Component.text("Your balance: " + plot.getOwningRegion().getFarmCoinsRounded(2) + "$", NamedTextColor.WHITE))
-                    .appendLoreLine(Component.empty())
-                    .appendLoreLine(Component.text("Shift-click to upgrade level", NamedTextColor.YELLOW));
-        }
-
-        return builder
-                .appendLoreLine(Component.text("Click to change status", NamedTextColor.GREEN))
-                .build();
+        return PlotSetting.getBuilderWithInfo(this.plot, setting, builder).build();
     }
 
     private @NotNull Consumer<InventoryClickEvent> getUnlockedSettingAction(PlotSetting setting) {
         return event -> {
             Player player = ((Player) event.getWhoClicked());
             if (event.isShiftClick() && !setting.isAtMaxLevel()) {
-                if (settingManager.purchaseSetting(this.plot, setting)) {
+                if (this.settingManager.purchaseSetting(this.plot, setting)) {
                     player.sendMessage(Component.text("TO ADD - purchased next level for upgrade " + setting.getSettingName()));
                 } else {
                     player.sendMessage(Component.text("TO ADD - You don't have enough coins"));
@@ -134,7 +99,7 @@ public class PlotSettingsGUI<T extends AbstractPlot> extends ChestGui {
         return event -> {
             if (!event.isShiftClick()) return;
             Player player = ((Player) event.getWhoClicked());
-            if (settingManager.unlockSetting(this.plot, plotSetting)) {
+            if (this.settingManager.unlockSetting(this.plot, plotSetting)) {
                 player.sendMessage(Component.text("TO ADD - purchased upgrade " + plotSetting.getSettingName()));
             } else {
                 player.sendMessage(Component.text("TO ADD - You don't have enough coins"));

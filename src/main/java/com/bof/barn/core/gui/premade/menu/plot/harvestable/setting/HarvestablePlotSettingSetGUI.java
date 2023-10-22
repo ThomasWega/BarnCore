@@ -17,15 +17,13 @@ import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -43,15 +41,15 @@ class HarvestablePlotSettingSetGUI<S extends HarvestablePlotSettingGUI<? extends
     private final AbstractHarvestablePlot<?> previousSelectedPlot;
     private final PlotType plotType;
     private final S mainSettingMenu;
-    private final Class<? extends HarvestablePlotSetting> setting;
+    private final Class<? extends HarvestablePlotSetting> settingClazz;
     private final SettingManager settingManager;
 
     public HarvestablePlotSettingSetGUI(@NotNull BarnRegion region, @NotNull PlotType plotType, @NotNull S mainSettingMenu, @Nullable AbstractHarvestablePlot<?> previousSelectedPlot) {
-        super(4, ComponentHolder.of(Component.text("Toggle " + PlotSetting.getSettingName(mainSettingMenu.getSetting()) + " for plot")));
+        super(4, ComponentHolder.of(Component.text("Toggle " + PlotSetting.getSettingName(mainSettingMenu.getSettingClazz()) + " for plot")));
         this.region = region;
         this.plotType = plotType;
         this.mainSettingMenu = mainSettingMenu;
-        this.setting = mainSettingMenu.getSetting();
+        this.settingClazz = mainSettingMenu.getSettingClazz();
         this.settingManager = region.getPlugin().getSettingManager();
         this.previousSelectedPlot = previousSelectedPlot;
         this.initialize();
@@ -68,43 +66,30 @@ class HarvestablePlotSettingSetGUI<S extends HarvestablePlotSettingGUI<? extends
     }
 
     private void addLockedSettingPlots() {
-        this.region.getLockedSettingPlots(this.setting).stream()
+        this.region.getLockedSettingPlots(this.settingClazz).stream()
                 .filter(plot -> plot.getType() == this.plotType)
                 // sort by id, so first plot is always 1, second is 2, etc.
                 .sorted(Comparator.comparingInt(AbstractPlot::getId))
                 .map(plot -> ((AbstractHarvestablePlot<?>) plot))
                 .forEach(plot -> {
-                    PlotSetting settingInst = plot.getSetting(this.setting);
-                    this.mainPane.addItem(new LockedSettingButton(plot, settingInst, this.getLockedSettingAction(plot, settingInst)));
+                    PlotSetting setting = plot.getSetting(this.settingClazz);
+                    this.mainPane.addItem(new LockedSettingButton(plot, setting, this.getLockedSettingAction(plot, setting)));
                 });
     }
 
     private void addUnToggledSettingPlots() {
-        this.region.getUnToggledSettingPlots(this.setting).stream()
+        this.region.getUnToggledSettingPlots(this.settingClazz).stream()
                 .filter(plot -> plot.getType() == this.plotType)
                 // sort by id, so first plot is always 1, second is 2, etc.
                 .sorted(Comparator.comparingInt(AbstractPlot::getId))
                 .map(plot -> ((AbstractHarvestablePlot<?>) plot))
                 .forEach(plot -> {
-                    List<Component> lore = new ArrayList<>(plot.getLore());
-                    lore.addAll(List.of(
-                            Component.empty(),
-                            Component.text("Click to select this plot", NamedTextColor.DARK_GRAY)
-                    ));
-                    this.mainPane.addItem(new SoundedGUIButton(
-                            new ItemBuilder(plot.getCurrentlyHarvesting().getItem())
-                                    .displayName(plot.getDisplayName())
-                                    .lore(lore)
-                                    .build(),
-                            event -> {
-                                if (this.previousSelectedPlot != null) {
-                                    this.previousSelectedPlot.setSetting(this.setting, SettingState.OFF);
-                                }
-                                plot.setSetting(this.setting, SettingState.ON);
-                                new HarvestablePlotSettingGUI<>(this.region, this.plotType, this.setting, this.mainSettingMenu.getGoBackGui())
-                                        .show(event.getWhoClicked());
-                            }
-                    ));
+                    PlotSetting setting = plot.getSetting(this.settingClazz);
+                    ItemBuilder builder = new ItemBuilder(plot.getCurrentlyHarvesting().getItem())
+                            .displayName(plot.getDisplayName());
+                    ItemStack item = PlotSetting.getBuilderWithInfo(plot, setting, builder).build();
+
+                    this.mainPane.addItem(new SoundedGUIButton(item, this.getUnlockedSettingAction(plot, setting)));
                 });
     }
 
@@ -112,12 +97,35 @@ class HarvestablePlotSettingSetGUI<S extends HarvestablePlotSettingGUI<? extends
         return event -> {
             if (!event.isShiftClick()) return;
             Player player = ((Player) event.getWhoClicked());
-            if (settingManager.unlockSetting(plot, plotSetting)) {
+            if (this.settingManager.unlockSetting(plot, plotSetting)) {
                 player.sendMessage(Component.text("TO ADD - purchased upgrade " + plotSetting.getSettingName()));
             } else {
                 player.sendMessage(Component.text("TO ADD - You don't have enough coins"));
             }
             new HarvestablePlotSettingSetGUI<>(this.region, this.plotType, this.mainSettingMenu, this.previousSelectedPlot).show(player);
+            plot.updateHologram();
+            event.setCancelled(true);
+        };
+    }
+
+    private @NotNull Consumer<InventoryClickEvent> getUnlockedSettingAction(AbstractPlot plot, PlotSetting setting) {
+        return event -> {
+            Player player = ((Player) event.getWhoClicked());
+            if (event.isShiftClick() && !setting.isAtMaxLevel()) {
+                if (this.settingManager.purchaseSetting(plot, setting)) {
+                    player.sendMessage(Component.text("TO ADD - purchased next level for upgrade " + setting.getSettingName()));
+                    new HarvestablePlotSettingSetGUI<>(this.region, this.plotType, this.mainSettingMenu, this.previousSelectedPlot).show(player);
+                } else {
+                    player.sendMessage(Component.text("TO ADD - You don't have enough coins"));
+                }
+            } else {
+                if (this.previousSelectedPlot != null) {
+                    this.previousSelectedPlot.setSetting(this.settingClazz, SettingState.OFF);
+                }
+                plot.setSetting(this.settingClazz, SettingState.ON);
+                new HarvestablePlotSettingGUI<>(this.region, this.plotType, this.settingClazz, this.mainSettingMenu.getGoBackGui())
+                        .show(event.getWhoClicked());
+            }
             plot.updateHologram();
             event.setCancelled(true);
         };

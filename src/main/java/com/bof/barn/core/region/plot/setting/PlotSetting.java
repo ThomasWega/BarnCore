@@ -1,12 +1,16 @@
 package com.bof.barn.core.region.plot.setting;
 
 import com.bof.barn.core.Purchasable;
+import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.region.plot.AbstractPlot;
 import com.bof.barn.core.region.plot.event.setting.PlotSettingLevelIncreaseEvent;
+import com.bof.barn.core.region.setting.ChanceSetting;
 import com.bof.barn.core.region.setting.SettingState;
+import com.bof.barn.core.region.setting.TimerSetting;
 import com.bof.toolkit.utils.NumberUtils;
-import com.mojang.datafixers.kinds.IdF;
 import lombok.Data;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -151,4 +155,46 @@ public abstract class PlotSetting implements Purchasable {
      * @param plot Plot that owns the setting
      */
     public abstract void upgradeAction(@NotNull AbstractPlot plot);
+
+
+    /**
+     * Creates an ItemBuilder with PlotSetting information for display.
+     *
+     * @param plot     The associated AbstractPlot.
+     * @param setting  The PlotSetting to be displayed.
+     * @param existing The existing ItemBuilder to extend.
+     * @return An ItemBuilder with added setting details and instructions.
+     * @throws NullPointerException if any input parameter is null.
+     */
+    public static @NotNull ItemBuilder getBuilderWithInfo(@NotNull AbstractPlot plot, @NotNull PlotSetting setting, @NotNull ItemBuilder existing) {
+        if (setting instanceof ChanceSetting chanceSetting) {
+            existing.appendLoreLine(Component.empty())
+                    .appendLoreLine(Component.text("Chance: " + NumberUtils.roundBy(chanceSetting.getCurrentChance(), 2) + "%", NamedTextColor.WHITE));
+
+            if (!setting.isAtMaxLevel()) {
+                existing.appendLoreLine(Component.text("Next Chance: " + NumberUtils.roundBy(chanceSetting.getNextChance(), 2) + "%", NamedTextColor.WHITE));
+            }
+        }
+
+        if (setting instanceof TimerSetting timerSetting) {
+            existing.appendLoreLine(Component.empty())
+                    .appendLoreLine(Component.text("Interval: " + NumberUtils.roundBy((float) timerSetting.getCurrentTickSpeed() / 20, 2) + "s", NamedTextColor.WHITE));
+
+            if (!setting.isAtMaxLevel()) {
+                existing.appendLoreLine(Component.text("Next Interval: " + NumberUtils.roundBy((float) timerSetting.getNextTickSpeed() / 20, 2) + "s", NamedTextColor.WHITE));
+            }
+        }
+
+        existing.appendLoreLine(Component.empty())
+                .appendLoreLine(Component.text("Level: " + setting.getCurrentLevel() + "/" + setting.getMaxLevel(), NamedTextColor.WHITE));
+
+        if (!setting.isAtMaxLevel()) {
+            existing.appendLoreLine(Component.text("Next level price: " + setting.getNextLevelPrice(), NamedTextColor.WHITE))
+                    .appendLoreLine(Component.text("Your balance: " + plot.getOwningRegion().getFarmCoinsRounded(2) + "$", NamedTextColor.WHITE))
+                    .appendLoreLine(Component.empty())
+                    .appendLoreLine(Component.text("Shift-click to upgrade level", NamedTextColor.YELLOW));
+        }
+
+        return existing.appendLoreLine(Component.text("Click to change status", NamedTextColor.GREEN));
+    }
 }

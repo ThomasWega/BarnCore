@@ -8,6 +8,8 @@ import com.bof.barn.core.region.setting.TimerSetting;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.Style;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,7 +24,7 @@ public class AutoHarvestSetting extends HarvestablePlotSetting implements TimerS
 
     public AutoHarvestSetting() {
         super("Auto Harvest", new ItemBuilder(Material.SHEARS)
-                .displayName(Component.text("Auto Harvest"))
+                .displayName(Component.text("Auto Harvest", Style.style(NamedTextColor.YELLOW, TextDecoration.BOLD)))
                 .lore(List.of(
                         Component.text("Automatically harvests crops/animals", NamedTextColor.GRAY)
                 ))

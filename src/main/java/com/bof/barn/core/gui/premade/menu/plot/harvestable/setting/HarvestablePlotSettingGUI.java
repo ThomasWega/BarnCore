@@ -42,7 +42,7 @@ import java.util.stream.IntStream;
 @Getter
 public class HarvestablePlotSettingGUI<S extends HarvestablePlotSetting> extends ChestGui {
     private final BarnRegion region;
-    private final Class<S> setting;
+    private final Class<S> settingClazz;
     private final OutlinePane selectedPane = new OutlinePane(1, 1, 7, 2, Pane.Priority.HIGHEST);
     private final OutlinePane unlockedSlotsPane = selectedPane.copy();
     private final OutlinePane lockedSlotsPane = unlockedSlotsPane.copy();
@@ -50,10 +50,10 @@ public class HarvestablePlotSettingGUI<S extends HarvestablePlotSetting> extends
     private final PlotType plotType;
     private final Gui goBackGui;
 
-    public HarvestablePlotSettingGUI(@NotNull BarnRegion region, @NotNull PlotType plotType, @NotNull Class<S> setting, @Nullable Gui goBackGui) {
-        super(4, ComponentHolder.of(Component.text(PlotSetting.getSettingName(setting) + " Menu")));
+    public HarvestablePlotSettingGUI(@NotNull BarnRegion region, @NotNull PlotType plotType, @NotNull Class<S> settingClazz, @Nullable Gui goBackGui) {
+        super(4, ComponentHolder.of(Component.text(PlotSetting.getSettingName(settingClazz) + " Menu")));
         this.region = region;
-        this.setting = setting;
+        this.settingClazz = settingClazz;
         this.plotType = plotType;
         this.goBackGui = goBackGui;
         this.unlockedSlotsPane.setPriority(Pane.Priority.HIGH);
@@ -75,7 +75,7 @@ public class HarvestablePlotSettingGUI<S extends HarvestablePlotSetting> extends
     }
 
     private void addSelectedPlots() {
-        this.region.getToggledSettingPlots(this.setting).stream()
+        this.region.getToggledSettingPlots(this.settingClazz).stream()
                 .filter(plot -> plot.getType() == this.plotType)
                 // sort by id, so first plot is always 1, second is 2, etc.
                 .sorted(Comparator.comparingInt(AbstractPlot::getId))
@@ -111,11 +111,11 @@ public class HarvestablePlotSettingGUI<S extends HarvestablePlotSetting> extends
         return event -> {
             if (event.isShiftClick()) {
                 if (plot != null) {
-                    plot.setSetting(this.setting, SettingState.OFF);
+                    plot.setSetting(this.settingClazz, SettingState.OFF);
                 }
                 // this doesn't work for some reason
                 // this.update();
-                new HarvestablePlotSettingGUI<>(this.region, this.plotType, this.setting, this.goBackGui).show(event.getWhoClicked());
+                new HarvestablePlotSettingGUI<>(this.region, this.plotType, this.settingClazz, this.goBackGui).show(event.getWhoClicked());
                 return;
             }
             // if not click shift, open the select menu
