@@ -36,7 +36,6 @@ public final class Core extends JavaPlugin implements Listener {
     private final RegionStorage regionStorage = new RegionStorage();
     private RegionManager regionManager;
 
-    // TODO add info about next update to the upgrade buttons
     // TODO separate upgrades buttons from the PlotSettingsGUI
     // TODO create some kind of handler class for purchasing upgrades
     // TODO use the same upgrade items (make sure to use the ones from PlotSettings) and purchase handlers for HarvestablePlotSettingSetGUI

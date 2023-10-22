@@ -17,6 +17,7 @@ import java.util.function.Consumer;
 
 public class LockedSettingButton extends SoundedGUIButton {
     public LockedSettingButton(@NotNull AbstractPlot plot, @NotNull PlotSetting setting, @Nullable Consumer<InventoryClickEvent> action) {
+        // use the item from the setting but change the material
         super(new SkullBuilder(new ItemBuilder(setting.getItem()).material(Material.PLAYER_HEAD))
                 .skin(new Skin("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODE2MjNkNTIzOGRhYjdkZWNkMzIwMjY1Y2FlMWRjNmNhOTFiN2ZhOTVmMzQ2NzNhYWY0YjNhZDVjNmJhMTZlMSJ9fX0=", null))
                 .appendLoreLine(Component.empty())

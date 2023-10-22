@@ -2,16 +2,14 @@ package com.bof.barn.core.region.plot.harvestable.settings.impl;
 
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.region.plot.AbstractPlot;
-import com.bof.barn.core.region.plot.event.setting.PlotSettingLevelIncreaseEvent;
 import com.bof.barn.core.region.plot.harvestable.settings.HarvestablePlotSetting;
 import com.bof.barn.core.region.setting.ChanceSetting;
-import com.bof.barn.core.region.setting.LeveledSetting;
 import com.bof.barn.core.region.setting.SettingState;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -19,11 +17,8 @@ import java.util.List;
  * Whether harvestables should be replanted after being harvested with a button
  */
 @Getter
-public class ReplantAllSetting extends HarvestablePlotSetting implements LeveledSetting, ChanceSetting {
+public class ReplantAllSetting extends HarvestablePlotSetting implements ChanceSetting {
     private float currentChance = 0.1f;
-    private final int maxLevel = 5;
-    private final float basePrice = this.getPrice();
-    private int currentLevel = 1;
 
     public ReplantAllSetting() {
         super("Replant All", new ItemBuilder(Material.BONE_MEAL)
@@ -32,16 +27,12 @@ public class ReplantAllSetting extends HarvestablePlotSetting implements Leveled
                         Component.text("Automatically replants all harvestables", NamedTextColor.GRAY),
                         Component.text("when harvesting all at once", NamedTextColor.GRAY)
                 ))
-                .build(), 500, SettingState.LOCKED);
+                .build(), 500, SettingState.LOCKED, 3);
     }
 
-    @Override
-    public boolean upgradeLevel(AbstractPlot plot) {
-        if (this.isAtMaxLevel()) return false;
 
-        currentLevel++;
-        currentChance += 0.15f;
-        Bukkit.getPluginManager().callEvent(new PlotSettingLevelIncreaseEvent(plot, this));
-        return true;
+    @Override
+    public void upgradeAction(@NotNull AbstractPlot plot) {
+        this.currentChance += 0.1f;
     }
 }

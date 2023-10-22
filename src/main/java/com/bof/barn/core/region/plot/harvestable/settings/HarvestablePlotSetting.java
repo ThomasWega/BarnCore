@@ -13,4 +13,8 @@ public abstract class HarvestablePlotSetting extends PlotSetting {
     public HarvestablePlotSetting(@NotNull String settingName, @NotNull ItemStack item, float price, @NotNull SettingState state) {
         super(settingName, item, price, state);
     }
+
+    public HarvestablePlotSetting(@NotNull String settingName, @NotNull ItemStack item, float basePrice, @NotNull SettingState initialState, int maxLevel) {
+        super(settingName, item, basePrice, initialState, maxLevel);
+    }
 }

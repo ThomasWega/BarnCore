@@ -6,7 +6,6 @@ import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.region.plot.AbstractPlot;
 import com.bof.barn.core.region.plot.setting.PlotSetting;
 import com.bof.barn.core.region.setting.ChanceSetting;
-import com.bof.barn.core.region.setting.LeveledSetting;
 import com.bof.barn.core.region.setting.TimerSetting;
 import com.bof.toolkit.utils.NumberUtils;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
@@ -67,57 +66,62 @@ public class PlotSettingsGUI<T extends AbstractPlot> extends ChestGui {
                 );
     }
 
-    private @NotNull ItemStack createUnlockedSettingItem(PlotSetting plotSetting) {
-        ItemBuilder displayItemBuilder = new ItemBuilder(plotSetting.getItem());
-
-        displayItemBuilder.appendLoreLine(Component.empty())
-                .appendLoreLine(Component.text("Status: ", NamedTextColor.WHITE).append(plotSetting.isToggled()
+    private @NotNull ItemStack createUnlockedSettingItem(PlotSetting setting) {
+        ItemBuilder builder = new ItemBuilder(setting.getItem())
+                .appendLoreLine(Component.empty())
+                .appendLoreLine(Component.text("Status: ", NamedTextColor.WHITE).append(setting.isToggled()
                         ? Component.text("ON", NamedTextColor.GREEN)
                         : Component.text("OFF", NamedTextColor.RED)
                 ));
 
 
-        if (plotSetting instanceof ChanceSetting chanceSetting) {
-            displayItemBuilder.appendLoreLine(Component.empty())
+        if (setting instanceof ChanceSetting chanceSetting) {
+            builder.appendLoreLine(Component.empty())
                     .appendLoreLine(Component.text("Chance: " + NumberUtils.roundBy(chanceSetting.getCurrentChance(), 2) + "%", NamedTextColor.WHITE));
-        }
 
-        if (plotSetting instanceof TimerSetting timerSetting) {
-            displayItemBuilder.appendLoreLine(Component.empty())
-                    .appendLoreLine(Component.text("Interval: " + NumberUtils.roundBy((float) timerSetting.getCurrentTickSpeed() / 20, 2) + "s", NamedTextColor.WHITE));
-        }
-
-        if (plotSetting instanceof LeveledSetting levelSetting) {
-            displayItemBuilder.appendLoreLine(Component.empty())
-                    .appendLoreLine(Component.text("Level: " + levelSetting.getCurrentLevel() + "/" + levelSetting.getMaxLevel(), NamedTextColor.WHITE));
-
-            if (!levelSetting.isAtMaxLevel()) {
-                displayItemBuilder
-                        .appendLoreLine(Component.text("Next level price: " + levelSetting.getNextLevelPrice(), NamedTextColor.WHITE))
-                        .appendLoreLine(Component.text("Your balance: " + plot.getOwningRegion().getFarmCoinsRounded(2) + "$", NamedTextColor.WHITE))
-                        .appendLoreLine(Component.empty())
-                        .appendLoreLine(Component.text("Shift-click to upgrade level", NamedTextColor.YELLOW));
+            if (!setting.isAtMaxLevel()) {
+                builder.appendLoreLine(Component.text("Next Chance: " + NumberUtils.roundBy(chanceSetting.getNextChance(), 2) + "%", NamedTextColor.WHITE));
             }
         }
 
-        return displayItemBuilder
+        if (setting instanceof TimerSetting timerSetting) {
+            builder.appendLoreLine(Component.empty())
+                    .appendLoreLine(Component.text("Interval: " + NumberUtils.roundBy((float) timerSetting.getCurrentTickSpeed() / 20, 2) + "s", NamedTextColor.WHITE));
+
+            if (!setting.isAtMaxLevel()) {
+                builder.appendLoreLine(Component.text("Next Interval: " + NumberUtils.roundBy((float) timerSetting.getNextTickSpeed() / 20, 2) + "s", NamedTextColor.WHITE));
+            }
+        }
+
+        builder.appendLoreLine(Component.empty())
+                .appendLoreLine(Component.text("Level: " + setting.getCurrentLevel() + "/" + setting.getMaxLevel(), NamedTextColor.WHITE));
+
+        if (!setting.isAtMaxLevel()) {
+            builder
+                    .appendLoreLine(Component.text("Next level price: " + setting.getNextLevelPrice(), NamedTextColor.WHITE))
+                    .appendLoreLine(Component.text("Your balance: " + plot.getOwningRegion().getFarmCoinsRounded(2) + "$", NamedTextColor.WHITE))
+                    .appendLoreLine(Component.empty())
+                    .appendLoreLine(Component.text("Shift-click to upgrade level", NamedTextColor.YELLOW));
+        }
+
+        return builder
                 .appendLoreLine(Component.text("Click to change status", NamedTextColor.GREEN))
                 .build();
     }
 
-    private @NotNull Consumer<InventoryClickEvent> getUnlockedSettingAction(PlotSetting plotSetting) {
+    private @NotNull Consumer<InventoryClickEvent> getUnlockedSettingAction(PlotSetting setting) {
         return event -> {
             Player player = ((Player) event.getWhoClicked());
-            if (event.isShiftClick() && plotSetting instanceof LeveledSetting levelSetting && !levelSetting.isAtMaxLevel()) {
-                if (this.plot.getOwningRegion().hasEnoughCoins(levelSetting.getNextLevelPrice())) {
-                    levelSetting.upgradeLevel(this.plot);
-                    this.plot.getOwningRegion().removeFarmCoins(levelSetting.getNextLevelPrice());
-                    player.sendMessage(Component.text("TO ADD - purchased next level for upgrade " + plotSetting.getSettingName()));
+            if (event.isShiftClick() && !setting.isAtMaxLevel()) {
+                if (this.plot.getOwningRegion().hasEnoughCoins(setting.getNextLevelPrice())) {
+                    setting.upgradeLevel(this.plot);
+                    this.plot.getOwningRegion().removeFarmCoins(setting.getNextLevelPrice());
+                    player.sendMessage(Component.text("TO ADD - purchased next level for upgrade " + setting.getSettingName()));
                 } else {
                     player.sendMessage(Component.text("TO ADD - You don't have enough coins"));
                 }
             } else {
-                player.sendMessage(Component.text("TO ADD - Switched " + plotSetting.getSettingName() + " for this plot to " + plot.switchSettingToggle(plotSetting.getClass())));
+                player.sendMessage(Component.text("TO ADD - Switched " + setting.getSettingName() + " for this plot to " + plot.switchSettingToggle(setting.getClass())));
             }
             new PlotSettingsGUI<>(this.plot, this.goBackGuiSupplier).show(event.getWhoClicked());
             this.plot.updateHologram();
