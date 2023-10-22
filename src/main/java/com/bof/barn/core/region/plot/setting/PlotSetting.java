@@ -21,10 +21,10 @@ import java.util.Map;
 @Data
 public abstract class PlotSetting implements Purchasable {
     /**
-     * A map that stores the setting name for each subclass of PlotSetting.
-     * This map is used to retrieve the setting name for a specific subclass.
+     * A map that stores the setting instance for each subclass of PlotSetting.
+     * This map is used to retrieve the setting name and other things for a specific subclass.
      */
-    protected static Map<Class<? extends PlotSetting>, String> values = new HashMap<>();
+    protected static Map<Class<? extends PlotSetting>, PlotSetting> values = new HashMap<>();
     private final String settingName;
     private final ItemStack item;
     private final float price;
@@ -45,7 +45,7 @@ public abstract class PlotSetting implements Purchasable {
         this.state = initialState;
         this.price = price;
         this.item = item;
-        values.put(this.getClass(), settingName);
+        values.put(this.getClass(), this);
     }
 
     /**
@@ -63,17 +63,27 @@ public abstract class PlotSetting implements Purchasable {
         this.price = price;
         this.item = item;
         this.maxLevel = maxLevel;
-        values.put(this.getClass(), settingName);
+        values.put(this.getClass(), this);
     }
 
     /**
      * Get the name of the setting for a specific subclass of PlotSetting.
      *
      * @param clazz The subclass of PlotSetting for which to retrieve the setting name.
-     * @return The setting name associated with the given subclass, or null if not found.
+     * @return The setting name associated with the given subclass
      */
-    public static String getSettingName(Class<? extends PlotSetting> clazz) {
-        return values.get(clazz);
+    public static @NotNull String getSettingName(Class<? extends PlotSetting> clazz) {
+        return values.get(clazz).getSettingName();
+    }
+
+    /**
+     * Get the ItemStack of the setting for a specific subclass of PlotSetting.
+     *
+     * @param clazz The subclass of PlotSetting for which to retrieve the setting name.
+     * @return The ItemStack associated with the given subclass
+     */
+    public static @NotNull ItemStack getItem(Class<? extends PlotSetting> clazz) {
+        return values.get(clazz).getItem();
     }
 
     public boolean isToggled() {

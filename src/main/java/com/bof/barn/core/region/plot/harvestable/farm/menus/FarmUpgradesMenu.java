@@ -45,7 +45,6 @@ public class FarmUpgradesMenu extends ChestGui {
 
     private GuiItem getAutoStoreButton() {
         List<Component> lore = List.of(
-                Component.text("Automatically puts crops into the silo", NamedTextColor.GRAY),
                 Component.empty(),
                 Component.text("Click to select plots", NamedTextColor.DARK_GRAY)
         );
@@ -55,7 +54,6 @@ public class FarmUpgradesMenu extends ChestGui {
 
     private GuiItem getAutoHarvestButton() {
         List<Component> lore = List.of(
-                Component.text("Automatically harvests the crops", NamedTextColor.GRAY),
                 Component.empty(),
                 Component.text("Click to select plots", NamedTextColor.DARK_GRAY)
         );
@@ -64,8 +62,6 @@ public class FarmUpgradesMenu extends ChestGui {
 
     private GuiItem getReplantAllButton() {
         List<Component> lore = List.of(
-                Component.text("Automatically replants all crops", NamedTextColor.GRAY),
-                Component.text("when harvesting all at once", NamedTextColor.GRAY),
                 Component.empty(),
                 Component.text("Click to select plots", NamedTextColor.DARK_GRAY)
         );

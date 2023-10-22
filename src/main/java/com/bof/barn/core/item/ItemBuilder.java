@@ -31,7 +31,6 @@ import java.util.*;
 @EqualsAndHashCode
 @SuppressWarnings({"unused", "UnusedReturnValue"})
 public class ItemBuilder {
-
     @Getter
     private final ItemStack itemStack;
     @Getter
@@ -190,6 +189,23 @@ public class ItemBuilder {
      */
     public ItemBuilder appendLoreLine(Component line) {
         lore.add(line.decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE));
+        meta.lore(lore);
+        itemStack.setItemMeta(meta);
+        return this;
+    }
+
+    /**
+     * Add a whole list of components to the end of the lore
+     *
+     * @param appendLore Lore to append at the end
+     * @return The ItemBuilder
+     */
+    public ItemBuilder appendLore(List<Component> appendLore) {
+        List<Component> nonItalicLore = appendLore.stream()
+                .map(line -> line.decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE))
+                .toList();
+
+        lore.addAll(nonItalicLore);
         meta.lore(lore);
         itemStack.setItemMeta(meta);
         return this;

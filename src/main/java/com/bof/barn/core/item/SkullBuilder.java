@@ -60,6 +60,12 @@ public class SkullBuilder extends ItemBuilder {
     }
 
     @Override
+    public SkullBuilder appendLore(List<Component> appendLore) {
+        super.appendLore(appendLore);
+        return this;
+    }
+
+    @Override
     public SkullBuilder setLoreLine(int index, Component line, boolean override) {
         super.setLoreLine(index, line, override);
         return this;

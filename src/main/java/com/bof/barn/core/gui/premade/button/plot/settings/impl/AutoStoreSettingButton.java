@@ -1,8 +1,9 @@
 package com.bof.barn.core.gui.premade.button.plot.settings.impl;
 
 import com.bof.barn.core.gui.premade.sound.SoundedGUIButton;
-import com.bof.barn.core.item.SkullBuilder;
-import com.bof.toolkit.skin.Skin;
+import com.bof.barn.core.item.ItemBuilder;
+import com.bof.barn.core.region.plot.harvestable.settings.impl.AutoStoreSetting;
+import com.bof.barn.core.region.plot.setting.PlotSetting;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -13,11 +14,10 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class AutoStoreSettingButton extends SoundedGUIButton {
-    public AutoStoreSettingButton(@NotNull List<Component> lore, @Nullable Consumer<InventoryClickEvent> action) {
-        super(new SkullBuilder()
+    public AutoStoreSettingButton(@NotNull List<Component> appendLore, @Nullable Consumer<InventoryClickEvent> action) {
+        super(new ItemBuilder(PlotSetting.getItem(AutoStoreSetting.class))
                 .displayName(MiniMessage.miniMessage().deserialize("<b><color:#2b84ff>Auto Store</color></b>"))
-                .lore(lore)
-                .skin(new Skin("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTVhMGIwN2UzNmVhZmRlY2YwNTljOGNiMTM0YTdiZjBhMTY3ZjkwMDk2NmYxMDk5MjUyZDkwMzI3NjQ2MWNjZSJ9fX0=", null))
+                .appendLore(appendLore)
                 .hideFlags()
                 .build(), action
         );
