@@ -1,8 +1,8 @@
 package com.bof.barn.core.region.plot.container.barn.menus;
 
 import com.bof.barn.core.gui.premade.menu.plot.harvestable.HarvestablesContainerGUI;
-import com.bof.barn.core.region.plot.harvestable.animal.AnimalType;
 import com.bof.barn.core.region.plot.container.barn.BarnPlot;
+import com.bof.barn.core.region.plot.harvestable.animal.AnimalType;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 

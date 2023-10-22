@@ -116,7 +116,7 @@ public class BoxUtils {
      * @param box Box to check in
      * @return Optional with location of the sign, or empty if no sign was found
      */
-    public static Optional<Location> identifySpawn(@NotNull BoundingBox box) {
+    public static @NotNull Optional<Location> identifySpawn(@NotNull BoundingBox box) {
         return getBlocksInBox(box, "SIGN").stream()
                 .map(block -> ((Sign) block.getState()))
                 .filter(sign -> ColorUtils.stripColor(sign.getSide(Side.FRONT).line(0)).equals("spawn"))

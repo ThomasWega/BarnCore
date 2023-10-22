@@ -2,11 +2,11 @@ package com.bof.barn.core.region.plot;
 
 import com.bof.barn.core.Core;
 import com.bof.barn.core.region.BarnRegion;
+import com.bof.barn.core.region.plot.container.barn.BarnPlot;
+import com.bof.barn.core.region.plot.container.silo.SiloPlot;
 import com.bof.barn.core.region.plot.event.setting.PlotSettingToggleEvent;
 import com.bof.barn.core.region.plot.harvestable.animal.AnimalPlot;
 import com.bof.barn.core.region.plot.harvestable.farm.FarmPlot;
-import com.bof.barn.core.region.plot.container.barn.BarnPlot;
-import com.bof.barn.core.region.plot.container.silo.SiloPlot;
 import com.bof.barn.core.region.plot.setting.PlotSetting;
 import com.bof.barn.core.region.setting.SettingState;
 import com.bof.barn.core.utils.BoxUtils;
@@ -182,7 +182,7 @@ public abstract class AbstractPlot {
      * Check for the given setting and value
      *
      * @param settingClazz The specific Setting class
-     * @param state     State to check against
+     * @param state        State to check against
      * @return whether the setting is the specified state
      * @see #isSetting(Class)
      */

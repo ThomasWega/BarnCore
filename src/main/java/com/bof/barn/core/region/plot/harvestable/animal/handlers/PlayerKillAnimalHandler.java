@@ -60,18 +60,18 @@ public class PlayerKillAnimalHandler implements Listener {
                         .map(plot -> (AnimalPlot) plot))
                 .filter(plot -> plot.getAnimals().contains(entity.getUniqueId()))
                 .ifPresent(plot -> {
-                    AdditionResult result = plot.handleAnimalKill(true, entity);
-                    switch (result) {
-                        case INV_FULL -> {
-                            player.sendMessage("TO ADD - Animal inventory is full 3");
-                            event.setCancelled(true);
+                            AdditionResult result = plot.handleAnimalKill(true, entity);
+                            switch (result) {
+                                case INV_FULL -> {
+                                    player.sendMessage("TO ADD - Animal inventory is full 3");
+                                    event.setCancelled(true);
+                                }
+                                case CONTAINER_FULL -> {
+                                    player.sendMessage("TO ADD - Barn inventory is full IDK");
+                                    event.setCancelled(true);
+                                }
+                            }
                         }
-                        case CONTAINER_FULL -> {
-                            player.sendMessage("TO ADD - Barn inventory is full IDK");
-                            event.setCancelled(true);
-                        }
-                    }
-                }
-        );
+                );
     }
 }

@@ -42,7 +42,7 @@ public abstract class PlotSetting implements Purchasable {
      *
      * @param settingName  The name of the plot setting.
      * @param item         Item used for this upgrade
-     * @param price    Base Price of the setting
+     * @param price        Base Price of the setting
      * @param initialState The initial toggle status of the setting.
      */
     public PlotSetting(@NotNull String settingName, @NotNull ItemStack item, float price, @NotNull SettingState initialState) {
@@ -58,7 +58,7 @@ public abstract class PlotSetting implements Purchasable {
      *
      * @param settingName  The name of the plot setting.
      * @param item         Item used for this upgrade
-     * @param price    Base Price of the setting
+     * @param price        Base Price of the setting
      * @param initialState The initial toggle status of the setting.
      * @param maxLevel     Max reachable level for this setting
      */
@@ -90,72 +90,6 @@ public abstract class PlotSetting implements Purchasable {
     public static @NotNull ItemStack getItem(Class<? extends PlotSetting> clazz) {
         return values.get(clazz).getItem();
     }
-
-    public boolean isToggled() {
-        return this.getState().isToggled();
-    }
-
-    public boolean isUnlocked() {
-        return this.getState().isUnlocked();
-    }
-
-    public boolean isLocked() {
-        return this.getState().isLocked();
-    }
-
-    /**
-     * @param unlocked Whether the setting should be unlocked
-     * @return Whether the state was changed
-     */
-    public boolean setUnlocked(boolean unlocked) {
-        if (unlocked && this.isLocked()) {
-            this.setState(SettingState.OFF);
-            return true;
-        } else if (!unlocked) {
-            this.setState(SettingState.LOCKED);
-            return true;
-        }
-        return false;
-    }
-
-
-    public boolean isAtMaxLevel() {
-        return this.currentLevel >= maxLevel;
-    }
-
-    /**
-     * Calculates the price of the next level by using modifier
-     * @return Price of the next level
-     */
-    public float getNextLevelPrice() {
-        if (this.getState().isLocked()) {
-            return this.getPrice();
-        }
-
-        float priceMultiplier = 1.2f;
-        return NumberUtils.roundBy(this.getPrice() * Math.pow(priceMultiplier, this.getCurrentLevel()), 2).floatValue();
-    }
-
-    /**
-     * Tries to upgrade the level. Checks all requirements and max level
-     * @param plot Plot that owns the setting
-     * @return Whether the operation succeeded
-     */
-    public boolean upgradeLevel(@NotNull AbstractPlot plot) {
-        if (this.isAtMaxLevel()) return false;
-
-        currentLevel++;
-        this.upgradeAction(plot);
-        Bukkit.getPluginManager().callEvent(new PlotSettingLevelIncreaseEvent(plot, this));
-        return true;
-    }
-
-    /**
-     * What to do when {@link #upgradeLevel(AbstractPlot)} succeeds
-     * @param plot Plot that owns the setting
-     */
-    public abstract void upgradeAction(@NotNull AbstractPlot plot);
-
 
     /**
      * Creates an ItemBuilder with PlotSetting information for display.
@@ -197,4 +131,71 @@ public abstract class PlotSetting implements Purchasable {
 
         return existing.appendLoreLine(Component.text("Click to change status", NamedTextColor.GREEN));
     }
+
+    public boolean isToggled() {
+        return this.getState().isToggled();
+    }
+
+    public boolean isUnlocked() {
+        return this.getState().isUnlocked();
+    }
+
+    public boolean isLocked() {
+        return this.getState().isLocked();
+    }
+
+    /**
+     * @param unlocked Whether the setting should be unlocked
+     * @return Whether the state was changed
+     */
+    public boolean setUnlocked(boolean unlocked) {
+        if (unlocked && this.isLocked()) {
+            this.setState(SettingState.OFF);
+            return true;
+        } else if (!unlocked) {
+            this.setState(SettingState.LOCKED);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isAtMaxLevel() {
+        return this.currentLevel >= maxLevel;
+    }
+
+    /**
+     * Calculates the price of the next level by using modifier
+     *
+     * @return Price of the next level
+     */
+    public float getNextLevelPrice() {
+        if (this.getState().isLocked()) {
+            return this.getPrice();
+        }
+
+        float priceMultiplier = 1.2f;
+        return NumberUtils.roundBy(this.getPrice() * Math.pow(priceMultiplier, this.getCurrentLevel()), 2).floatValue();
+    }
+
+    /**
+     * Tries to upgrade the level. Checks all requirements and max level
+     *
+     * @param plot Plot that owns the setting
+     * @return Whether the operation succeeded
+     */
+    public boolean upgradeLevel(@NotNull AbstractPlot plot) {
+        if (this.isAtMaxLevel()) return false;
+
+        currentLevel++;
+        this.upgradeAction(plot);
+        Bukkit.getPluginManager().callEvent(new PlotSettingLevelIncreaseEvent(plot, this));
+        return true;
+    }
+
+    /**
+     * What to do when {@link #upgradeLevel(AbstractPlot)} succeeds
+     *
+     * @param plot Plot that owns the setting
+     */
+    public abstract void upgradeAction(@NotNull AbstractPlot plot);
 }

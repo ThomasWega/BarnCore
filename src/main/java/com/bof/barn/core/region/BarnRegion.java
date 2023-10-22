@@ -4,10 +4,10 @@ package com.bof.barn.core.region;
 import com.bof.barn.core.Core;
 import com.bof.barn.core.region.plot.AbstractPlot;
 import com.bof.barn.core.region.plot.PlotType;
-import com.bof.barn.core.region.plot.harvestable.animal.AnimalType;
-import com.bof.barn.core.region.plot.harvestable.farm.CropType;
 import com.bof.barn.core.region.plot.container.barn.BarnPlot;
 import com.bof.barn.core.region.plot.container.silo.SiloPlot;
+import com.bof.barn.core.region.plot.harvestable.animal.AnimalType;
+import com.bof.barn.core.region.plot.harvestable.farm.CropType;
 import com.bof.barn.core.region.plot.setting.PlotSetting;
 import com.bof.barn.core.region.setting.SettingState;
 import com.bof.barn.core.utils.HarvestableUtils;
@@ -380,6 +380,7 @@ public class BarnRegion {
 
     /**
      * Whether the player is a member of this region (includes owner as well)
+     *
      * @param uuid UUID to check for
      * @return Whether he is a member of this region
      */

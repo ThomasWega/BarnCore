@@ -21,8 +21,8 @@ import java.util.stream.Collectors;
 @Data
 public class RegionStorage {
     private final Core plugin;
-    public Set<BarnRegion> regions = new HashSet<>();
     private final RegionUUIDGenerator regionUUIDGenerator = new RegionUUIDGenerator();
+    public Set<BarnRegion> regions = new HashSet<>();
 
     /**
      * Converts the {@link org.bukkit.util.BoundingBox} from schematics to {@link BarnRegion} instance

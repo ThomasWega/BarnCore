@@ -60,7 +60,7 @@ public class GamePlayer {
     /**
      * @return Region the player is owner or member of
      */
-    public Optional<BarnRegion> getBarnRegion() {
+    public @NotNull Optional<BarnRegion> getBarnRegion() {
         return this.plugin.getRegionManager().getRegionOf(bukkitPlayer);
     }
 }

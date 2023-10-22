@@ -24,7 +24,7 @@ public class PlotUtils {
      * @param plot Plot to check for signs in
      * @return Optional with location of the sign, or empty if no sign with holo is present
      */
-    public static Optional<Location> identifyHologram(@NotNull AbstractPlot plot) {
+    public static @NotNull Optional<Location> identifyHologram(@NotNull AbstractPlot plot) {
         return BoxUtils.getBlocksInBox(plot.getBox(), "SIGN").stream()
                 .map(block -> ((Sign) block.getState()))
                 .filter(sign -> ColorUtils.stripColor(sign.getSide(Side.FRONT).line(0)).equals("holo"))

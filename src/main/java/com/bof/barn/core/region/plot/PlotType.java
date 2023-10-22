@@ -24,7 +24,7 @@ public enum PlotType {
      * @param identifier String that identifies the type of plot
      * @return Instance if any identifier matches
      */
-    public static Optional<PlotType> getByIdentifier(@NotNull String identifier) {
+    public static @NotNull Optional<PlotType> getByIdentifier(@NotNull String identifier) {
         return Arrays.stream(PlotType.values())
                 .filter(plotType -> plotType.identifier.equalsIgnoreCase(identifier))
                 .findAny();

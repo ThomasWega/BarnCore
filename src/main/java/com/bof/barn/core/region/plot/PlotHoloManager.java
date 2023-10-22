@@ -110,7 +110,8 @@ public class PlotHoloManager implements Listener {
             case BARN -> item = new SkullBuilder()
                     .skin(new Skin("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmRhMGMyNDBjOGM3ZjMyOGYyZTYzOGYxYmY4NjJiODg5YjZlOTdiNjYwNzAwOTcxMTM5YmQ2MzQ4MWVjZDQzOSJ9fX0=", null))
                     .build();
-            case FARM, ANIMAL -> item = new ItemStack(((AbstractHarvestablePlot<?>) plot).getCurrentlyHarvesting().getItem());
+            case FARM, ANIMAL ->
+                    item = new ItemStack(((AbstractHarvestablePlot<?>) plot).getCurrentlyHarvesting().getItem());
             case SILO -> item = new ItemStack(Material.BARREL);
         }
 

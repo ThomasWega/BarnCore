@@ -75,7 +75,7 @@ public class RegionManager implements Listener {
      * @param player Player to check for
      * @return Optional of owned region or empty if none was found
      */
-    public Optional<BarnRegion> getRegionOf(@NotNull Player player) {
+    public @NotNull Optional<BarnRegion> getRegionOf(@NotNull Player player) {
         return this.storage.getRegions().stream()
                 .filter(barnRegion -> barnRegion.isMember(player.getUniqueId()))
                 .findAny();
@@ -92,7 +92,7 @@ public class RegionManager implements Listener {
     /**
      * @return A free region (un-assigned)
      */
-    public Optional<BarnRegion> getFreeRegion() {
+    public @NotNull Optional<BarnRegion> getFreeRegion() {
         return this.storage.getRegions().stream()
                 .filter(barnRegion -> !barnRegion.isAssigned())
                 .findFirst();

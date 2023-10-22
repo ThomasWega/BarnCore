@@ -37,14 +37,14 @@ public enum CropType implements HarvestableType {
     }
 
 
-    public static Optional<CropType> getByMaterial(@NotNull Material material) {
+    public static @NotNull Optional<CropType> getByMaterial(@NotNull Material material) {
         for (CropType type : CropType.values()) {
             if (type.getMaterial() == material) return Optional.of(type);
         }
         return Optional.empty();
     }
 
-    public static Optional<CropType> getByItemMaterial(@NotNull Material material) {
+    public static @NotNull Optional<CropType> getByItemMaterial(@NotNull Material material) {
         for (CropType type : CropType.values()) {
             if (type.getItem().getType() == material) return Optional.of(type);
         }

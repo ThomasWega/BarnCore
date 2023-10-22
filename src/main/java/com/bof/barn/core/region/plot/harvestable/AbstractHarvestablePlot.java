@@ -37,6 +37,7 @@ public abstract class AbstractHarvestablePlot<T extends HarvestableType> extends
 
     /**
      * Changes the type and updates the hologram
+     *
      * @param type Type to change to
      */
     public void setCurrentlyHarvesting(@NotNull T type) {

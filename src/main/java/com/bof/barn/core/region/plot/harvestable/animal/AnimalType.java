@@ -41,14 +41,14 @@ public enum AnimalType implements HarvestableType {
                 .collect(Collectors.toSet());
     }
 
-    public static Optional<AnimalType> getByItemMaterial(@NotNull Material material) {
+    public static @NotNull Optional<AnimalType> getByItemMaterial(@NotNull Material material) {
         for (AnimalType type : AnimalType.values()) {
             if (type.getItem().getType() == material) return Optional.of(type);
         }
         return Optional.empty();
     }
 
-    public static Optional<AnimalType> getByEntityType(@NotNull EntityType entityType) {
+    public static @NotNull Optional<AnimalType> getByEntityType(@NotNull EntityType entityType) {
         for (AnimalType type : AnimalType.values()) {
             if (type.getEntityType() == entityType) return Optional.of(type);
         }

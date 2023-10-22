@@ -2,8 +2,8 @@ package com.bof.barn.core;
 
 import com.bof.barn.core.enviromental.EnchantedRain;
 import com.bof.barn.core.item.ItemBuilder;
-import com.bof.barn.core.region.plot.harvestable.AdditionResult;
 import com.bof.barn.core.region.plot.harvestable.AbstractHarvestablePlot;
+import com.bof.barn.core.region.plot.harvestable.AdditionResult;
 import com.bof.barn.core.region.plot.harvestable.HarvestableType;
 import de.tr7zw.changeme.nbtapi.NBT;
 import org.bukkit.enchantments.Enchantment;
