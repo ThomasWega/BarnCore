@@ -13,6 +13,7 @@ import com.bof.barn.core.region.plot.harvestable.tasks.ReplantAllTask;
 import com.bof.barn.core.utils.BoxUtils;
 import com.github.unldenis.hologram.event.PlayerHologramInteractEvent;
 import com.github.unldenis.hologram.line.BlockLine;
+import de.tr7zw.changeme.nbtapi.NBT;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
@@ -64,10 +65,15 @@ public class AnimalPlot extends AbstractHarvestablePlot<AnimalType> {
         this.updateHologram();
     }
 
-    public void addAnimal(AnimalType type) {
+    public void addAnimal(@NotNull AnimalType type) {
         Location location = BoxUtils.getRandomLocation(this.getBox());
         Entity entity = WORLD.spawnEntity(location, type.getEntityType(), CreatureSpawnEvent.SpawnReason.CUSTOM);
         entity.setSilent(true);
+        // this is used to identify the BarnRegion and this plot in Kill Event
+        NBT.modifyPersistentData(entity, nbt -> {
+            nbt.setUUID("region-uuid", this.getOwningRegion().getUuid());
+            nbt.setInteger("animal-plot-id", this.getId());
+        });
         WORLD.playSound(AnimalPlotSound.SUMMON.getSound(), entity.getX(), entity.getY(), entity.getZ());
         this.animals.add(entity.getUniqueId());
     }
@@ -89,7 +95,7 @@ public class AnimalPlot extends AbstractHarvestablePlot<AnimalType> {
         int i = 0;
         animalLoop:
         for (LivingEntity entity : this.getEntities()) {
-            switch (this.handleAnimalKill(player, false, entity)) {
+            switch (this.handleAnimalKill(false, entity)) {
                 case SUCCESS -> i++;
                 case INV_FULL -> {
                     player.sendMessage("TO ADD - Animal inventory is full 1");
@@ -115,12 +121,11 @@ public class AnimalPlot extends AbstractHarvestablePlot<AnimalType> {
      * Changes the {@link #currentlyHarvesting} type, puts the items into {@link BarnPlot} on {@link AutoStoreSetting},
      * if the barn is full, tries putting it into {@link BarnRegion#getAnimalInventory()}.
      *
-     * @param player Player that killed the animals
      * @param entity Animal that was killed
      * @param byHand Whether the animal was killed by hand
      * @return result when trying to save the animal drop
      */
-    public @NotNull AdditionResult handleAnimalKill(@NotNull Player player, boolean byHand, @NotNull LivingEntity entity) {
+    public @NotNull AdditionResult handleAnimalKill(boolean byHand, @NotNull LivingEntity entity) {
         final AdditionResult[] result = new AdditionResult[1];
         AnimalType.getByEntityType(entity.getType())
                 .filter(type -> type != AnimalType.NONE)
@@ -131,7 +136,6 @@ public class AnimalPlot extends AbstractHarvestablePlot<AnimalType> {
                     }
                     result[0] = this.handleAddition(item);
                     if (result[0] == AdditionResult.SUCCESS) {
-                        entity.setKiller(player);
                         entity.setHealth(0);
                         // needs to be after killing the mob
                         this.animals.remove(entity.getUniqueId());

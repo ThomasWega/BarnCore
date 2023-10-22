@@ -27,18 +27,14 @@ public class AutoHarvestTask<T extends AbstractHarvestablePlot<?>> implements Pl
     @Override
     public void run() {
         if (this.plot instanceof FarmPlot farmPlot) {
-            this.getRandomCropWithType(farmPlot.getRemainingHarvestables()).ifPresent(entry -> {
-                // technically the player doesn't matter for now, as no message will be sent, do take a caution with this though! (13.10.2023)
-                farmPlot.handleCropBreak(farmPlot.getOwningRegion().getOwner(), false, entry.getKey());
-            });
+            this.getRandomCropWithType(farmPlot.getRemainingHarvestables()).ifPresent(entry ->
+                    farmPlot.handleCropBreak(false, entry.getKey()));
             return;
         }
 
         if (this.plot instanceof AnimalPlot animalPlot) {
-            this.getRandomAnimalWithType(animalPlot.getRemainingHarvestables()).ifPresent(entry -> {
-                // technically the player doesn't matter for now, as no message will be sent, do take a caution with this though! (13.10.2023)
-                animalPlot.handleAnimalKill(animalPlot.getOwningRegion().getOwner(), false, entry.getKey());
-            });
+            this.getRandomAnimalWithType(animalPlot.getRemainingHarvestables()).ifPresent(entry ->
+                    animalPlot.handleAnimalKill(false, entry.getKey()));
             return;
         }
     }

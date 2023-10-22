@@ -32,7 +32,7 @@ public class PlayerFarmPlotHandler implements Listener {
                     if (!plot.getBoxBlocks().contains(block)) return;
                     event.setDropItems(false);
 
-                    if (plot.handleCropBreak(player, true, block) != AdditionResult.SUCCESS) {
+                    if (plot.handleCropBreak(true, block) != AdditionResult.SUCCESS) {
                         player.sendMessage("TO ADD - Crops inventory is full 3");
                         return;
                     }

@@ -69,7 +69,7 @@ public class FarmPlot extends AbstractHarvestablePlot<CropType> {
         List<Block> successfulBlocks = new ArrayList<>();
         blockLoop:
         for (Block block : this.getBoxBlocks()) {
-            AdditionResult result = this.handleCropBreak(player, false, block);
+            AdditionResult result = this.handleCropBreak(false, block);
             if (result == null) continue;
             switch (result) {
                 case SUCCESS -> successfulBlocks.add(block);
@@ -98,12 +98,11 @@ public class FarmPlot extends AbstractHarvestablePlot<CropType> {
      * Changes the {@link #getCurrentlyHarvesting()} type, puts the items into {@link SiloPlot} on {@link AutoStoreSetting},
      * if the silo is full, tries putting it into {@link BarnRegion#getCropsInventory()}.
      *
-     * @param player Player that broke the crop
      * @param block  Block that was broken
      * @param byHand Whether the crop was broken by hand
      * @return amount of crops that were successfully broken
      */
-    public @Nullable AdditionResult handleCropBreak(@NotNull Player player, boolean byHand, @NotNull Block block) {
+    public @Nullable AdditionResult handleCropBreak(boolean byHand, @NotNull Block block) {
         final AdditionResult[] result = new AdditionResult[1];
         CropType.getByMaterial(block.getType())
                 .filter(cropType -> cropType != CropType.NONE)

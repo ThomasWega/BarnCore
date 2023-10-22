@@ -43,7 +43,10 @@ public final class Core extends JavaPlugin implements Listener {
     // chance to drop more harvestables
     // chance to multiply harvestables when put into container
 
+    // TODO maybe add owner plot to the PlotSetting? will need to adapt the code
     // TODO test island members (this is probably not implemented yet)
+
+    // TODO do the multipliers and production placeholders on holograms (create papi placeholders)
 
     // THEN TODO |-
     // clearing player data on region
@@ -97,7 +100,7 @@ public final class Core extends JavaPlugin implements Listener {
         p.registerEvents(regionManager, this);
         p.registerEvents(new PlayerFarmPlotHandler(), this);
         p.registerEvents(new CropsTrampingHandler(), this);
-        p.registerEvents(new PlayerKillAnimalHandler(), this);
+        p.registerEvents(new PlayerKillAnimalHandler(this.regionStorage), this);
         p.registerEvents(new PlayerHotbarHandler(this), this);
     }
 

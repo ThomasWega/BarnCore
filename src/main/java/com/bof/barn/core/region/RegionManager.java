@@ -41,7 +41,7 @@ public class RegionManager implements Listener {
         Optional<BarnRegion> optRegion = this.getFreeRegion();
         if (optRegion.isPresent()) {
             BarnRegion region = optRegion.get();
-            region.setOwner(player);
+            region.setOwner(player.getUniqueId());
             region.setAssigned(true);
             player.teleport(region.getSpawnLocation());
             player.sendMessage("TO ADD - assigned region to you");
@@ -59,7 +59,7 @@ public class RegionManager implements Listener {
      */
     public boolean deAssignRegion(@NotNull Player player) {
         return this.storage.getRegions().stream()
-                .filter(barnRegion -> barnRegion.getOwner() == player)
+                .filter(barnRegion -> barnRegion.getOwner() == player.getUniqueId())
                 .peek(barnRegion -> {
                     barnRegion.setOwner(null);
                     barnRegion.setAssigned(false);
@@ -75,10 +75,9 @@ public class RegionManager implements Listener {
      * @param player Player to check for
      * @return Optional of owned region or empty if none was found
      */
-    // todo get from members as well
     public Optional<BarnRegion> getRegionOf(@NotNull Player player) {
         return this.storage.getRegions().stream()
-                .filter(barnRegion -> barnRegion.getOwner() == player)
+                .filter(barnRegion -> barnRegion.getOwner() == player.getUniqueId())
                 .findAny();
     }
 

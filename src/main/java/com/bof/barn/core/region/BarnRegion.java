@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 @Data
 public class BarnRegion {
     private final Core plugin;
+    private final UUID uuid;
     private final BoundingBox box;
     private final Set<UUID> members = new HashSet<>();
     private final List<ItemStack> cropsInventory = new ArrayList<>();
@@ -37,7 +38,7 @@ public class BarnRegion {
     private final List<ItemStack> animalInventory = new ArrayList<>();
     private final int animalInventoryCapacity = 100;
     private boolean isAssigned = false;
-    private Player owner;
+    private UUID owner;
     private Location spawnLocation;
     // otherwise stackoverflow is produced (https://github.com/projectlombok/lombok/issues/993)
     @ToString.Exclude
@@ -366,10 +367,24 @@ public class BarnRegion {
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
 
-        if (owner != null && owner.isOnline()) {
-            onlineMembers.add(owner);
+        if (this.owner != null) {
+            Player onlineOwner = Bukkit.getPlayer(this.owner);
+            if (onlineOwner != null && onlineOwner.isOnline()) {
+                onlineMembers.add(onlineOwner);
+            }
         }
 
         return onlineMembers;
+    }
+
+
+    /**
+     * Whether the player is a member of this region (includes owner as well)
+     * @param uuid UUID to check for
+     * @return Whether he is a member of this region
+     */
+    public boolean isMember(@NotNull UUID uuid) {
+        if (this.owner == uuid) return true;
+        return this.members.contains(uuid);
     }
 }
