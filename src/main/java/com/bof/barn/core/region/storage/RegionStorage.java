@@ -1,5 +1,6 @@
 package com.bof.barn.core.region.storage;
 
+import com.bof.barn.core.Core;
 import com.bof.barn.core.region.BarnRegion;
 import com.bof.barn.core.region.events.RegionCreatedEvent;
 import com.bof.barn.world_generator.data.SchematicsStorage;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
  */
 @Data
 public class RegionStorage {
+    private final Core plugin;
     public Set<BarnRegion> regions = new HashSet<>();
 
     /**
@@ -23,7 +25,7 @@ public class RegionStorage {
      */
     public void convertToRegions() {
         this.regions = SchematicsStorage.getPastedRegions().stream()
-                .map(BarnRegion::new)
+                .map(boundingBox -> new BarnRegion(this.plugin, boundingBox))
                 .collect(Collectors.toSet());
 
         // run the events

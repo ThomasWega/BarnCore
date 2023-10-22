@@ -1,6 +1,7 @@
 package com.bof.barn.core.region;
 
 
+import com.bof.barn.core.Core;
 import com.bof.barn.core.region.plot.AbstractPlot;
 import com.bof.barn.core.region.plot.PlotType;
 import com.bof.barn.core.region.plot.harvestable.animal.AnimalType;
@@ -28,6 +29,7 @@ import java.util.stream.Collectors;
 
 @Data
 public class BarnRegion {
+    private final Core plugin;
     private final BoundingBox box;
     private final Set<UUID> members = new HashSet<>();
     private final List<ItemStack> cropsInventory = new ArrayList<>();

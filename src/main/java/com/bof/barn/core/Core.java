@@ -34,18 +34,18 @@ import java.io.IOException;
 public final class Core extends JavaPlugin implements Listener {
     public static ComponentLogger LOGGER;
     public static World WORLD;
-    private final RegionStorage regionStorage = new RegionStorage();
+    private RegionStorage regionStorage;
     private RegionManager regionManager;
     private SettingManager settingManager;
 
-    // TODO use the same upgrade items (make sure to use the ones from PlotSettings) and purchase handlers for HarvestablePlotSettingSetGUI
-    // -- TODO add unlocked plots but not unlocked upgrade buttons to HarvestablePlotSettingGUI
-
-    // TODO add upgrade that has chance to regenerate the crops with delay and chance (think about it more)
+    // UPGRADES TO ADD -
+    // chance to regenerate the crops with delay
+    // chance to drop more harvestables
+    // chance to multiply harvestables when put into container
 
     // TODO test island members (this is probably not implemented yet)
 
-    // THEN -
+    // THEN TODO |-
     // clearing player data on region
     // saving player region data to database
     // loading player region data on assign
@@ -63,6 +63,7 @@ public final class Core extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         LOGGER = getComponentLogger();
+        this.regionStorage = new RegionStorage(this);
         this.loadFiles();
         this.registerEvents();
     }

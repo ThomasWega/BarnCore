@@ -1,7 +1,7 @@
 package com.bof.barn.core.gui.premade.menu.plot.harvestable.setting;
 
 import com.bof.barn.core.gui.premade.button.back.GoBackPane;
-import com.bof.barn.core.gui.premade.button.plot.LockedPlotButton;
+import com.bof.barn.core.gui.premade.button.plot.settings.LockedSettingButton;
 import com.bof.barn.core.gui.premade.sound.SoundedGUIButton;
 import com.bof.barn.core.item.ItemBuilder;
 import com.bof.barn.core.region.BarnRegion;
@@ -10,6 +10,7 @@ import com.bof.barn.core.region.plot.PlotType;
 import com.bof.barn.core.region.plot.harvestable.AbstractHarvestablePlot;
 import com.bof.barn.core.region.plot.harvestable.settings.HarvestablePlotSetting;
 import com.bof.barn.core.region.plot.setting.PlotSetting;
+import com.bof.barn.core.region.setting.SettingManager;
 import com.bof.barn.core.region.setting.SettingState;
 import com.github.stefvanschie.inventoryframework.adventuresupport.ComponentHolder;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
@@ -17,13 +18,15 @@ import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.IntStream;
+import java.util.function.Consumer;
 
 /**
  * A menu which allows to set a specific setting for a plot which don't have this setting yet.
@@ -36,12 +39,12 @@ import java.util.stream.IntStream;
 class HarvestablePlotSettingSetGUI<S extends HarvestablePlotSettingGUI<? extends HarvestablePlotSetting>> extends ChestGui {
     private final BarnRegion region;
     private final OutlinePane mainPane = new OutlinePane(1, 1, 7, 2, Pane.Priority.NORMAL);
-    private final OutlinePane lockedPane = mainPane.copy();
     @Nullable
     private final AbstractHarvestablePlot<?> previousSelectedPlot;
     private final PlotType plotType;
     private final S mainSettingMenu;
     private final Class<? extends HarvestablePlotSetting> setting;
+    private final SettingManager settingManager;
 
     public HarvestablePlotSettingSetGUI(@NotNull BarnRegion region, @NotNull PlotType plotType, @NotNull S mainSettingMenu, @Nullable AbstractHarvestablePlot<?> previousSelectedPlot) {
         super(4, ComponentHolder.of(Component.text("Toggle " + PlotSetting.getSettingName(mainSettingMenu.getSetting()) + " for plot")));
@@ -49,28 +52,34 @@ class HarvestablePlotSettingSetGUI<S extends HarvestablePlotSettingGUI<? extends
         this.plotType = plotType;
         this.mainSettingMenu = mainSettingMenu;
         this.setting = mainSettingMenu.getSetting();
+        this.settingManager = region.getPlugin().getSettingManager();
         this.previousSelectedPlot = previousSelectedPlot;
-        this.lockedPane.setPriority(Pane.Priority.LOW);
         this.initialize();
     }
 
     private void initialize() {
-        this.addLockedPlots();
-        this.addSettablePlots();
+        this.addLockedSettingPlots();
+        this.addUnToggledSettingPlots();
 
-        this.addPane(new GoBackPane(4, 3, mainSettingMenu));
-        this.addPane(mainPane);
-        this.addPane(lockedPane);
+        this.addPane(new GoBackPane(4, 3, this.mainSettingMenu));
+        this.addPane(this.mainPane);
 
         this.setOnGlobalClick(event -> event.setCancelled(true));
     }
 
-    private void addLockedPlots() {
-        IntStream.rangeClosed(1, this.region.getLockedPlots(this.plotType).size()).forEach(value ->
-                this.lockedPane.addItem(new LockedPlotButton(this.plotType)));
+    private void addLockedSettingPlots() {
+        this.region.getLockedSettingPlots(this.setting).stream()
+                .filter(plot -> plot.getType() == this.plotType)
+                // sort by id, so first plot is always 1, second is 2, etc.
+                .sorted(Comparator.comparingInt(AbstractPlot::getId))
+                .map(plot -> ((AbstractHarvestablePlot<?>) plot))
+                .forEach(plot -> {
+                    PlotSetting settingInst = plot.getSetting(this.setting);
+                    this.mainPane.addItem(new LockedSettingButton(plot, settingInst, this.getLockedSettingAction(plot, settingInst)));
+                });
     }
 
-    private void addSettablePlots() {
+    private void addUnToggledSettingPlots() {
         this.region.getUnToggledSettingPlots(this.setting).stream()
                 .filter(plot -> plot.getType() == this.plotType)
                 // sort by id, so first plot is always 1, second is 2, etc.
@@ -97,5 +106,20 @@ class HarvestablePlotSettingSetGUI<S extends HarvestablePlotSettingGUI<? extends
                             }
                     ));
                 });
+    }
+
+    private @NotNull Consumer<InventoryClickEvent> getLockedSettingAction(AbstractPlot plot, PlotSetting plotSetting) {
+        return event -> {
+            if (!event.isShiftClick()) return;
+            Player player = ((Player) event.getWhoClicked());
+            if (settingManager.unlockSetting(plot, plotSetting)) {
+                player.sendMessage(Component.text("TO ADD - purchased upgrade " + plotSetting.getSettingName()));
+            } else {
+                player.sendMessage(Component.text("TO ADD - You don't have enough coins"));
+            }
+            new HarvestablePlotSettingSetGUI<>(this.region, this.plotType, this.mainSettingMenu, this.previousSelectedPlot).show(player);
+            plot.updateHologram();
+            event.setCancelled(true);
+        };
     }
 }
